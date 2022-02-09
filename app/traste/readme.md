@@ -3,7 +3,7 @@ Se till så att ni har npm installerat
 ```sh
     npm install -g npm
 ```
-*Mac 
+* Mac 
 ```sh
     brew install node - "för att uppdatera" brew upgrade node
 ```
