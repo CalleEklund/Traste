@@ -1,5 +1,11 @@
+const { assert } = require('@firebase/util');
 const Firestore = require('@google-cloud/firestore');
 const path = require('path');
+const { db } = require('./config');
+
+
+
+
 
 class FirestoreClient {
     constructor() {
@@ -8,23 +14,31 @@ class FirestoreClient {
             keyFilename: path.join(__dirname, './service_account.json')
         })
     }
-    async createReport (_docketNumber, _docketPicture , _wastePicture, _name, _weight, _timeStamps, _binSize, _facility) {
+    createReport (data) {
 
         const reportData = {
-            docketNumber: _docketNumber,
-            docketPicture: _docketPicture,
-            wastePicture: _wastePicture,
-            name: _name,
-            weight: _weight,
-            timestamps: _timeStamps,
-            binSize: _binSize,
-            facility: _facility
+            docketNumber: data.docketNumber, //INT
+            docketPicture: data.docketPicture, // PNG
+            wastePicture: data.wastePicture, // JPG
+            name: data.name, // STRING
+            weight: data.weight, // FLOAT
+            timestamps: data.timeStamps, //DATE
+            binSize: data.binSize, // INT
+            facility: data.facility // STRING
           };
-          
-        
-          const res = await this.firestore.collection('Reports').doc(_docketNumber).set(reportData);
-          
-    
+        var response = this.firestore.collection('Reports').doc(data.docketNumber).get()
+        .then (async doc =>{
+            if (doc.exists){
+                return {msg: "Report already exists!"};
+            } else {
+                await this.firestore.collection('Reports').doc(data.docketNumber).set(reportData); 
+                return {msg: 'report was made'};
+            }
+        })
+        .catch(err => {
+            console.error('Error making report', err);
+        })
+        return response;
     }
 }
 
