@@ -1,7 +1,12 @@
 import React from "react";
-import { Container, } from "@mui/material";
+import { Container, TextField, Box } from "@mui/material";
 import Selection from "../components/Selection";
-import Inputfield from "../components/Inputfield"
+import Inputfield from "../components/Inputfield";
+
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+
 const binsizes = [
   {
     id: "0",
@@ -41,11 +46,23 @@ const sites = [
 ];
 
 function FactPage() {
-  
+  const [value, setValue] = React.useState(new Date());
+
   return (
     <Container sx={{ display: "flex", flexDirection: "column" }}>
-      <Inputfield label="Docket No." type="string"/>
-      <Inputfield label="Weight" type="number"/>
+        <LocalizationProvider dateAdapter={AdapterDateFns} >
+          <MobileDatePicker
+            label="For mobile"
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} sx={{marginTop:'15px', backgroundColor: "rgba(255,255,255,0.3)"}}/>}
+            
+          />
+        </LocalizationProvider>
+      <Inputfield label="Docket No." type="string" />
+      <Inputfield label="Weight" type="number" />
       <Selection title="Bin Size" data={binsizes} />
       <Selection title="Sites" data={sites} />
     </Container>
