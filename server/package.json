@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test",
+    "coverage": "nyc --reporter=html npm run test"
   },
   "dependencies": {
     "chai": "^4.3.6",

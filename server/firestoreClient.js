@@ -1,4 +1,3 @@
-const { assert } = require('@firebase/util');
 const Firestore = require('@google-cloud/firestore');
 const path = require('path');
 
@@ -10,8 +9,6 @@ class FirestoreClient {
         })
     }
 
-    
-
     async deleteCollection(collectionPath, batchSize) {
         const collectionRef = this.firestore.collection(collectionPath);
         const query = collectionRef.orderBy('__name__').limit(batchSize);
@@ -20,14 +17,11 @@ class FirestoreClient {
           deleteQueryBatch(this.firestore, query, resolve).catch(reject);
         });
       }
-      
-    
-  
 
     async createReport (data) {
 
         const reportData = {
-            docketNumber: data.docketNumber, //INT
+            docketNumber: data.docketNumber, //STRING
             docketPicture: data.docketPicture, // PNG
             wastePicture: data.wastePicture, // JPG
             name: data.name, // STRING
@@ -39,14 +33,14 @@ class FirestoreClient {
         var response = this.firestore.collection('Reports').doc(data.docketNumber).get()
         .then (async doc =>{
             if (doc.exists){
-                return JSON.stringify({msg: "Report already exists!"});
+                return JSON.stringify({msg: "Report already exists"});
             } else {
                 await this.firestore.collection('Reports').doc(data.docketNumber).set(reportData); 
                 return JSON.stringify({msg: 'Report was made'});
             }
         })
         .catch(err => {
-            console.error('Error making report', err);
+            throw err;
         })
         return response;
     }
@@ -75,8 +69,4 @@ async function deleteQueryBatch(db, query, resolve) {
     deleteQueryBatch(db, query, resolve);
     });
 }
-
-
-
 module.exports = new FirestoreClient();
-//module.exports = {deleteCollection};

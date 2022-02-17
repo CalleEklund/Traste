@@ -7,6 +7,7 @@ const {
 const { reportSchema }  = require('./databaseSchemas');
 const app = express();
 app.use(express.json());
+
 const { validate } = new Validator();
 
 function validationErrorMiddleware(error, request, response, next) {
@@ -24,14 +25,15 @@ function validationErrorMiddleware(error, request, response, next) {
 	});
 	next();
 }
-
-app.post("/create", validate({ body: reportSchema }), async(req, res) => {
-
+app.post("/create", validate({ body: reportSchema }),  async(req, res) => {
     var data = req.body;
     var response = FirestoreClient.createReport(data);
+    console.log(response)
     response = response.then(function(msg) {
         res.send(msg);
-    });
+    }).catch(err => {
+        res.send(JSON.stringify({"error": err.message}));
+   })
 })
 
 app.use(validationErrorMiddleware);
