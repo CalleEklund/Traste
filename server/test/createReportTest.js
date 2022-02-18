@@ -1,8 +1,13 @@
+/*
+This is the test file for createReport
+*/
+
 const { expect } = require('chai');
 const FirestoreClient = require("../firestoreClient");
 
-describe('The create function', () => {   
-
+describe('The create function', () => {  
+    
+    
     it('Should return report was made',  function(done) {
         
         var data = {

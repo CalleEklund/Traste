@@ -1,3 +1,9 @@
+/*
+This file contains the Firebase Class.
+It initiliazez the firebase database and handles all the functions for adding, 
+changing and deleting entries in the database.
+*/
+
 const Firestore = require('@google-cloud/firestore');
 const path = require('path');
 
@@ -9,6 +15,11 @@ class FirestoreClient {
         })
     }
 
+    /*
+    This function deletes all entries of specific collection.
+    params collectionPath, batchSize
+    returns promise
+    */
     async deleteCollection(collectionPath, batchSize) {
         const collectionRef = this.firestore.collection(collectionPath);
         const query = collectionRef.orderBy('__name__').limit(batchSize);
@@ -17,7 +28,13 @@ class FirestoreClient {
           deleteQueryBatch(this.firestore, query, resolve).catch(reject);
         });
       }
-
+    
+     /*
+    This function creates a report from data.
+    If data is not formatted correctly a error code will be provided
+    params data
+    returns promise
+    */
     async createReport (data) {
 
         const reportData = {
@@ -39,13 +56,16 @@ class FirestoreClient {
                 return JSON.stringify({msg: 'Report was made'});
             }
         })
-        .catch(err => {
-            throw err;
-        })
         return response;
     }
 }
 
+/*
+This function deletes small batches of documents in the database.
+It gets called by deleteCollection.
+params db, query, resolve
+returns promise
+*/
 async function deleteQueryBatch(db, query, resolve) {
     const snapshot = await query.get();
 

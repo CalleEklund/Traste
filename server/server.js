@@ -1,3 +1,7 @@
+/*
+This file contains functions for deplyoing the firebase database locally.
+*/
+
 const FirestoreClient = require("./firestoreClient");
 const express = require("express");
 const {
@@ -10,6 +14,9 @@ app.use(express.json());
 
 const { validate } = new Validator();
 
+/*
+This function validates the get request and returns the correct error code.
+*/
 function validationErrorMiddleware(error, request, response, next) {
 	if (response.headersSent) {
 		return next(error);
@@ -25,6 +32,11 @@ function validationErrorMiddleware(error, request, response, next) {
 	});
 	next();
 }
+
+/*
+This if the function for posting on localhost/3000/create.
+This is for testing the create>Report function.
+*/
 app.post("/create", validate({ body: reportSchema }),  async(req, res) => {
     var data = req.body;
     var response = FirestoreClient.createReport(data);

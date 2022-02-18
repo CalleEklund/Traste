@@ -1,3 +1,7 @@
+/*
+This file contains the schemas ov different structures in the database.
+*/
+
 var reportSchema = {
     type: "object",
     required: ["docketNumber", "docketPicture", "wastePicture", "name", "weight", "timeStamps", "binSize", "facility"],
