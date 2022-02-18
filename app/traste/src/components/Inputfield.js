@@ -2,14 +2,16 @@ import React from "react";
 import { TextField } from "@mui/material";
 
 function Inputfield(props) {
-  var inputId = "input" + props.label;
+  var inputid = "input-" + props.label;
   return (
     <TextField
-      id={inputId}
+      id={inputid}
+      name={props.name}
       label={props.label}
       variant="outlined"
       type={props.type}
-      sx={{ marginTop: "15px", backgroundColor: "rgba(255,255,255,0.3)" }}
+      sx={{ marginTop: "15px", backgroundColor: "rgba(255,255,255,0.3)", width:'90vw' }}
+      onChange={props.handleFactChange}
     />
   );
 }
