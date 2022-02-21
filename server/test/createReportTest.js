@@ -59,7 +59,8 @@ describe('The create function', () => {
         FirestoreClient.createReport(data).then((res, body) => {
             done();
         }).catch(err => {
-            expect(JSON.stringify({"error": err.message})).to.be.eq(JSON.stringify({"error": "Value for argument \"documentPath\" is not a valid resource path. Path must be a non-empty string."}));
+            expect(JSON.stringify({"error": err.message})).to.be.eq(JSON.stringify(
+                {"error": "Value for argument \"documentPath\" is not a valid resource path. Path must be a non-empty string."}));
             done();
         })
     })
