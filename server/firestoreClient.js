@@ -105,6 +105,30 @@ class FirestoreClient {
         })
         return response;
     }
+
+    /*
+    This function writes facilities into the database.
+    params data
+    returns promise
+    */
+    async createFacility (data) {
+
+        const reportData = {
+            facilityId: data.facilityId, //STRING
+            location: data.location // STRING
+          };
+        var response = this.firestore.collection('Facilities').doc(data.facilityId).get()
+        .then (async doc =>{
+            if (doc.exists){
+                return JSON.stringify({msg: "Facility already exists"});
+            } else {
+                await this.firestore.collection('Facilities').doc(data.facilityId).set(reportData); 
+                return JSON.stringify({msg: 'Facility was added to the database'});
+            }
+        })
+        return response;
+    }
+    
 }
 
 /*

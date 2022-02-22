@@ -6,4 +6,5 @@ const FirestoreClient = require("../firestoreClient");
 FirestoreClient.deleteCollection('Reports', 10);
 FirestoreClient.deleteCollection('Sites', 10);
 FirestoreClient.deleteCollection('Waste', 10);
+FirestoreClient.deleteCollection('Facilities', 10);
 

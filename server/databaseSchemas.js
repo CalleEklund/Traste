@@ -72,4 +72,20 @@ var wasteSchema = {
     
 };
 
-module.exports = {reportSchema, wasteSchema, siteSchema};
+var facilitySchema = {
+    type: "object",
+    required: ["facilityId", "location"],
+    properties: {
+        materialName: {
+            type: "string",
+            minLength: 1,
+        },
+        density: {
+            type: "string",
+            minlength: 1,
+        },
+    }
+    
+};
+
+module.exports = {reportSchema, wasteSchema, siteSchema, facilitySchema};
