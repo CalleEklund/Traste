@@ -8,7 +8,7 @@ const {
 	Validator,
 	ValidationError,
 } = require("express-json-validator-middleware");
-const { reportSchema, siteSchema, wasteSchema, facilitySchema}  = require('./databaseSchemas');
+const { reportSchema, siteSchema, wasteSchema, facilitySchema, employeeSchema}  = require('./databaseSchemas');
 const app = express();
 app.use(express.json());
 
@@ -34,7 +34,7 @@ function validationErrorMiddleware(error, request, response, next) {
 }
 
 /*
-This if the function for posting on localhost/3000/createreport.
+This is the function for posting on localhost/3000/createreport.
 This is for testing the createreport function.
 */
 app.post("/createreport", validate({ body: reportSchema }),  async(req, res) => {
@@ -49,7 +49,7 @@ app.post("/createreport", validate({ body: reportSchema }),  async(req, res) => 
 })
 
 /*
-This if the function for posting on localhost/3000/createsite.
+This is the function for posting on localhost/3000/createsite.
 This is for testing the createsite function.
 */
 app.post("/createsite", validate({ body: siteSchema }),  async(req, res) => {
@@ -64,7 +64,7 @@ app.post("/createsite", validate({ body: siteSchema }),  async(req, res) => {
 })
 
 /*
-This if the function for posting on localhost/3000/createwaste.
+This is the function for posting on localhost/3000/createwaste.
 This is for testing the createwaste function.
 */
 app.post("/createwaste", validate({ body: wasteSchema }),  async(req, res) => {
@@ -77,10 +77,27 @@ app.post("/createwaste", validate({ body: wasteSchema }),  async(req, res) => {
         res.send(JSON.stringify({"error": err.message}));
    })
 })
-
+/*
+This is the function for posting on localhost/3000/createfacility
+This is for testing.
+*/
 app.post("/createfacility", validate({ body: facilitySchema }),  async(req, res) => {
     var data = req.body;
     var response = FirestoreClient.createFacility(data);
+    console.log(response)
+    response = response.then(function(msg) {
+        res.send(msg);
+    }).catch(err => {
+        res.send(JSON.stringify({"error": err.message}));
+   })
+})
+/*
+This is the function for posting on localhost/3000/createemployee
+This is for testing.
+*/
+app.post("/createemployee", validate({ body: employeeSchema }),  async(req, res) => {
+    var data = req.body;
+    var response = FirestoreClient.createEmployee(data);
     console.log(response)
     response = response.then(function(msg) {
         res.send(msg);
