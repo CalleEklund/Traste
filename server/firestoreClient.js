@@ -58,6 +58,29 @@ class FirestoreClient {
         })
         return response;
     }
+    /*
+    This function is used to log different types of waste.
+    Waste is included in logging a report in the database.
+    params data
+    returns promise
+    */
+    async createWaste (data) {
+
+        const reportData = {
+            materialName: data.materialName, //STRING
+            density: data.density // DOUBLE
+          };
+        var response = this.firestore.collection('Waste').doc(data.materialName).get()
+        .then (async doc =>{
+            if (doc.exists){
+                return JSON.stringify({msg: "Waste already exists"});
+            } else {
+                await this.firestore.collection('Waste').doc(data.materialName).set(reportData); 
+                return JSON.stringify({msg: 'Waste was added to the database'});
+            }
+        })
+        return response;
+    }
 }
 
 /*

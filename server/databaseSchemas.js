@@ -41,4 +41,20 @@ var reportSchema = {
     },
 };
 
-module.exports = {reportSchema};
+var wasteSchema = {
+    type: "object",
+    required: ["materialName", "density"],
+    properties: {
+        materialName: {
+            type: "string",
+            minLength: 1,
+        },
+        density: {
+            type: "number",
+            minimum: 0,
+        },
+    }
+    
+};
+
+module.exports = {reportSchema, wasteSchema};
