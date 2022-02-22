@@ -8,7 +8,7 @@ const {
 	Validator,
 	ValidationError,
 } = require("express-json-validator-middleware");
-const { reportSchema, siteSchema, wasteSchema}  = require('./databaseSchemas');
+const { reportSchema, siteSchema, wasteSchema, facilitySchema}  = require('./databaseSchemas');
 const app = express();
 app.use(express.json());
 
@@ -70,6 +70,17 @@ This is for testing the createwaste function.
 app.post("/createwaste", validate({ body: wasteSchema }),  async(req, res) => {
     var data = req.body;
     var response = FirestoreClient.createWaste(data);
+    console.log(response)
+    response = response.then(function(msg) {
+        res.send(msg);
+    }).catch(err => {
+        res.send(JSON.stringify({"error": err.message}));
+   })
+})
+
+app.post("/createfacility", validate({ body: facilitySchema }),  async(req, res) => {
+    var data = req.body;
+    var response = FirestoreClient.createFacility(data);
     console.log(response)
     response = response.then(function(msg) {
         res.send(msg);
