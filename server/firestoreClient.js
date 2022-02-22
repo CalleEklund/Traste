@@ -128,7 +128,33 @@ class FirestoreClient {
         })
         return response;
     }
-    
+
+    /*
+    This function writes employees into the database.
+    params data
+    returns promise
+    */
+    async createEmployee (data) {
+
+        const reportData = {
+            employeeId: data.employeeId, //STRING
+            name: data.name, // STRING
+            email: data.email, // STRING
+            password: data.password, // STRING
+            isDeleted: data.isDeleted, // BOLEAN
+            facilityId: data.facilityId //STRING
+          };
+        var response = this.firestore.collection('Employees').doc(data.employeeId).get()
+        .then (async doc =>{
+            if (doc.exists){
+                return JSON.stringify({msg: "Employee already exists"});
+            } else {
+                await this.firestore.collection('Employees').doc(data.employeeId).set(reportData); 
+                return JSON.stringify({msg: 'Employee was added to the database'});
+            }
+        })
+        return response;
+    } 
 }
 
 /*

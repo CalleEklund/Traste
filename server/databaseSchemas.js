@@ -76,11 +76,11 @@ var facilitySchema = {
     type: "object",
     required: ["facilityId", "location"],
     properties: {
-        materialName: {
+        facilityId: {
             type: "string",
             minLength: 1,
         },
-        density: {
+        location: {
             type: "string",
             minlength: 1,
         },
@@ -88,4 +88,35 @@ var facilitySchema = {
     
 };
 
-module.exports = {reportSchema, wasteSchema, siteSchema, facilitySchema};
+var employeeSchema = {
+    type: "object",
+    required: ["employeeId", "name", "email", "password", "isDeleted", "facilityId"],
+    properties: {
+        employeeId: {
+            type: "string",
+            minLength: 1,
+        },
+        name: {
+            type: "string",
+            minlength: 1,
+        },
+        email: {
+            type: "string",
+            minlength: 1,
+        },
+        password: {
+            type: "string",
+            minlength: 1,
+        },
+        isDeleted: {
+            type: "boolean"
+        },
+        facilityId: {
+            type: "string",
+            minlength: 1,
+        },
+    }
+    
+};
+
+module.exports = {reportSchema, wasteSchema, siteSchema, facilitySchema, employeeSchema};
