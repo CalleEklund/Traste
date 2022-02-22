@@ -41,6 +41,21 @@ var reportSchema = {
     },
 };
 
+var siteSchema = {
+    type: "object",
+    required: ["adress", "name"],
+    properties: {
+        adress: {
+            type: "string",
+            minLength: 1,
+        },
+        name: {
+            type: "string",
+            minLength: 1,
+        },
+    },
+};
+
 var wasteSchema = {
     type: "object",
     required: ["materialName", "density"],
@@ -57,4 +72,4 @@ var wasteSchema = {
     
 };
 
-module.exports = {reportSchema, wasteSchema};
+module.exports = {reportSchema, wasteSchema, siteSchema};

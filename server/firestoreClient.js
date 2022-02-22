@@ -58,6 +58,30 @@ class FirestoreClient {
         })
         return response;
     }
+
+    /*
+    This function creates a site from data.
+    If data is not formatted correctly a error code will be provided
+    params data
+    returns promise
+    */
+    async createSite (data) {
+
+        const reportData = {
+            adress: data.adress, //STRING
+            name: data.name      //STRING
+          };
+        var response = this.firestore.collection('Sites').doc(data.adress).get()
+        .then (async doc =>{
+            if (doc.exists){
+                return JSON.stringify({msg: "Site already exists"});
+            } else {
+                await this.firestore.collection('Sites').doc(data.adress).set(reportData); 
+                return JSON.stringify({msg: 'Site was made'});
+                }
+        })
+        return response;
+    }
     /*
     This function is used to log different types of waste.
     Waste is included in logging a report in the database.
