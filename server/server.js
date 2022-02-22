@@ -8,7 +8,7 @@ const {
 	Validator,
 	ValidationError,
 } = require("express-json-validator-middleware");
-const { reportSchema }  = require('./databaseSchemas');
+const { reportSchema, wasteSchema }  = require('./databaseSchemas');
 const app = express();
 app.use(express.json());
 
@@ -34,10 +34,10 @@ function validationErrorMiddleware(error, request, response, next) {
 }
 
 /*
-This if the function for posting on localhost/3000/create.
-This is for testing the create>Report function.
+This if the function for posting on localhost/3000/createreport.
+This is for testing the createreport function.
 */
-app.post("/create", validate({ body: reportSchema }),  async(req, res) => {
+app.post("/createreport", validate({ body: reportSchema }),  async(req, res) => {
     var data = req.body;
     var response = FirestoreClient.createReport(data);
     console.log(response)
@@ -47,6 +47,22 @@ app.post("/create", validate({ body: reportSchema }),  async(req, res) => {
         res.send(JSON.stringify({"error": err.message}));
    })
 })
+
+/*
+This if the function for posting on localhost/3000/createwaste.
+This is for testing the createwaste function.
+*/
+app.post("/createwaste", validate({ body: wasteSchema }),  async(req, res) => {
+    var data = req.body;
+    var response = FirestoreClient.createWaste(data);
+    console.log(response)
+    response = response.then(function(msg) {
+        res.send(msg);
+    }).catch(err => {
+        res.send(JSON.stringify({"error": err.message}));
+   })
+})
+
 
 app.use(validationErrorMiddleware);
 const PORT = process.env.PORT || 3000;
