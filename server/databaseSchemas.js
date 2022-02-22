@@ -41,4 +41,19 @@ var reportSchema = {
     },
 };
 
-module.exports = {reportSchema};
+var siteSchema = {
+    type: "object",
+    required: ["adress", "name"],
+    properties: {
+        adress: {
+            type: "string",
+            minLength: 1,
+        },
+        name: {
+            type: "string",
+            minLength: 1,
+        },
+    },
+};
+
+module.exports = {reportSchema, siteSchema};
