@@ -17,12 +17,17 @@ function Selection(props) {
       value={selectedValue}
       onChange={e => {handleChange(e); props.handleFactChange(e)}}
       sx={{ marginTop: "15px", backgroundColor: "rgba(255,255,255,0.3)", width:'90vw' }}
+      //required
+      inputProps={{"data-testid":"selectionfield"}}
     >
-      {props.data.map((option) => (
+      {
+      /** Placeholde ifall det inte finns någon data */
+      props.data !== undefined ?
+      props.data.map((option) => (
         <MenuItem key={option.id} value={option.label}>
           {option.label}
         </MenuItem>
-      ))}
+      )): <p>Ingen data</p>}
     </TextField>
   );
 }

@@ -6,13 +6,15 @@ import Typography from "@mui/material/Typography";
 
 import logo from "../assets/traste_logo.png";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import {Colors} from "../assets/Colors"
+
 
 function Header(props) {
   return (
-    <Box>
+    <Box data-testid="header">
       <AppBar
         position="static"
-        sx={{ textAlign: "center", backgroundColor: "#103849" }}
+        sx={{ textAlign: "center", backgroundColor: Colors.trasteNavyBlue }}
       >
         <Toolbar>
           <KeyboardBackspaceIcon fontSize="large" onClick={props.goBackHandler} />

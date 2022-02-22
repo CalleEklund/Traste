@@ -8,6 +8,8 @@ import {
   CircularProgress,
   Button,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 import Selection from "../components/Selection";
 import Inputfield from "../components/Inputfield";
 
@@ -15,8 +17,11 @@ import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MaterialField from "../components/MaterialField";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SendIcon from "@mui/icons-material/Send";
+
+import {Colors} from "../assets/Colors"
+
+/*FactPage renders the report form for a waste report*/ 
 
 const factData = {
   Date: new Date(),
@@ -66,12 +71,15 @@ const sites = [
   },
 ];
 
-function FactPage() {
+function FactPage(props) {
+
+  let navigate = useNavigate()
+
   const [fact, setFact] = useState(factData);
   const [estimate, setEstimate] = useState(wasteData);
   const [totalEstimate, setTotalEstimate] = useState(0);
-
   const [date, setDate] = useState(new Date());
+  const [formDisable, setFormDisable] = useState(true);
 
   function handleFactChange(evt) {
     if (evt.target === undefined) {
@@ -84,8 +92,13 @@ function FactPage() {
       });
     }
   }
+
   function handleEstimateChange(evt) {
-    const value = evt.target.value;
+    var value = evt.target.value;
+    if (value === "") {
+      value = 0;
+    }
+
     setEstimate({
       ...estimate,
       [evt.target.name]: value,
@@ -95,11 +108,20 @@ function FactPage() {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     console.log("Submitted data:", fact, estimate);
+    props.snackBarHandler()
+    navigate('/')
+
   };
 
+
+
   useEffect(() => {
+    /** Calculates the total sum of each waste percentage, is called everytime a wastetype value is changed */
     var sum = 0;
     Object.values(estimate).forEach((x) => (sum += parseInt(x)));
+    if (isNaN(sum)) {
+      sum = 0;
+    }
     setTotalEstimate(sum);
   }, [estimate]);
 
@@ -141,6 +163,10 @@ function FactPage() {
     );
   }
 
+  function isReportDisabled() {
+    return totalEstimate !== 100 && fact !== factData;
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -162,6 +188,7 @@ function FactPage() {
             name="Date"
             value={date}
             autoOK
+            minDate={new Date('2000-01-01T03:00:00')}
             onChange={setDate}
             onAccept={handleFactChange}
             renderInput={(params) => (
@@ -222,7 +249,7 @@ function FactPage() {
               alignContent: "center",
               alignItems: "center",
               justifyContent: "space-around",
-              backgroundColor: "#103849",
+              backgroundColor: Colors.trasteNavyBlue,
               color: "white",
             }}
             direction="row"
@@ -235,7 +262,7 @@ function FactPage() {
                 value={totalEstimate > 100 ? 100 : totalEstimate}
                 size={60}
                 thickness={5}
-                sx={{ color: totalEstimate > 100 ? "red" : "#80ed99" }}
+                sx={{ color: totalEstimate > 100 ? "red" : Colors.trasteGreen }}
               />
               <Box
                 sx={{
@@ -263,7 +290,7 @@ function FactPage() {
             </Box>
           </Stack>
           <Button
-            endIcon={<SendIcon sx={{ color: "#103849", fontSize: "200px" }} />}
+            endIcon={<SendIcon sx={{ color: Colors.trasteNavyBlue, fontSize: "200px" }} />}
             disabled={totalEstimate !== 100}
             type="submit"
             sx={{
@@ -272,14 +299,15 @@ function FactPage() {
               alignItems: "center",
               aligntContent: "stretch",
               justifyContent: "space-around",
-              backgroundColor: totalEstimate === 100 ? "#ae00fb" : "#dadada",
+              backgroundColor: totalEstimate === 100 ? Colors.trastePurple : Colors.trasteDadada,
               borderRadius: "0",
             }}
           >
-            <Typography variant="h5" sx={{ color: "#103849" }}>
+            <Typography variant="h5" sx={{ color: Colors.trasteNavyBlue }}>
               Send Report
             </Typography>
           </Button>
+         
         </Stack>
       </Container>
     </form>
