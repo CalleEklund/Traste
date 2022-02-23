@@ -3,6 +3,7 @@ This file contains functions for deplyoing the firebase database locally.
 */
 
 const FirestoreClient = require("./firestoreClient");
+const functions = require("firebase-functions");
 const express = require("express");
 const cors = require("cors");
 const {
@@ -118,4 +119,5 @@ app.listen(PORT, () =>
 );
 
 module.exports = {app};
+exports.app = functions.https.onRequest(app);
 
