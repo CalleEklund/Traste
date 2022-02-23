@@ -8,7 +8,6 @@ import {
   CircularProgress,
   Button,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 import Selection from "../components/Selection";
 import Inputfield from "../components/Inputfield";
@@ -35,47 +34,59 @@ const factData = {
 
 const wasteData = { Wood: 0, Plastic: 0, Concrete: 0, Metal: 0, Other: 0 };
 
-const binsizes = [
+const selectionProps = [
   {
-    id: "0",
-    label: "5",
+    title: "Bin Size",
+    name: "BinSize",
+    data: [
+      {
+        id: "0",
+        label: "5",
+      },
+      {
+        id: "1",
+        label: "10",
+      },
+      {
+        id: "2",
+        label: "15",
+      },
+      {
+        id: "3",
+        label: "20",
+      },
+    ],
   },
   {
-    id: "1",
-    label: "10",
-  },
-  {
-    id: "2",
-    label: "15",
-  },
-  {
-    id: "3",
-    label: "20",
+    title: "Sites",
+    name: "Site",
+    data: [
+      {
+        id: "0",
+        label: "Linköping",
+      },
+      {
+        id: "1",
+        label: "Norrköping",
+      },
+      {
+        id: "2",
+        label: "Gustavsberg",
+      },
+      {
+        id: "3",
+        label: "Vetlanda",
+      },
+    ],
   },
 ];
 
-const sites = [
-  {
-    id: "0",
-    label: "Linköping",
-  },
-  {
-    id: "1",
-    label: "Norrköping",
-  },
-  {
-    id: "2",
-    label: "Gustavsberg",
-  },
-  {
-    id: "3",
-    label: "Vetlanda",
-  },
+const inputFieldProps = [
+  { label: "Docket No.", name: "DocketNo", type: "string" },
+  { label: "Weight", name: "Weight", type: "number" },
 ];
 
 function FactPage(props) {
-  let navigate = useNavigate();
-
   const [fact, setFact] = useState(factData);
   const [estimate, setEstimate] = useState(wasteData);
   const [totalEstimate, setTotalEstimate] = useState(0);
@@ -116,7 +127,7 @@ function FactPage(props) {
 
   async function getDataAxios() {
     const response = await axios.post("http://localhost:3001/createsite", {
-      body: { "adress": "lin2", "name": "namn" }
+      body: { adress: "lin2", name: "namn" },
     });
     console.log("Response data: ", response);
   }
@@ -210,31 +221,31 @@ function FactPage(props) {
             )}
           />
         </LocalizationProvider>
-        <Inputfield
-          label="Docket No."
-          name="DocketNo"
-          type="string"
-          handleFactChange={handleFactChange}
-        />
-        <Inputfield
-          label="Weight"
-          name="Weight"
-          type="number"
-          handleFactChange={handleFactChange}
-        />
-        <Selection
-          title="Bin Size"
-          name="BinSize"
-          data={binsizes}
-          handleFactChange={handleFactChange}
-        />
-        <Selection
-          title="Sites"
-          name="Site"
-          data={sites}
-          handleFactChange={handleFactChange}
-        />
 
+        {
+          //renders the inputfields with data taken from inputFieldProps
+          inputFieldProps.map((item, index) => (
+            <Inputfield
+              key={index + item}
+              label={item.label}
+              name={item.name}
+              type={item.type}
+              handleFactChange={handleFactChange}
+            />
+          ))
+        }
+        {
+          //renders the selectionfields with data taken from selectionProps
+          selectionProps.map((item, index) => (
+            <Selection
+              key={index + item}
+              title={item.title}
+              name={item.name}
+              data={item.data}
+              handleFactChange={handleFactChange}
+            />
+          ))
+        }
         <Typography
           variant="h3"
           sx={{ textAlign: "center", marginTop: "15px" }}
