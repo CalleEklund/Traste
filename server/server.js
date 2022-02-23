@@ -3,7 +3,9 @@ This file contains functions for deplyoing the firebase database locally.
 */
 
 const FirestoreClient = require("./firestoreClient");
+const functions = require("firebase-functions");
 const express = require("express");
+const cors = require("cors");
 const {
 	Validator,
 	ValidationError,
@@ -11,6 +13,7 @@ const {
 const { reportSchema, siteSchema, wasteSchema, facilitySchema, employeeSchema}  = require('./databaseSchemas');
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const { validate } = new Validator();
 
@@ -57,8 +60,10 @@ app.post("/createsite", validate({ body: siteSchema }),  async(req, res) => {
     var response = FirestoreClient.createSite(data);
     console.log(response)
     response = response.then(function(msg) {
+        res.header('Access-Control-Allow-Origin', '*' );
         res.send(msg);
     }).catch(err => {
+        res.header('Access-Control-Allow-Origin', '*' );
         res.send(JSON.stringify({"error": err.message}));
    })
 })
@@ -107,11 +112,12 @@ app.post("/createemployee", validate({ body: employeeSchema }),  async(req, res)
 })
 
 app.use(validationErrorMiddleware);
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () =>
 	console.log(`Example app listening at http://localhost:${PORT}`)
 );
 
 module.exports = {app};
+exports.app = functions.https.onRequest(app);
 
