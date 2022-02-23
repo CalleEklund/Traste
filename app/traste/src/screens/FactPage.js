@@ -19,9 +19,11 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MaterialField from "../components/MaterialField";
 import SendIcon from "@mui/icons-material/Send";
 
-import {Colors} from "../assets/Colors"
+import { Colors } from "../assets/Colors";
 
-/*FactPage renders the report form for a waste report*/ 
+import axios from "axios";
+
+/*FactPage renders the report form for a waste report*/
 
 const factData = {
   Date: new Date(),
@@ -72,8 +74,7 @@ const sites = [
 ];
 
 function FactPage(props) {
-
-  let navigate = useNavigate()
+  let navigate = useNavigate();
 
   const [fact, setFact] = useState(factData);
   const [estimate, setEstimate] = useState(wasteData);
@@ -108,12 +109,17 @@ function FactPage(props) {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     console.log("Submitted data:", fact, estimate);
-    props.snackBarHandler()
-    navigate('/')
-
+    getDataAxios();
+    //props.snackBarHandler()
+    //navigate('/')
   };
 
-
+  async function getDataAxios() {
+    const response = await axios.post("http://localhost:3001/createsite", {
+      body: { "adress": "lin2", "name": "namn" }
+    });
+    console.log("Response data: ", response);
+  }
 
   useEffect(() => {
     /** Calculates the total sum of each waste percentage, is called everytime a wastetype value is changed */
@@ -188,7 +194,7 @@ function FactPage(props) {
             name="Date"
             value={date}
             autoOK
-            minDate={new Date('2000-01-01T03:00:00')}
+            minDate={new Date("2000-01-01T03:00:00")}
             onChange={setDate}
             onAccept={handleFactChange}
             renderInput={(params) => (
@@ -290,7 +296,11 @@ function FactPage(props) {
             </Box>
           </Stack>
           <Button
-            endIcon={<SendIcon sx={{ color: Colors.trasteNavyBlue, fontSize: "200px" }} />}
+            endIcon={
+              <SendIcon
+                sx={{ color: Colors.trasteNavyBlue, fontSize: "200px" }}
+              />
+            }
             disabled={totalEstimate !== 100}
             type="submit"
             sx={{
@@ -299,7 +309,10 @@ function FactPage(props) {
               alignItems: "center",
               aligntContent: "stretch",
               justifyContent: "space-around",
-              backgroundColor: totalEstimate === 100 ? Colors.trastePurple : Colors.trasteDadada,
+              backgroundColor:
+                totalEstimate === 100
+                  ? Colors.trastePurple
+                  : Colors.trasteDadada,
               borderRadius: "0",
             }}
           >
@@ -307,7 +320,6 @@ function FactPage(props) {
               Send Report
             </Typography>
           </Button>
-         
         </Stack>
       </Container>
     </form>
