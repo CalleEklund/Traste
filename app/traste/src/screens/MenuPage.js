@@ -1,20 +1,20 @@
 import React from "react";
-import { Container, Box, Typography  } from "@mui/material";
+import { Container, Box, Typography } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useNavigate } from "react-router-dom";
-import {Colors} from "../assets/Colors"
+import { Colors } from "../assets/Colors";
 
 function MenuPage() {
   let navigate = useNavigate();
   const routeChange = () => {
-    navigate("/factpage");
+    navigate("/reportpage");
   };
   //bytte namn på branch
   return (
     <Container
       disableGutters={true}
-     sx={{flex:1, display:'flex', flexDirection: 'column'}}
+      sx={{ flex: 1, display: "flex", flexDirection: "column" }}
     >
       <Box
         sx={{
