@@ -115,10 +115,13 @@ function FactPage(props) {
   };
 
   async function getDataAxios() {
-    const response = await axios.post("http://localhost:3001/createsite", {
-      body: { "adress": "lin2", "name": "namn" }
-    });
-    console.log("Response data: ", response);
+    const response = await axios.post('http://localhost:3001/createsite', {
+       adress: "lin2",
+       name: "namn" 
+    })
+    .then(function (response) {
+      console.log(response);
+    })
   }
 
   useEffect(() => {

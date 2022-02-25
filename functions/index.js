@@ -1,4 +1,3 @@
-
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -7,6 +6,8 @@
 //   response.send("Hello from Firebase!");
 // });
 
+/* eslint linebreak-style: ["error", "windows"] */
+
 /*
 This file contains functions for deplyoing the firebase database locally.
 */
@@ -14,14 +15,14 @@ This file contains functions for deplyoing the firebase database locally.
 const FirestoreClient = require("../server/firestoreClient");
 const functions = require("firebase-functions");
 const express = require("express");
-const cors = require("cors");
+const cors = require("cors")({origin: true});
 const {Validator, ValidationError} =
     require("express-json-validator-middleware");
 const {reportSchema, siteSchema, wasteSchema, facilitySchema, employeeSchema} =
     require("../server/databaseSchemas");
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors);
 
 const {validate} = new Validator();
 
@@ -125,6 +126,6 @@ app.post("/createemployee", validate({body: employeeSchema}), (req, res) => {
 });
 
 app.use(validationErrorMiddleware);
-
-module.exports = {app};
 exports.app = functions.https.onRequest(app);
+module.exports = {app};
+
