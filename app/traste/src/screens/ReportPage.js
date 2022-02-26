@@ -1,146 +1,100 @@
 import React, { useState, useEffect } from "react";
 import {
-  Container,
-  TextField,
   Typography,
   Stack,
+  Container,
+  TextField,
+  Button,
   Box,
   CircularProgress,
-  Button,
 } from "@mui/material";
-
-import Selection from "../components/Selection";
+import MaterialField from "../components/MaterialField";
+import { useForm, Controller } from "react-hook-form";
 import Inputfield from "../components/Inputfield";
+import Selection from "../components/Selection";
+import { Colors } from "../assets/Colors";
+import SendIcon from "@mui/icons-material/Send";
 
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import MaterialField from "../components/MaterialField";
-import SendIcon from "@mui/icons-material/Send";
-
-import { Colors } from "../assets/Colors";
 
 import axios from "axios";
 
-/*FactPage renders the report form for a waste report*/
-
-const factData = {
-  Date: new Date(),
-  DocketNo: 0,
-  Weight: 0,
-  BinSize: 0,
-  Site: "",
-};
-
 const wasteData = { Wood: 0, Plastic: 0, Concrete: 0, Metal: 0, Other: 0 };
 
-const selectionProps = [
+const binsizes = [
   {
-    title: "Bin Size",
-    name: "BinSize",
-    data: [
-      {
-        id: "0",
-        label: "5",
-      },
-      {
-        id: "1",
-        label: "10",
-      },
-      {
-        id: "2",
-        label: "15",
-      },
-      {
-        id: "3",
-        label: "20",
-      },
-    ],
+    id: "0",
+    label: "5",
   },
   {
-    title: "Sites",
-    name: "Site",
-    data: [
-      {
-        id: "0",
-        label: "Linköping",
-      },
-      {
-        id: "1",
-        label: "Norrköping",
-      },
-      {
-        id: "2",
-        label: "Gustavsberg",
-      },
-      {
-        id: "3",
-        label: "Vetlanda",
-      },
-    ],
+    id: "1",
+    label: "10",
+  },
+  {
+    id: "2",
+    label: "15",
+  },
+  {
+    id: "3",
+    label: "20",
+  },
+];
+const sites = [
+  {
+    id: "0",
+    label: "Linköping",
+  },
+  {
+    id: "1",
+    label: "Norrköping",
+  },
+  {
+    id: "2",
+    label: "Gustavsberg",
+  },
+  {
+    id: "3",
+    label: "Vetlanda",
   },
 ];
 
-const inputFieldProps = [
-  { label: "Docket No.", name: "DocketNo", type: "string" },
-  { label: "Weight", name: "Weight", type: "number" },
-];
-
+/*FactPage renders the report form for a waste report*/
 function FactPage(props) {
-  const [fact, setFact] = useState(factData);
-  const [estimate, setEstimate] = useState(wasteData);
-  const [totalEstimate, setTotalEstimate] = useState(0);
-  const [date, setDate] = useState(new Date());
-  const [formDisable, setFormDisable] = useState(true);
-
-  function handleFactChange(evt) {
-    if (evt.target === undefined) {
-      setFact({ ...fact, Date: evt });
-    } else {
-      const value = evt.target.value;
-      setFact({
-        ...fact,
-        [evt.target.name]: value,
-      });
-    }
-  }
-
-  function handleEstimateChange(evt) {
-    var value = evt.target.value;
-    if (value === "") {
-      value = 0;
-    }
-
-    setEstimate({
-      ...estimate,
-      [evt.target.name]: value,
-    });
-  }
-
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    console.log("Submitted data:", fact, estimate);
-    getDataAxios();
-    //props.snackBarHandler()
-    //navigate('/')
-  };
-
-  async function getDataAxios() {
-    const response = await axios.post("http://localhost:3001/createsite", {
-      body: { adress: "lin2", name: "namn" },
-    });
-    console.log("Response data: ", response);
-  }
+  const [total, setTotal] = useState(0);
+  const {
+    handleSubmit,
+    control,
+    watch,
+    getValues,
+    formState: { isValid },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      date: new Date(),
+      docketNo: "",
+      weight: "",
+      binSize: "",
+      site: "",
+      ...wasteData,
+    },
+  });
+  const all = watch(Object.keys(wasteData));
 
   useEffect(() => {
-    /** Calculates the total sum of each waste percentage, is called everytime a wastetype value is changed */
-    var sum = 0;
-    Object.values(estimate).forEach((x) => (sum += parseInt(x)));
-    if (isNaN(sum)) {
-      sum = 0;
-    }
-    setTotalEstimate(sum);
-  }, [estimate]);
+    var tmp = 0;
+    all.forEach((item) => {
+      if (!isNaN(parseInt(item))) {
+        tmp += parseInt(item);
+      }
+    });
+    setTotal(tmp);
+  }, [all]);
+
+  //fungerar inte för t.ex. 10e+12
+  const onlyNumbers = (score) => !isNaN(parseFloat(score)) && isFinite(score);
+  const onSubmit = (data) => console.log(data);
 
   function renderWasteList() {
     var outputlist = [];
@@ -148,25 +102,70 @@ function FactPage(props) {
       if (i + 1 >= Object.keys(wasteData).length) {
         outputlist.push(
           <Stack direction="row" key={i + "stack"}>
-            <MaterialField
+            <Controller
               name={Object.keys(wasteData)[i]}
-              estimateChange={handleEstimateChange}
-              key={i}
+              control={control}
+              rules={{
+                validate: onlyNumbers,
+                max: { value: 100, message: "Too large of a number" },
+              }}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <MaterialField
+                  key={i}
+                  label={Object.keys(wasteData)[i]}
+                  onChange={onChange}
+                  value={value}
+                  error={error}
+                />
+              )}
             />
           </Stack>
         );
       } else {
         outputlist.push(
           <Stack direction="row" spacing={2} key={i + "stack"}>
-            <MaterialField
+            <Controller
               name={Object.keys(wasteData)[i]}
-              estimateChange={handleEstimateChange}
-              key={i}
+              control={control}
+              rules={{
+                validate: onlyNumbers,
+                max: { value: 100, message: "Too large of a number" },
+              }}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <MaterialField
+                  key={i}
+                  label={Object.keys(wasteData)[i]}
+                  onChange={onChange}
+                  value={value}
+                  error={error}
+                />
+              )}
             />
-            <MaterialField
+            <Controller
               name={Object.keys(wasteData)[i + 1]}
-              estimateChange={handleEstimateChange}
-              key={i + 1}
+              control={control}
+              rules={{
+                validate: onlyNumbers,
+                max: { value: 100, message: "Too large of a number" },
+              }}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <MaterialField
+                  key={i + 1}
+                  label={Object.keys(wasteData)[i + 1]}
+                  onChange={onChange}
+                  value={value}
+                  error={error}
+                />
+              )}
             />
           </Stack>
         );
@@ -180,13 +179,9 @@ function FactPage(props) {
     );
   }
 
-  function isReportDisabled() {
-    return totalEstimate !== 100 && fact !== factData;
-  }
-
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       style={{
         minWidth: "100%",
         height: "100vh",
@@ -196,59 +191,103 @@ function FactPage(props) {
       }}
     >
       <Container
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-        disableGutters={true}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
       >
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <MobileDatePicker
-            label="Date"
-            name="Date"
-            value={date}
-            autoOK
-            minDate={new Date("2000-01-01T03:00:00")}
-            onChange={setDate}
-            onAccept={handleFactChange}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                sx={{
-                  marginTop: "15px",
-                  backgroundColor: "rgba(255,255,255,0.3)",
-                  width: "90vw",
-                }}
-                onChange={handleFactChange}
+        <Controller
+          name="date"
+          control={control}
+          rules={{ required: "Select a valid date" }}
+          render={({ field: { onChange, value } }) => (
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <MobileDatePicker
+                label="Date"
+                name="Date"
+                value={value}
+                autoOK
+                minDate={new Date("2000-01-01T03:00:00")}
+                maxDate={new Date()}
+                onChange={onChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    sx={{
+                      marginTop: "15px",
+                      backgroundColor: "rgba(255,255,255,0.3)",
+                      width: "90vw",
+                    }}
+                  />
+                )}
               />
-            )}
-          />
-        </LocalizationProvider>
+            </LocalizationProvider>
+          )}
+        />
 
-        {
-          //renders the inputfields with data taken from inputFieldProps
-          inputFieldProps.map((item, index) => (
+        <Controller
+          name="docketNo"
+          control={control}
+          rules={{ required: "Docket Number required" }}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
             <Inputfield
-              key={index + item}
-              label={item.label}
-              name={item.name}
-              type={item.type}
-              handleFactChange={handleFactChange}
+              label="Docket No."
+              onChange={onChange}
+              value={value}
+              error={error}
             />
-          ))
-        }
-        {
-          //renders the selectionfields with data taken from selectionProps
-          selectionProps.map((item, index) => (
+          )}
+        />
+        <Controller
+          name="weight"
+          control={control}
+          rules={{
+            required: "Enter a valid number",
+            validate: onlyNumbers,
+          }}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <Inputfield
+              label="Weight"
+              onChange={onChange}
+              value={value}
+              error={error}
+              type="number"
+            />
+          )}
+        />
+
+        <Controller
+          name="binSize"
+          control={control}
+          rules={{ required: "Select a bin size" }}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
             <Selection
-              key={index + item}
-              title={item.title}
-              name={item.name}
-              data={item.data}
-              handleFactChange={handleFactChange}
+              label="Bin Size"
+              data={binsizes}
+              onChange={onChange}
+              value={value}
+              error={error}
             />
-          ))
-        }
+          )}
+        />
+        <Controller
+          name="site"
+          control={control}
+          rules={{ required: "Select a site" }}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <Selection
+              label="Site"
+              data={sites}
+              onChange={onChange}
+              value={value}
+              error={error}
+            />
+          )}
+        />
         <Typography
           variant="h3"
-          sx={{ textAlign: "center", marginTop: "15px" }}
+          sx={{ textAlign: "center", marginTop: "10px", marginBottom: "10px" }}
         >
           Waste Types
         </Typography>
@@ -276,10 +315,10 @@ function FactPage(props) {
             <Box sx={{ position: "relative", display: "inline-flex" }}>
               <CircularProgress
                 variant="determinate"
-                value={totalEstimate > 100 ? 100 : totalEstimate}
+                value={total > 100 ? 100 : total}
                 size={60}
                 thickness={5}
-                sx={{ color: totalEstimate > 100 ? "red" : Colors.trasteGreen }}
+                sx={{ color: total > 100 ? "red" : Colors.trasteGreen }}
               />
               <Box
                 sx={{
@@ -301,7 +340,7 @@ function FactPage(props) {
                   fontWeight="bold"
                   sx={{ color: "white" }}
                 >
-                  {`${Math.round(totalEstimate)}%`}
+                  {`${Math.round(total)}%`}
                 </Typography>
               </Box>
             </Box>
@@ -312,7 +351,7 @@ function FactPage(props) {
                 sx={{ color: Colors.trasteNavyBlue, fontSize: "200px" }}
               />
             }
-            disabled={totalEstimate !== 100}
+            disabled={total !== 100}
             type="submit"
             sx={{
               flex: "1",
@@ -321,9 +360,7 @@ function FactPage(props) {
               aligntContent: "stretch",
               justifyContent: "space-around",
               backgroundColor:
-                totalEstimate === 100
-                  ? Colors.trastePurple
-                  : Colors.trasteDadada,
+                total !== 100 ? Colors.trasteDadada : Colors.trastePurple,
               borderRadius: "0",
             }}
           >
