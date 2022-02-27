@@ -360,7 +360,9 @@ function FactPage(props) {
               aligntContent: "stretch",
               justifyContent: "space-around",
               backgroundColor:
-                total !== 100 ? Colors.trasteDadada : Colors.trastePurple,
+                isValid && total === 100
+                  ? Colors.trastePurple
+                  : Colors.trasteDadada,
               borderRadius: "0",
             }}
           >
