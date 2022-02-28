@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import MenuPage from "./screens/MenuPage";
 import { Container, Snackbar, Alert } from "@mui/material";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import FactPage from "./screens/FactPage";
+import ReportPage from "./screens/ReportPage";
 import Header from "./components/Header";
 
-import {Colors} from "./assets/Colors"
+import { Colors } from "./assets/Colors";
 
 function App() {
   const history = useNavigate();
@@ -35,9 +35,17 @@ function App() {
         key={1}
         autoHideDuration={6000}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        sx={{ marginTop: "7vh", }}
+        sx={{ marginTop: "7vh" }}
       >
-        <Alert severity="success" sx={{ width: "100%",backgroundColor: Colors.trasteGreen,color:'#103849', fontSize:18 }}>
+        <Alert
+          severity="success"
+          sx={{
+            width: "100%",
+            backgroundColor: Colors.trasteGreen,
+            color: "#103849",
+            fontSize: 18,
+          }}
+        >
           Report Sent!
         </Alert>
       </Snackbar>
@@ -45,8 +53,8 @@ function App() {
       <Routes>
         <Route exact path="/" element={<MenuPage />} />
         <Route
-          path="/factpage"
-          element={<FactPage snackBarHandler={openSnackBar} />}
+          path="/reportpage"
+          element={<ReportPage snackBarHandler={openSnackBar} />}
         />
       </Routes>
     </Container>

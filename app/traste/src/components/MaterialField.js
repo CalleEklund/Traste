@@ -2,16 +2,11 @@ import React from "react";
 
 import { TextField, InputAdornment } from "@mui/material";
 
-function MaterialField(props) {
-  var inputid = "estimate-" + props.name;
+function MaterialField({ label, value, onChange, error }) {
   return (
     <TextField
-      id={inputid}
-      name={props.name}
+      label={label}
       InputProps={{
-        startAdornment: (
-          <InputAdornment position="end">{props.name}</InputAdornment>
-        ),
         endAdornment: (
           <InputAdornment position="start" disableTypography={true}>
             %
@@ -23,16 +18,22 @@ function MaterialField(props) {
       onFocus={(event) => {
         event.target.select();
       }}
-      onChange={props.estimateChange}
-      defaultValue={0}
+      onBlur={(evt) => {
+        if (evt.target.value === "") {
+          onChange(0);
+        }
+      }}
+      value={value}
+      onChange={onChange}
       sx={{
         backgroundColor: "rgba(255,255,255,0.3)",
-        width: "fit-content",
       }}
       inputProps={{
-        style: { textAlign: "right" },
-        "data-testid":"materialfield"
+        style: { textAlign: "right", fontSize: 16 },
+        "data-testid": "materialfield",
       }}
+      error={!!error}
+      //helperText={error ? error.message : null}
     />
   );
 }
