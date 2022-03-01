@@ -82,6 +82,19 @@ function FactPage(props) {
   });
   const all = watch(Object.keys(wasteData));
 
+  async function getDataAxios() {
+    const response = await axios.post('http://localhost:5001/traste-71a71/europe-west3/app/createfacility' , {
+       adress: "lin2",
+       name: "namn",
+       facilityId: "Rasmus",
+       location: "Glava, Arvika" 
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+  }
+
+
   useEffect(() => {
     var tmp = 0;
     all.forEach((item) => {
@@ -94,7 +107,12 @@ function FactPage(props) {
 
   //fungerar inte för t.ex. 10e+12
   const onlyNumbers = (score) => !isNaN(parseFloat(score)) && isFinite(score);
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+
+    getDataAxios()
+    console.log(data);
+
+  }
 
   function renderWasteList() {
     var outputlist = [];
