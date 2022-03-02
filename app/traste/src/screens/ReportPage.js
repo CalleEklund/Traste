@@ -330,7 +330,7 @@ function FactPage(props) {
           >
             <Typography variant="h3">Total: </Typography>
 
-            <Box sx={{ position: "relative", display: "inline-flex" }}>
+            <Box sx={{ position: "relative", display: "inline-flex"}}>
               <CircularProgress
                 variant="determinate"
                 value={total > 100 ? 100 : total}
@@ -374,9 +374,12 @@ function FactPage(props) {
             sx={{
               flex: "1",
               display: "flex",
+              position: "fixed",
+              bottom: 0,
               alignItems: "center",
               aligntContent: "stretch",
               justifyContent: "space-around",
+              width: 1,
               backgroundColor:
                 isValid && total === 100
                   ? Colors.trastePurple
