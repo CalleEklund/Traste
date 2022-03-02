@@ -62,19 +62,24 @@ class FirestoreClient {
             // const path = "Reports/" + data.docketNumber + "/Contains";
             // let id;
             const wasteData = data.wasteData;
+            const reportRef = this.firestore.collection("Reports").doc(data.docketNumber);
             // PRECREATE ID AND INSERT OPERATION INTO BATCH.
             if (wasteData && (typeof wasteData === "object")) {
               // eslint-disable-next-line guard-for-in
-              for (const waste in wasteData) {
+              for (const [key, value] of Object.entries(wasteData)) {
+                console.log(`${key}: ${value}`);
+                batch.set(reportRef.collection("Contains").doc(key).set({percentage: parseInt(value)}));
+              }
+              /*
+                for (const waste in wasteData) {
                 // id = this.firestore.collection(path).doc(messageRef);
-                this.firestore.collection("Reports").doc(data.docketNumber).get()
-                    .then(async (report) => {
-                      batch.setData(
-                          report.collection("Contains"), {waste});
-                    });
+                console.log(waste);
+                console.log(waste[0]);
+                console.log(waste[1]);
+                batch.set(reportRef.collection("Contains").doc("waste").set(wasteData));
                 // const collectionRef = this.firestore.collection("Reports").doc(data.docketNumber).collection("Contains");
                 // batch.set(collectionRef, waste);
-              }
+              } */
             }
             // COMMIT THE OPERATIONS, MIGHT WANT TO CONVERT THIS TO AN ASYNC AWAIT FUNCTION TO ENSURE THIS FUNCTION FINISHES.
             batch.commit().then(()=>{
