@@ -129,9 +129,6 @@ app.post("/createemployee", validate({body: employeeSchema}), (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>{});
-
 app.use(validationErrorMiddleware);
 
 exports.app = functions.region("europe-west3").https.onRequest(app);

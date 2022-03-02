@@ -50,12 +50,40 @@ class FirestoreClient {
       binSize: data.binSize, // INT
       facility: data.facility, // STRING
     };
+
+    // HÄMTA COLLECTION FÖRST OCH SEDAN SKICKA BATCHEN (SETDATA).
     const response = this.firestore.collection("Reports").doc(data.docketNumber).get()
         .then(async (doc) =>{
           if (doc.exists) {
             return JSON.stringify({msg: "Report already exists"});
           } else {
             await this.firestore.collection("Reports").doc(data.docketNumber).set(reportData);
+            const batch = this.firestore.batch();
+            // const path = "Reports/" + data.docketNumber + "/Contains";
+            // let id;
+            const wasteData = data.wasteData;
+            // PRECREATE ID AND INSERT OPERATION INTO BATCH.
+            if (wasteData && (typeof wasteData === "object")) {
+              // eslint-disable-next-line guard-for-in
+              for (const waste in wasteData) {
+                // id = this.firestore.collection(path).doc(messageRef);
+                this.firestore.collection("Reports").doc(data.docketNumber).get()
+                    .then(async (report) => {
+                      batch.setData(
+                          report.collection("Contains"), {waste});
+                    });
+                // const collectionRef = this.firestore.collection("Reports").doc(data.docketNumber).collection("Contains");
+                // batch.set(collectionRef, waste);
+              }
+            }
+            // COMMIT THE OPERATIONS, MIGHT WANT TO CONVERT THIS TO AN ASYNC AWAIT FUNCTION TO ENSURE THIS FUNCTION FINISHES.
+            batch.commit().then(()=>{
+              console.log("COMMIT SUCCESSFUL!");
+              return;
+            }).catch((e)=>{
+              console.log(e.message);
+            });
+
             return JSON.stringify({msg: "Report was made"});
           }
         });

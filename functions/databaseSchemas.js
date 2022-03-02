@@ -41,6 +41,9 @@ const reportSchema = {
       type: "string",
       minLength: 1,
     },
+    wasteData: {
+      type: "object",
+    },
   },
 };
 

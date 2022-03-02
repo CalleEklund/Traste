@@ -186,4 +186,5 @@ async function deleteQueryBatch(db, query, resolve) {
     deleteQueryBatch(db, query, resolve);
     });
 }
-module.exports = new FirestoreClient();
+
+module.exports = FirestoreClient;
