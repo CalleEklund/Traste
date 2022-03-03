@@ -3,7 +3,7 @@
 /* eslint linebreak-style: ["error", "windows"] */
 /*
 This file contains the Firebase Class.
-It initiliazez the firebase database and handles all the functions for adding,
+It initializes the firebase database and handles all the functions for adding,
 changing and deleting entries in the database.
 */
 
@@ -44,18 +44,30 @@ class FirestoreClient {
       docketNumber: data.docketNumber, // STRING
       docketPicture: data.docketPicture, // PNG
       wastePicture: data.wastePicture, // JPG
+      date: data.date, // STRING
       name: data.name, // STRING
       weight: data.weight, // FLOAT
       timestamps: data.timeStamps, // DATE
       binSize: data.binSize, // INT
       facility: data.facility, // STRING
     };
+
     const response = this.firestore.collection("Reports").doc(data.docketNumber).get()
         .then(async (doc) =>{
           if (doc.exists) {
             return JSON.stringify({msg: "Report already exists"});
           } else {
             await this.firestore.collection("Reports").doc(data.docketNumber).set(reportData);
+            const wasteData = data.wasteData;
+            const reportRef = this.firestore.collection("Reports").doc(data.docketNumber);
+
+            if (wasteData && (typeof wasteData === "object")) {
+              // eslint-disable-next-line guard-for-in
+              for (const [key, value] of Object.entries(wasteData)) {
+                // console.log(`${key}: ${value}`);
+                await reportRef.collection("Contains").doc(key).set({percentage: parseInt(value)});
+              }
+            }
             return JSON.stringify({msg: "Report was made"});
           }
         });

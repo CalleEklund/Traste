@@ -77,18 +77,23 @@ function FactPage(props) {
       weight: "",
       binSize: "",
       site: "",
-      ...wasteData,
+      wasteData,
     },
   });
   const all = watch(Object.keys(wasteData));
 
-  async function getDataAxios() {
-    const response = await axios.post('http://localhost:5001/traste-71a71/europe-west3/app/createfacility' , {
-       adress: "lin2",
-       name: "namn",
-       facilityId: "Rasmus",
-       location: "Glava, Arvika" 
-    })
+  async function getDataAxios(data) {
+    const response = await axios.post('http://localhost:5001/traste-71a71/europe-west3/app/createreport' , {
+      docketNumber: "123hej", 
+      docketPicture: "NULL", 
+      wastePicture: "NULL", 
+      name: "Linus", 
+      weight: 100,
+      timeStamps: "Måndag", 
+      binSize: 100, 
+      facility: "Linköping", 
+      wasteData: {Wood: 45, Plastic: 55}
+  })
     .then(function (response) {
       console.log(response);
     })
@@ -108,7 +113,7 @@ function FactPage(props) {
   const onlyNumbers = (score) => !isNaN(parseFloat(score)) && isFinite(score);
   const onSubmit = (data) => {
 
-    getDataAxios()
+    getDataAxios(data)
     console.log(data);
 
   }
