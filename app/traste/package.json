@@ -63,7 +63,12 @@
     ]
   },
   "devDependencies": {
+    "eslint": "^8.10.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-react": "^7.29.2",
     "jest": "^27.5.1",
-    "jest-watch-typeahead": "^0.6.5"
+    "jest-watch-typeahead": "^0.6.5",
+    "prettier": "^2.5.1"
   }
 }
