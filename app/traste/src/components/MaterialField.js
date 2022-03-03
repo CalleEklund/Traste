@@ -19,7 +19,7 @@ function MaterialField({ label, value, onChange, error }) {
         event.target.select();
       }}
       onBlur={(evt) => {
-        if (evt.target.value === "") {
+        if (evt.target.value === "" || evt.target.value < 0) {
           onChange(0);
         }
       }}
