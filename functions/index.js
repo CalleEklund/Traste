@@ -71,7 +71,7 @@ This is for testing the createsite function.
 */
 app.post("/createsite", validate({body: siteSchema}), (req, res) => {
   const data = req.body;
-  console.log("HEEEEEEEEEEEEEEEEEEEEEEEEEEJ");
+  console.log("HEJ");
 
   let response = FS.createSite(data);
   console.log(response);

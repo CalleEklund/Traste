@@ -3,7 +3,7 @@
 /* eslint linebreak-style: ["error", "windows"] */
 /*
 This file contains the Firebase Class.
-It initiliazez the firebase database and handles all the functions for adding,
+It initializes the firebase database and handles all the functions for adding,
 changing and deleting entries in the database.
 */
 
@@ -60,11 +60,10 @@ class FirestoreClient {
             const wasteData = data.wasteData;
             const reportRef = this.firestore.collection("Reports").doc(data.docketNumber);
 
-            // PRECREATE ID AND INSERT OPERATION INTO BATCH.
             if (wasteData && (typeof wasteData === "object")) {
               // eslint-disable-next-line guard-for-in
               for (const [key, value] of Object.entries(wasteData)) {
-                console.log(`${key}: ${value}`);
+                // console.log(`${key}: ${value}`);
                 await reportRef.collection("Contains").doc(key).set({percentage: parseInt(value)});
               }
             }
