@@ -44,6 +44,7 @@ class FirestoreClient {
       docketNumber: data.docketNumber, // STRING
       docketPicture: data.docketPicture, // PNG
       wastePicture: data.wastePicture, // JPG
+      date: data.date, // STRING
       name: data.name, // STRING
       weight: data.weight, // FLOAT
       timestamps: data.timeStamps, // DATE
