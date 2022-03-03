@@ -94,7 +94,6 @@ function FactPage(props) {
     })
   }
 
-
   useEffect(() => {
     var tmp = 0;
     all.forEach((item) => {
@@ -126,6 +125,7 @@ function FactPage(props) {
               rules={{
                 validate: onlyNumbers,
                 max: { value: 100, message: "Too large of a number" },
+                min: { value: 0, message: "No negative numbers"}
               }}
               render={({
                 field: { onChange, value },
@@ -151,6 +151,7 @@ function FactPage(props) {
               rules={{
                 validate: onlyNumbers,
                 max: { value: 100, message: "Too large of a number" },
+                min: { value: 0, message: "No negative numbers"}
               }}
               render={({
                 field: { onChange, value },
@@ -171,6 +172,7 @@ function FactPage(props) {
               rules={{
                 validate: onlyNumbers,
                 max: { value: 100, message: "Too large of a number" },
+                min: { value: 0, message: "No negative numbers"}
               }}
               render={({
                 field: { onChange, value },
