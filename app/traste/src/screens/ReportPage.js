@@ -200,13 +200,7 @@ function FactPage(props) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      style={{
-        minWidth: "100%",
-        height: "100vh",
-        margin: "0",
-        padding: "0",
-        display: "flex",
-      }}
+      
     >
       <Container
         sx={{
@@ -325,10 +319,12 @@ function FactPage(props) {
               justifyContent: "space-around",
               backgroundColor: Colors.trasteNavyBlue,
               color: "white",
+              paddingTop: 1,
+              paddingBottom: 1
             }}
             direction="row"
           >
-            <Typography variant="h3">Total: </Typography>
+            <Typography variant="h4">Waste total: </Typography>
 
             <Box sx={{ position: "relative", display: "inline-flex"}}>
               <CircularProgress
@@ -363,10 +359,14 @@ function FactPage(props) {
               </Box>
             </Box>
           </Stack>
-          <Button
+          
+        </Stack>
+      </Container>
+      
+      <Button
             endIcon={
               <SendIcon
-                sx={{ color: Colors.trasteNavyBlue, fontSize: "200px" }}
+                sx={{ color: Colors.trasteNavyBlue, fontSize: "200px", width: 40, height: 40 }}
               />
             }
             disabled={total !== 100}
@@ -374,25 +374,26 @@ function FactPage(props) {
             sx={{
               flex: "1",
               display: "flex",
-              position: "fixed",
+              position: "sticky",
               bottom: 0,
               alignItems: "center",
               aligntContent: "stretch",
               justifyContent: "space-around",
               width: 1,
+              zIndex: 2,
               backgroundColor:
                 isValid && total === 100
                   ? Colors.trastePurple
                   : Colors.trasteDadada,
               borderRadius: "0",
+              paddingTop: 1,
+              paddingBottom: 1
             }}
           >
-            <Typography variant="h5" sx={{ color: Colors.trasteNavyBlue }}>
+            <Typography variant="h4" sx={{ color: Colors.trasteNavyBlue }}>
               Send Report
             </Typography>
           </Button>
-        </Stack>
-      </Container>
     </form>
   );
 }
