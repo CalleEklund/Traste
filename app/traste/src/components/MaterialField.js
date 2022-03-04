@@ -24,7 +24,15 @@ function MaterialField({ label, value, onChange, error }) {
         }
       }}
       value={value}
-      onChange={onChange}
+      onChange={(e) => {
+        var tmpval = e.target.value;
+        if (isNaN(parseInt(e.target.value, 10))) {
+          tmpval = "";
+        } else {
+          tmpval = parseInt(tmpval, 10);
+        }
+        onChange(tmpval);
+      }}
       sx={{
         backgroundColor: "rgba(255,255,255,0.3)",
       }}

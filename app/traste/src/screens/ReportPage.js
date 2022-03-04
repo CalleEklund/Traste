@@ -74,6 +74,7 @@ function FactPage(props) {
     control,
     watch,
     getValues,
+    setValue,
     formState: { isValid },
   } = useForm({
     mode: "onChange",
@@ -106,15 +107,20 @@ function FactPage(props) {
     var tmp = 0;
     Object.values(all.wasteData).forEach((item) => {
       if (!isNaN(parseInt(item))) {
-        tmp += parseInt(item);
+        tmp += parseInt(item, 10);
       }
     });
     setTotal(tmp);
   }, [all]);
 
   //fungerar inte för t.ex. 10e+12
-  const onlyNumbers = (score) => !isNaN(parseFloat(score)) && isFinite(score);
+  const onlyNumbers = (score) => !isNaN(parseInt(score)) && isFinite(score);
   const onSubmit = (data) => {
+    data = {
+      ...data,
+      timeStamps: new Date().toUTCString(),
+      date: new Date(data.date).toDateString(),
+    };
     //getDataAxios(data);
     console.log(data);
   };
@@ -266,7 +272,15 @@ function FactPage(props) {
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <Inputfield
               label="Weight"
-              onChange={onChange}
+              onChange={(e) => {
+                var tmpval = e.target.value;
+                if (isNaN(parseInt(e.target.value, 10))) {
+                  tmpval = 0;
+                } else {
+                  tmpval = parseInt(tmpval, 10);
+                }
+                onChange(tmpval);
+              }}
               value={value}
               error={error}
               type="number"
