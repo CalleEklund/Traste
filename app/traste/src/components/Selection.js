@@ -1,7 +1,16 @@
-import React from "react";
-import { TextField, MenuItem } from "@mui/material";
+import React from 'react';
+import {TextField, MenuItem} from '@mui/material';
 
-function Selection({ label, value, onChange, error, data }) {
+/**
+ * Custom TextField for displaying a selectionbox with different alternatives.
+ * @param {*} label Name of field.
+ * @param {*} value Starting value.
+ * @param {*} onChange Handler.
+ * @param {*} error What will be shown for the error.
+ * @param {*} data A list of data to be displayed.
+ * @return {TextField} Rendred field.
+ */
+function Selection({label, value, onChange, error, data}) {
   return (
     <TextField
       select
@@ -9,14 +18,14 @@ function Selection({ label, value, onChange, error, data }) {
       value={value}
       onChange={onChange}
       sx={{
-        marginTop: "15px",
-        backgroundColor: "rgba(255,255,255,0.3)",
-        width: "90vw",
+        marginTop: '15px',
+        backgroundColor: 'rgba(255,255,255,0.3)',
+        width: '90vw',
       }}
-      //required
-      inputProps={{ "data-testid": "selectionfield" }}
+      // required
+      inputProps={{'data-testid': 'selectionfield'}}
       error={!!error}
-      //helperText={error ? error.message : null}
+      // helperText={error ? error.message : null}
     >
       {
         /** Placeholde ifall det inte finns någon data */
@@ -33,4 +42,13 @@ function Selection({ label, value, onChange, error, data }) {
     </TextField>
   );
 }
+
+Selection.propTypes = {
+  label: PropTypes.func.isRequired,
+  value: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  error: PropTypes.func.isRequired,
+  data: PropTypes.func.isRequired,
+};
+
 export default Selection;
