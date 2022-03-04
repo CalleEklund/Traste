@@ -49,7 +49,7 @@ class FirestoreClient {
       weight: data.weight, // FLOAT
       timestamps: data.timeStamps, // DATE
       binSize: data.binSize, // INT
-      facility: data.facility, // STRING
+      site: data.site, // STRING
     };
 
     const response = this.firestore.collection("Reports").doc(data.docketNumber).get()
