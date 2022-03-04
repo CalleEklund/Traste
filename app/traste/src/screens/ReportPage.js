@@ -26,19 +26,19 @@ const wasteData = { Wood: 0, Plastic: 0, Concrete: 0, Metal: 0, Other: 0 };
 const binsizes = [
   {
     id: "0",
-    label: "5",
+    label: 5,
   },
   {
     id: "1",
-    label: "10",
+    label: 10,
   },
   {
     id: "2",
-    label: "15",
+    label: 15,
   },
   {
     id: "3",
-    label: "20",
+    label: 20,
   },
 ];
 const sites = [
@@ -72,30 +72,28 @@ function FactPage(props) {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      date: new Date(),
-      docketNo: "",
+      date: new Date().toDateString(),
+      docketNumber: "",
+      docketPicture: "NULL",
+      wastePicture: "NULL",
+      name: "NULL",
       weight: "",
       binSize: "",
       site: "",
       wasteData,
+      timeStamps: "NULL",
     },
   });
   const all = watch(Object.keys(wasteData));
 
   async function getDataAxios(data) {
-    const response = await axios.post('http://localhost:5001/traste-71a71/europe-west3/app/createreport' , {
-      docketNumber: "123hej", 
-      docketPicture: "NULL", 
-      wastePicture: "NULL", 
-      name: "Linus", 
-      weight: 100,
-      timeStamps: "Måndag", 
-      binSize: 100, 
-      facility: "Linköping", 
-      wasteData: {Wood: 45, Plastic: 55}
+    await axios({
+      method: "post",
+      url: 'http://localhost:5001/traste-71a71/europe-west3/app/createreport',
+      data: data,
   })
     .then(function (response) {
-      console.log(response);
+      console.log(response.data)
     })
   }
 
@@ -112,7 +110,7 @@ function FactPage(props) {
   //fungerar inte för t.ex. 10e+12
   const onlyNumbers = (score) => !isNaN(parseFloat(score)) && isFinite(score);
   const onSubmit = (data) => {
-
+  
     getDataAxios(data)
     console.log(data);
 
@@ -246,7 +244,7 @@ function FactPage(props) {
         />
 
         <Controller
-          name="docketNo"
+          name="docketNumber"
           control={control}
           rules={{ required: "Docket Number required" }}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
