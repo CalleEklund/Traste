@@ -31,12 +31,17 @@ function Inputfield({label, value, onChange, error, type}) {
   );
 }
 
+Inputfield.defaultProps = {
+  error: false,
+  type: 'text',
+};
+
 Inputfield.propTypes = {
-  label: PropTypes.func.isRequired,
-  value: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.any.isRequired,
   onChange: PropTypes.func.isRequired,
-  error: PropTypes.func.isRequired,
-  type: PropTypes.func.isRequired,
+  error: PropTypes.any.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default Inputfield;

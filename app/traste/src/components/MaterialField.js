@@ -55,11 +55,15 @@ function MaterialField({label, value, onChange, error}) {
   );
 }
 
+MaterialField.defaultProps = {
+  error: false,
+};
+
 MaterialField.propTypes = {
-  label: PropTypes.func.isRequired,
-  value: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.any.isRequired,
   onChange: PropTypes.func.isRequired,
-  error: PropTypes.func.isRequired,
+  error: PropTypes.any.isRequired,
 };
 
 export default MaterialField;

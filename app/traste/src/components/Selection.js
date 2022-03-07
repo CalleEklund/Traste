@@ -44,12 +44,17 @@ function Selection({label, value, onChange, error, data}) {
   );
 }
 
+
+Selection.defaultProps = {
+  error: false,
+};
+
 Selection.propTypes = {
-  label: PropTypes.func.isRequired,
-  value: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.any.isRequired,
   onChange: PropTypes.func.isRequired,
-  error: PropTypes.func.isRequired,
-  data: PropTypes.func.isRequired,
+  error: PropTypes.any.isRequired,
+  data: PropTypes.array.isRequired,
 };
 
 export default Selection;
