@@ -1,23 +1,31 @@
-import React, { useState } from "react";
-import MenuPage from "./screens/MenuPage";
-import { Container, Snackbar, Alert } from "@mui/material";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import ReportPage from "./screens/ReportPage";
-import Header from "./components/Header";
+import React, {useState} from 'react';
+import MenuPage from './screens/MenuPage';
+import {Container, Snackbar, Alert} from '@mui/material';
+import {Routes, Route, useNavigate} from 'react-router-dom';
+import ReportPage from './screens/ReportPage';
+import Header from './components/Header';
 
-import { Colors } from "./assets/Colors";
+import {Colors} from './assets/Colors';
 
+/**
+ * Main file for controling the flow of the app.
+ * @return {Container} with paths to the different screens.
+ */
 function App() {
   const history = useNavigate();
   const [open, setOpen] = useState();
 
   const handleClose = () => {
     setOpen(false);
-    console.log("snackbar closed");
+    console.log('snackbar closed');
   };
   const openSnackBar = () => {
     setOpen(true);
   };
+
+  /**
+   * Function to return to the previous page via routing.
+   */
   function goBack() {
     history(-1);
   }
@@ -25,7 +33,7 @@ function App() {
   return (
     <Container
       disableGutters={true}
-      sx={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      sx={{height: '100vh', display: 'flex', flexDirection: 'column'}}
     >
       <Header goBackHandler={goBack} />
 
@@ -34,15 +42,15 @@ function App() {
         onClose={handleClose}
         key={1}
         autoHideDuration={6000}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        sx={{ marginTop: "7vh" }}
+        anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+        sx={{marginTop: '7vh'}}
       >
         <Alert
           severity="success"
           sx={{
-            width: "100%",
+            width: '100%',
             backgroundColor: Colors.trasteGreen,
-            color: "#103849",
+            color: '#103849',
             fontSize: 18,
           }}
         >

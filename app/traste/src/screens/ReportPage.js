@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import {
   Typography,
   Stack,
@@ -7,60 +7,63 @@ import {
   Button,
   Box,
   CircularProgress,
-} from "@mui/material";
-import MaterialField from "../components/MaterialField";
-import { useForm, Controller } from "react-hook-form";
-import Inputfield from "../components/Inputfield";
-import Selection from "../components/Selection";
-import { Colors } from "../assets/Colors";
-import SendIcon from "@mui/icons-material/Send";
+} from '@mui/material';
+import MaterialField from '../components/MaterialField';
+import {useForm, Controller} from 'react-hook-form';
+import Inputfield from '../components/Inputfield';
+import Selection from '../components/Selection';
+import {Colors} from '../assets/Colors';
+import SendIcon from '@mui/icons-material/Send';
 
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
-import axios from "axios";
+import axios from 'axios';
 
 const binsizes = [
   {
-    id: "0",
+    id: '0',
     label: 5,
   },
   {
-    id: "1",
+    id: '1',
     label: 10,
   },
   {
-    id: "2",
+    id: '2',
     label: 15,
   },
   {
-    id: "3",
+    id: '3',
     label: 20,
   },
 ];
 const sites = [
   {
-    id: "0",
-    label: "Linköping",
+    id: '0',
+    label: 'Linköping',
   },
   {
-    id: "1",
-    label: "Norrköping",
+    id: '1',
+    label: 'Norrköping',
   },
   {
-    id: "2",
-    label: "Gustavsberg",
+    id: '2',
+    label: 'Gustavsberg',
   },
   {
-    id: "3",
-    label: "Vetlanda",
+    id: '3',
+    label: 'Vetlanda',
   },
 ];
 
-/*FactPage renders the report form for a waste report*/
-function FactPage(props) {
-  var wasteTypes = {
+/**
+ * ReportPage renders the report form for a waste report.
+ * @return {form} Returns the form that renders the report page.
+ */
+function ReportPage() {
+  const wasteTypes = {
     Wood: 0,
     Plastic: 0,
     Concrete: 0,
@@ -73,38 +76,40 @@ function FactPage(props) {
     handleSubmit,
     control,
     watch,
-    getValues,
-    setValue,
-    formState: { isValid },
+    formState: {isValid},
   } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       date: new Date().toDateString(),
-      docketNumber: "",
-      docketPicture: "NULL",
-      wastePicture: "NULL",
-      name: "NULL",
-      weight: "",
-      binSize: "",
-      site: "",
-      wasteData: { ...wasteTypes },
-      timeStamps: "NULL",
+      docketNumber: '',
+      docketPicture: 'NULL',
+      wastePicture: 'NULL',
+      name: 'NULL',
+      weight: '',
+      binSize: '',
+      site: '',
+      wasteData: {...wasteTypes},
+      timeStamps: 'NULL',
     },
   });
   const all = watch(control);
 
-  async function getDataAxios(data) {
+  /**
+   * sendReport will send the data from the form to the backend.
+   * @param {*} data all data from the form.
+   */
+  async function sendReport(data) {
     await axios({
-      method: "post",
-      url: "http://localhost:5001/traste-71a71/europe-west3/app/createreport",
+      method: 'post',
+      url: 'http://localhost:5001/traste-71a71/europe-west3/app/createreport',
       data: data,
-    }).then(function (response) {
+    }).then(function(response) {
       console.log(response.data);
     });
   }
 
   useEffect(() => {
-    var tmp = 0;
+    let tmp = 0;
     Object.values(all.wasteData).forEach((item) => {
       if (!isNaN(parseInt(item))) {
         tmp += parseInt(item, 10);
@@ -113,7 +118,7 @@ function FactPage(props) {
     setTotal(tmp);
   }, [all]);
 
-  //fungerar inte för t.ex. 10e+12
+  // fungerar inte för t.ex. 10e+12
   const onlyNumbers = (score) => !isNaN(parseInt(score)) && isFinite(score);
   const onSubmit = (data) => {
     data = {
@@ -121,91 +126,95 @@ function FactPage(props) {
       timeStamps: new Date().toUTCString(),
       date: new Date(data.date).toDateString(),
     };
-    //getDataAxios(data);
+    sendReport(data);
     console.log(data);
   };
 
+  /**
+   * Renders the inputboxes for the different types of wastes.
+   * @return {Stack} is returned containing all MaterialFields.
+   */
   function renderWasteList() {
-    var outputlist = [];
+    const outputlist = [];
     for (let i = 0; i < Object.keys(wasteTypes).length; i += 2) {
       if (i + 1 >= Object.keys(wasteTypes).length) {
         outputlist.push(
-          <Stack direction="row" key={i + "stack"}>
-            <Controller
-              name={"wasteData." + Object.keys(wasteTypes)[i]}
-              control={control}
-              rules={{
-                validate: onlyNumbers,
-                max: { value: 100, message: "Too large of a number" },
-                min: { value: 0, message: "No negative numbers" },
-              }}
-              render={({
-                field: { onChange, value },
-                fieldState: { error },
-              }) => (
-                <MaterialField
-                  key={i}
-                  label={Object.keys(wasteTypes)[i]}
-                  onChange={onChange}
-                  value={value}
-                  error={error}
-                />
-              )}
-            />
-          </Stack>
+            <Stack direction="row" key={i + 'stack'}>
+              <Controller
+                name={'wasteData.' + Object.keys(wasteTypes)[i]}
+                control={control}
+                rules={{
+                  validate: onlyNumbers,
+                  max: {value: 100, message: 'Too large of a number'},
+                  min: {value: 0, message: 'No negative numbers'},
+                }}
+                render={({
+                  field: {onChange, value},
+                  fieldState: {error},
+                }) => (
+                  <MaterialField
+                    key={i}
+                    label={Object.keys(wasteTypes)[i]}
+                    onChange={onChange}
+                    value={value}
+                    error={error}
+                  />
+                )}
+              />
+            </Stack>,
         );
       } else {
         outputlist.push(
-          <Stack direction="row" spacing={2} key={i + "stack"}>
-            <Controller
-              name={"wasteData." + Object.keys(wasteTypes)[i]}
-              control={control}
-              rules={{
-                validate: onlyNumbers,
-                max: { value: 100, message: "Too large of a number" },
-                min: { value: 0, message: "No negative numbers" },
-              }}
-              render={({
-                field: { onChange, value },
-                fieldState: { error },
-              }) => (
-                <MaterialField
-                  key={i}
-                  label={Object.keys(wasteTypes)[i]}
-                  onChange={onChange}
-                  value={value}
-                  error={error}
-                />
-              )}
-            />
-            <Controller
-              name={"wasteData." + Object.keys(wasteTypes)[i + 1]}
-              control={control}
-              rules={{
-                validate: onlyNumbers,
-                max: { value: 100, message: "Too large of a number" },
-                min: { value: 0, message: "No negative numbers" },
-              }}
-              render={({
-                field: { onChange, value },
-                fieldState: { error },
-              }) => (
-                <MaterialField
-                  key={i + 1}
-                  label={Object.keys(wasteTypes)[i + 1]}
-                  onChange={onChange}
-                  value={value}
-                  error={error}
-                />
-              )}
-            />
-          </Stack>
+            <Stack direction="row" spacing={2} key={i + 'stack'}>
+              <Controller
+                name={'wasteData.' + Object.keys(wasteTypes)[i]}
+                control={control}
+                rules={{
+                  validate: onlyNumbers,
+                  max: {value: 100, message: 'Too large of a number'},
+                  min: {value: 0, message: 'No negative numbers'},
+                }}
+                render={({
+                  field: {onChange, value},
+                  fieldState: {error},
+                }) => (
+                  <MaterialField
+                    key={i}
+                    label={Object.keys(wasteTypes)[i]}
+                    onChange={onChange}
+                    value={value}
+                    error={error}
+                  />
+                )}
+              />
+              <Controller
+                name={'wasteData.' + Object.keys(wasteTypes)[i + 1]}
+                control={control}
+                rules={{
+                  validate: onlyNumbers,
+                  max: {value: 100, message: 'Too large of a number'},
+                  min: {value: 0, message: 'No negative numbers'},
+                }}
+                render={({
+                  field: {onChange, value},
+                  fieldState: {error},
+                }) => (
+                  <MaterialField
+                    key={i + 1}
+                    label={Object.keys(wasteTypes)[i + 1]}
+                    onChange={onChange}
+                    value={value}
+                    error={error}
+                  />
+                )}
+              />
+            </Stack>,
         );
       }
     }
 
     return (
-      <Stack direction="column" spacing={2} sx={{ width: "90vw" }}>
+      <Stack direction="column" spacing={2} sx={{width: '90vw'}}>
         {outputlist}
       </Stack>
     );
@@ -215,32 +224,32 @@ function FactPage(props) {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Container
         sx={{
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "column",
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column',
         }}
       >
         <Controller
           name="date"
           control={control}
-          rules={{ required: "Select a valid date" }}
-          render={({ field: { onChange, value } }) => (
+          rules={{required: 'Select a valid date'}}
+          render={({field: {onChange, value}}) => (
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <MobileDatePicker
                 label="Date"
                 name="Date"
                 value={value}
                 autoOK
-                minDate={new Date("2000-01-01T03:00:00")}
+                minDate={new Date('2000-01-01T03:00:00')}
                 maxDate={new Date()}
                 onChange={onChange}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     sx={{
-                      marginTop: "15px",
-                      backgroundColor: "rgba(255,255,255,0.3)",
-                      width: "90vw",
+                      marginTop: '15px',
+                      backgroundColor: 'rgba(255,255,255,0.3)',
+                      width: '90vw',
                     }}
                   />
                 )}
@@ -252,8 +261,8 @@ function FactPage(props) {
         <Controller
           name="docketNumber"
           control={control}
-          rules={{ required: "Docket Number required" }}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
+          rules={{required: 'Docket Number required'}}
+          render={({field: {onChange, value}, fieldState: {error}}) => (
             <Inputfield
               label="Docket No."
               onChange={onChange}
@@ -266,14 +275,14 @@ function FactPage(props) {
           name="weight"
           control={control}
           rules={{
-            required: "Enter a valid number",
+            required: 'Enter a valid number',
             validate: onlyNumbers,
           }}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
+          render={({field: {onChange, value}, fieldState: {error}}) => (
             <Inputfield
               label="Weight"
               onChange={(e) => {
-                var tmpval = e.target.value;
+                let tmpval = e.target.value;
                 if (isNaN(parseInt(e.target.value, 10))) {
                   tmpval = 0;
                 } else {
@@ -291,8 +300,8 @@ function FactPage(props) {
         <Controller
           name="binSize"
           control={control}
-          rules={{ required: "Select a bin size" }}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
+          rules={{required: 'Select a bin size'}}
+          render={({field: {onChange, value}, fieldState: {error}}) => (
             <Selection
               label="Bin Size"
               data={binsizes}
@@ -305,8 +314,8 @@ function FactPage(props) {
         <Controller
           name="site"
           control={control}
-          rules={{ required: "Select a site" }}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
+          rules={{required: 'Select a site'}}
+          render={({field: {onChange, value}, fieldState: {error}}) => (
             <Selection
               label="Site"
               data={sites}
@@ -318,7 +327,7 @@ function FactPage(props) {
         />
         <Typography
           variant="h3"
-          sx={{ textAlign: "center", marginTop: "10px", marginBottom: "10px" }}
+          sx={{textAlign: 'center', marginTop: '10px', marginBottom: '10px'}}
         >
           Waste Types
         </Typography>
@@ -327,17 +336,17 @@ function FactPage(props) {
           direction="column"
           justifyContent="center"
           alignContent="stretch"
-          sx={{ marginTop: "15px", width: "100vw", flexGrow: "2" }}
+          sx={{marginTop: '15px', width: '100vw', flexGrow: '2'}}
         >
           <Stack
             sx={{
-              flex: "1",
-              display: "flex",
-              alignContent: "center",
-              alignItems: "center",
-              justifyContent: "space-around",
+              flex: '1',
+              display: 'flex',
+              alignContent: 'center',
+              alignItems: 'center',
+              justifyContent: 'space-around',
               backgroundColor: Colors.trasteNavyBlue,
-              color: "white",
+              color: 'white',
               paddingTop: 1,
               paddingBottom: 1,
             }}
@@ -345,13 +354,13 @@ function FactPage(props) {
           >
             <Typography variant="h4">Waste total: </Typography>
 
-            <Box sx={{ position: "relative", display: "inline-flex" }}>
+            <Box sx={{position: 'relative', display: 'inline-flex'}}>
               <CircularProgress
                 variant="determinate"
                 value={total > 100 ? 100 : total}
                 size={60}
                 thickness={5}
-                sx={{ color: total > 100 ? "red" : Colors.trasteGreen }}
+                sx={{color: total > 100 ? 'red' : Colors.trasteGreen}}
               />
               <Box
                 sx={{
@@ -359,10 +368,10 @@ function FactPage(props) {
                   left: 0,
                   bottom: 0,
                   right: 0,
-                  position: "absolute",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  position: 'absolute',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <Typography
@@ -371,7 +380,7 @@ function FactPage(props) {
                   color="text.secondary"
                   fontSize={16}
                   fontWeight="bold"
-                  sx={{ color: "white" }}
+                  sx={{color: 'white'}}
                 >
                   {`${Math.round(total)}%`}
                 </Typography>
@@ -386,7 +395,7 @@ function FactPage(props) {
           <SendIcon
             sx={{
               color: Colors.trasteNavyBlue,
-              fontSize: "200px",
+              fontSize: '200px',
               width: 40,
               height: 40,
             }}
@@ -395,29 +404,29 @@ function FactPage(props) {
         disabled={total !== 100}
         type="submit"
         sx={{
-          flex: "1",
-          display: "flex",
-          position: "sticky",
+          flex: '1',
+          display: 'flex',
+          position: 'sticky',
           bottom: 0,
-          alignItems: "center",
-          aligntContent: "stretch",
-          justifyContent: "space-around",
+          alignItems: 'center',
+          aligntContent: 'stretch',
+          justifyContent: 'space-around',
           width: 1,
           zIndex: 2,
           backgroundColor:
-            isValid && total === 100
-              ? Colors.trastePurple
-              : Colors.trasteDadada,
-          borderRadius: "0",
+            isValid && total === 100 ?
+              Colors.trastePurple :
+              Colors.trasteDadada,
+          borderRadius: '0',
           paddingTop: 1,
           paddingBottom: 1,
         }}
       >
-        <Typography variant="h4" sx={{ color: Colors.trasteNavyBlue }}>
+        <Typography variant="h4" sx={{color: Colors.trasteNavyBlue}}>
           Send Report
         </Typography>
       </Button>
     </form>
   );
 }
-export default FactPage;
+export default ReportPage;
