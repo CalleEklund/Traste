@@ -27,12 +27,20 @@ function MaterialField({label, value, onChange, error}) {
         event.target.select();
       }}
       onBlur={(evt) => {
-        if (evt.target.value === '') {
+        if (evt.target.value === '' || evt.target.value < 0) {
           onChange(0);
         }
       }}
       value={value}
-      onChange={onChange}
+      onChange={(e) => {
+        let tmpval = e.target.value;
+        if (isNaN(parseInt(e.target.value, 10))) {
+          tmpval = '';
+        } else {
+          tmpval = parseInt(tmpval, 10);
+        }
+        onChange(tmpval);
+      }}
       sx={{
         backgroundColor: 'rgba(255,255,255,0.3)',
       }}

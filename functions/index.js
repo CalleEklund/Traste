@@ -71,7 +71,7 @@ This is for testing the createsite function.
 */
 app.post("/createsite", validate({body: siteSchema}), (req, res) => {
   const data = req.body;
-  console.log("HEEEEEEEEEEEEEEEEEEEEEEEEEEJ");
+  console.log("HEJ");
 
   let response = FS.createSite(data);
   console.log(response);
@@ -128,9 +128,6 @@ app.post("/createemployee", validate({body: employeeSchema}), (req, res) => {
     res.send(JSON.stringify({"error": err.message}));
   });
 });
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>{});
 
 app.use(validationErrorMiddleware);
 
