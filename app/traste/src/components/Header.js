@@ -11,9 +11,10 @@ import {Colors} from "../assets/Colors"
 
 function Header(props) {
   return (
-    <Box data-testid="header">
-      <AppBar
-        position="static"
+  
+      <AppBar 
+        data-testid="header"
+        position = "sticky"
         sx={{ textAlign: "center", backgroundColor: Colors.trasteNavyBlue }}
       >
         <Toolbar>
@@ -25,7 +26,7 @@ function Header(props) {
           <img src={logo} alt="traste logo" style={{ height: "40px" }} />
         </Toolbar>
       </AppBar>
-    </Box>
+
   );
 }
 export default Header;
