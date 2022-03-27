@@ -27,7 +27,8 @@ npm-functions:
 
 eslint-backend:
   stage: lint
-  dependencies: npm-functions
+  dependencies: 
+    - npm-functions
   script:
     # Install ESLint in this docker container
     - npm install -g eslint
