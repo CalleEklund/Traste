@@ -27,7 +27,7 @@ test:
   dependencies:
     - npm
   script:
-    - npm coverage
+    - npm test
 
 deploy-firestore:
   stage: deploy
