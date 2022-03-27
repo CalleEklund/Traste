@@ -28,7 +28,7 @@ test:
     - npm
   script:
     - cd functions
-    - npm run
+    - npm run test
     - cd ..
 
 deploy-firestore:
