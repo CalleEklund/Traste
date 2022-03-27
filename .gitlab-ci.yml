@@ -2,52 +2,36 @@ image: node:latest
 
 before_script:
   - npm i -g firebase-tools
+  - yarn install
 
 stages:     # List of stages for jobs, and their order of execution
-  - test
-  - deploy
+  - npm
+  - lint
 
-test:
-  stage: test
+npm-functions:
+  stage: npm
   script:
     - cd functions
+    - echo "Running npm install"
     - npm install
-    - npm run test
+    - echo "npm install is complete"
     - cd ..
+  cache:
+    paths:
+      - functions/node_modules/
+  artifacts:
+    expire_in: 1 days
+    when: on_success
+    paths:
+      - functions/node_modules/
 
-deploy-firestore:
-  stage: deploy
+eslint-backend:
+  stage: lint
+  dependencies: npm-functions
   script:
-    - echo "Deploying firestore..."
-    - firebase deploy --only firestore --token $FIREBASE_TOKEN
-    - echo "Firestore successfully deployed."
-  only:
-    refs:
-      - main
-    changes:
-      - firestore.rules
-      - firestore.indexes.json
-
-deploy-functions:   # This job runs in the deploy stage.
-  stage: deploy     # It only runs when *both* jobs in the test stage complete successfully.
-  script:
-    - echo "Deploying functions..."
-    - cd functions
-    - npm install
-    - cd ..
-    - firebase deploy --only functions --token $FIREBASE_TOKEN
-    - echo "Functions successfully deployed."
-  only:
-    refs:
-      - main
-    changes:
-      - functions/**/*
-
-prod-hosting:
-  stage: deploy
-  script:
-    - yarn
-    - yarn build
-    - firebase deploy --only hosting --token $FIREBASE_TOKEN
-  only:
-    - main
+    # Install ESLint in this docker container
+    - npm install -g eslint
+    # Configure ESLint (will read your .eslintrc file)
+    - eslint --init
+    # Run ESLint on index.js file
+    - eslint functions/index.js
