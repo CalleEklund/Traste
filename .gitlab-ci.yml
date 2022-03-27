@@ -1,0 +1,67 @@
+image: node:latest
+
+before_script:
+  - npm i -g firebase-tools
+
+stages:     # List of stages for jobs, and their order of execution
+  - npm
+  - test
+  - deploy
+
+npm:
+  stage: npm
+  script:
+    - npm config set registry ${CI_NPM_REGISTRY}
+    - npm install
+  cache:
+    paths:
+      - node_modules/
+  artifacts:
+    expire_in: 1 days
+    when: on_success
+    paths:
+      - node_modules/
+
+test:
+  stage: test
+  dependencies:
+    - npm
+  script:
+    - npm coverage
+
+deploy-firestore:
+  stage: deploy
+  script:
+    - echo "Deploying firestore..."
+    - firebase deploy --only firestore --token $FIREBASE_TOKEN
+    - echo "Firestore successfully deployed."
+  only:
+    refs:
+      - main
+    changes:
+      - firestore.rules
+      - firestore.indexes.json
+
+deploy-functions:   # This job runs in the deploy stage.
+  stage: deploy     # It only runs when *both* jobs in the test stage complete successfully.
+  script:
+    - echo "Deploying functions..."
+    - cd functions
+    - npm install
+    - cd ..
+    - firebase deploy --only functions --token $FIREBASE_TOKEN
+    - echo "Functions successfully deployed."
+  only:
+    refs:
+      - main
+    changes:
+      - functions/**/*
+
+prod-hosting:
+  stage: deploy
+  script:
+    - yarn
+    - yarn build
+    - firebase deploy --only hosting --token $FIREBASE_TOKEN
+  only:
+    - main
