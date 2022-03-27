@@ -4,23 +4,8 @@ before_script:
   - npm i -g firebase-tools
 
 stages:     # List of stages for jobs, and their order of execution
-  - npm
   - test
   - deploy
-
-npm:
-  stage: npm
-  script:
-    - npm config set registry ${CI_NPM_REGISTRY}
-    - npm install
-  cache:
-    paths:
-      - node_modules/
-  artifacts:
-    expire_in: 1 days
-    when: on_success
-    paths:
-      - node_modules/
 
 test:
   stage: test
@@ -28,6 +13,7 @@ test:
     - npm
   script:
     - cd functions
+    - npm install
     - npm run test
     - cd ..
 
