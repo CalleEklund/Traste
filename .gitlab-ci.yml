@@ -9,8 +9,6 @@ stages:     # List of stages for jobs, and their order of execution
 
 test:
   stage: test
-  dependencies:
-    - npm
   script:
     - cd functions
     - npm install
