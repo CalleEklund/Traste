@@ -2,11 +2,12 @@ image: node:latest
 
 before_script:
   - npm i -g firebase-tools
-  - yarn install
 
 stages:     # List of stages for jobs, and their order of execution
   - npm
   - lint
+  - test
+  - deploy
 
 npm-functions:
   stage: npm
@@ -33,6 +34,74 @@ eslint-backend:
     # Install ESLint in this docker container
     - npm install -g eslint
     # Configure ESLint (will read your .eslintrc file)
+    - cd functions
+    - echo "Reading .eslintrc file"
     - eslint --init
-    # Run ESLint on index.js file
-    - eslint functions/index.js
+    - cd ..
+    - echo "Reading of .eslintrc file is complete"
+
+    - echo "Running eslint on functions/index.js file"
+    - eslint functions/index.js # Run ESLint on index.js file
+    - echo "Done with index.js file"
+
+    - echo "Running eslint on functions/firestoreClient.js file"
+    - eslint functions/firestoreClient.js # Run ESLint on firestoreClient.js file
+    - echo "Done with firestoreClient.js file"
+
+    - echo "Running eslint on functions/databaseSchemas.js file"
+    - eslint functions/databaseSchemas.js # Run ESLint on databaseSchemas.js file
+    - echo "Done with databaseSchemas.jsfile"
+
+    - echo "Eslint is now done running"
+
+unit-test-backend:
+  stage: test
+  dependencies:
+    - npm-functions
+  script:
+    - cd functions
+    - echo "Running unit tests"
+    - npm run test
+    - echo "Unit tests are complete"
+    - cd ..
+
+deploy-firestore:
+  stage: deploy
+  script:
+    - echo "Deploying firestore..."
+    - firebase deploy --only firestore --token $FIREBASE_TOKEN
+    - echo "Firestore successfully deployed."
+  only:
+    refs:
+      - main
+    changes:
+      - firestore.rules
+      - firestore.indexes.json
+
+deploy-functions:   # This job runs in the deploy stage.
+  stage: deploy     # It only runs when *both* jobs in the test stage complete successfully.
+  script:
+    - echo "Deploying functions..."
+    - cd functions
+    - npm install
+    - cd ..
+    - firebase deploy --only functions --token $FIREBASE_TOKEN
+    - echo "Functions successfully deployed."
+  only:
+    refs:
+      - main
+    changes:
+      - functions/**/*
+
+deploy-hosting:
+  stage: deploy
+  script:
+    - yarn
+    - echo "Building application"
+    - yarn build
+    - echo "Building is done"
+    - echo "Starting to deploy application"
+    - firebase deploy --only hosting --token $FIREBASE_TOKEN
+    - echo "Application is deployed"
+  only:
+    - main
