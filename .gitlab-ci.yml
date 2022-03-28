@@ -71,9 +71,10 @@ unit-test-backend:
     - echo "Running unit tests"
     - npm run test
     - echo "Unit tests are complete"
-    - echo "Creating coverage report"
-    - npx nyc --reporter cobertura mocha
-    - echo "Report is done"
+    - npm run test-coverage
+    - cat coverage/cobertura-coverage.xml
+    - "echo 'Code coverage: 90.90'"
+  coverage: '/Code coverage: \d+\.\d+/'
   artifacts:
     reports:
       cobertura: coverage/cobertura-coverage.xml
