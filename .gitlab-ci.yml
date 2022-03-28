@@ -83,6 +83,10 @@ eslint-backend:
     - echo "Starting eslint fix for databaseSchemas.js"
     - eslint --fix databaseSchemas.js
     - echo "Eslint fix for databaseSchemas.js is done"
+
+    - echo "Starting eslint fix for eslintrc.js"
+    - eslint --fix eslintrc.js
+    - echo "Eslint fix for eslintrc.js is done"
     
     - *git-script
     - echo "Done"
