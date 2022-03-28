@@ -38,7 +38,7 @@ describe("The create site function", () => {
       "name": "EPIC RECYCLING CENTER",
     };
 
-    FirestoreClient.createSite(data).then((res, body) => {
+    FS.createSite(data).then((res, body) => {
       done();
     }).catch((err) => {
       expect(JSON.stringify({"error": err.message})).to.be.eq(JSON.stringify(
@@ -48,7 +48,7 @@ describe("The create site function", () => {
   });
 
   it("Should delete all reports", function(done) {
-    FirestoreClient.deleteCollection("Sites", 10).then((res, body) =>{
+    FS.deleteCollection("Sites", 10).then((res, body) =>{
       done();
     });
   });
