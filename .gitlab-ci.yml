@@ -35,24 +35,9 @@ eslint-backend:
     - npm install -g eslint
     # Configure ESLint (will read your .eslintrc file)
     - cd functions
-    - echo "Reading .eslintrc file"
-    - eslint --init
-    - cd ..
-    - echo "Reading of .eslintrc file is complete"
-
-    - echo "Running eslint on functions/index.js file"
-    - eslint functions/index.js # Run ESLint on index.js file
-    - echo "Done with index.js file"
-
-    - echo "Running eslint on functions/firestoreClient.js file"
-    - eslint functions/firestoreClient.js # Run ESLint on firestoreClient.js file
-    - echo "Done with firestoreClient.js file"
-
-    - echo "Running eslint on functions/databaseSchemas.js file"
-    - eslint functions/databaseSchemas.js # Run ESLint on databaseSchemas.js file
-    - echo "Done with databaseSchemas.jsfile"
-
-    - echo "Eslint is now done running"
+    - echo "Running eslint on all files in functions/"
+    - eslint .
+    - echo "Eslint is done"
 
 unit-test-backend:
   stage: test
