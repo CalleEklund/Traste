@@ -36,15 +36,15 @@ eslint-backend:
     # Configure ESLint (will read your .eslintrc file)
     - cd functions
     - echo "Running eslint on functions/index.js"
-    - npx eslint index.js
+    - npx eslint -c .eslintrc.js index.js
     - echo "Eslint for index.js is done"
     
     - echo "Running eslint on functions/databaseSchemas.js"
-    - npx eslint databaseSchemas.js
+    - npx eslint -c .eslintrc.js databaseSchemas.js
     - echo "Eslint for databaseSchemas.js is done"
 
     - echo "Running eslint on functions/firestoreClient.js"
-    - npx eslint firestoreClient.js
+    - npx eslint -c .eslintrc.js firestoreClient.js
     - echo "Eslint for firestoreClient.js is done"
     - echo "Eslint check for backend is now complete"
     - cd ..
