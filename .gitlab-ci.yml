@@ -72,12 +72,15 @@ unit-test-backend:
     - npm run test
     - echo "Unit tests are complete"
     - npm run test-coverage
-    - cat coverage/cobertura-coverage.xml
-    - "echo 'Code coverage: 90.90'"
   coverage: '/Code coverage: \d+\.\d+/'
   artifacts:
     reports:
       cobertura: coverage/cobertura-coverage.xml
+    expire_in: 1 year
+    when: on_success
+    paths:
+      - functions/coverage/
+  
 
 deploy-firestore:
   stage: deploy
