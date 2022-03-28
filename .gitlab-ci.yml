@@ -57,6 +57,11 @@ npm-frontend:
     when: on_success
     paths:
       - app/traste/node_modules/
+  only:
+    refs:
+      - main
+    changes:
+      - app/traste/**/*
 
 eslint-backend:
   stage: lint
@@ -123,6 +128,11 @@ unit-test-frontend: # Runs only tests when changes to frontend is made
     when: on_success
     paths:
       - app/traste/coverage/
+  only:
+    refs:
+      - main
+    changes:
+      - app/traste/**/*
   
 
 deploy-firestore:
