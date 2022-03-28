@@ -69,14 +69,15 @@ unit-test-backend:
   script:
     - cd functions
     - echo "Running unit tests"
-    - npm run test
+    - npm run coverage
     - echo "Unit tests are complete"
-    - npm run test-coverage
   coverage: '/Code coverage: \d+\.\d+/'
   artifacts:
-    reports:
-      cobertura: functions/coverage/cobertura-coverage.xml
     expire_in: 1 year
+    when: on_success
+    paths:
+      - functions/coverage/index.html
+  
 
 deploy-firestore:
   stage: deploy
