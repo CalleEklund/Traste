@@ -1,3 +1,19 @@
+.git-script: &git-script |
+  cd $CI_PROJECT_DIR
+  git status
+  lines=$(git status -s | wc -l)
+  if [ $lines -gt 0 ];then
+    echo "committing"
+    git config --global user.name "PipelineUser"
+    git config --global user.email "PipelineUser@gmail.com"
+    git add .
+    git commit -m "fix: auto-update of eslint"
+    git push -o ci.skip "https://${GITLAB_USER_NAME}:${PROJECT_VARIABLE_WITH_ACCESS_TOKEN_VALUE}@${CI_REPOSITORY_URL#*@}"
+  else
+    echo "no change, nothing to commit"
+  fi
+
+
 image: node:latest
 
 before_script:
@@ -35,7 +51,13 @@ eslint-backend:
     - npm install -g eslint
     # Configure ESLint (will read your .eslintrc file)
     - cd functions
+    - echo "fixing eslint problems if they exist"
     - eslint --fix
+    - echo "Eslint fix is done"
+    - echo "Commiting and pushing changes if made"
+    - *git-script
+    - echo "Done"
+
 
 unit-test-backend:
   stage: test
