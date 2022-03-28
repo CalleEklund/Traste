@@ -52,7 +52,7 @@ eslint-backend:
     # Configure ESLint (will read your .eslintrc file)
     - cd functions
     - echo "fixing eslint problems if they exist"
-    - eslint --fix
+    - eslint --fix index.js
     - echo "Eslint fix is done"
     - echo "Commiting and pushing changes if made"
     - *git-script
