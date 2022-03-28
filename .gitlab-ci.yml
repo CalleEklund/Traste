@@ -15,9 +15,6 @@
 
 image: node:latest
 
-before_script:
-  - npm i -g firebase-tools
-
 stages:     # List of stages for jobs, and their order of execution
   - npm
   - lint
@@ -50,13 +47,20 @@ eslint-backend:
     - npm install -g eslint
     # Configure ESLint (will read your .eslintrc file)
     - cd functions
-    - echo "fixing eslint problems if they exist"
+    - echo "Starting eslint fix for  index.js"
     - eslint --fix index.js
-    - echo "Eslint fix is done"
-    - echo "Commiting and pushing changes if made"
+    - echo "Eslint fix for index.js is done"
+
+    - echo "Starting eslint fix for firestoreClient.js"
+    - eslint --fix firestoreClient.js
+    - echo "Eslint fix for firestoreClient.js is done"
+
+    - echo "Starting eslint fix for databaseSchemas.js"
+    - eslint --fix databaseSchemas.js
+    - echo "Eslint fix for databaseSchemas.js is done"
+    
     - *git-script
     - echo "Done"
-
 
 unit-test-backend:
   stage: test
@@ -71,6 +75,8 @@ unit-test-backend:
 
 deploy-firestore:
   stage: deploy
+  before_script:
+    - npm i -g firebase-tools
   script:
     - echo "Deploying firestore..."
     - firebase deploy --only firestore --token $FIREBASE_TOKEN
@@ -84,6 +90,8 @@ deploy-firestore:
 
 deploy-functions:   # This job runs in the deploy stage.
   stage: deploy     # It only runs when *both* jobs in the test stage complete successfully.
+  before_script:
+    - npm i -g firebase-tools
   script:
     - echo "Deploying functions..."
     - cd functions
@@ -99,6 +107,8 @@ deploy-functions:   # This job runs in the deploy stage.
 
 deploy-hosting:
   stage: deploy
+  before_script:
+    - npm i -g firebase-tools
   script:
     - yarn
     - echo "Building application"
