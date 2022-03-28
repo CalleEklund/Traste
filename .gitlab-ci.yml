@@ -81,6 +81,11 @@ eslint-backend:
     
     - *git-script
     - echo "Done"
+  only:
+    refs:
+      - main
+    changes:
+      - functions/**/*
 
 unit-test-backend: # Runs only tests when changes to backend is made
   stage: test
