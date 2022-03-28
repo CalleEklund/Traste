@@ -36,7 +36,7 @@ eslint-backend:
     # Configure ESLint (will read your .eslintrc file)
     - cd functions
     - echo "Running eslint on all files in functions/"
-    - eslint .
+    - npx eslint --print-config index.js
     - echo "Eslint is done"
 
 unit-test-backend:
