@@ -3,7 +3,7 @@
   git status
   lines=$(git status -s | wc -l)
   if [ $lines -gt 0 ];then
-    echo "committing"
+    echo "committing eslint fixes"
     git config --global user.name "PipelineUser"
     git config --global user.email "PipelineUser@gmail.com"
     git add .
@@ -71,7 +71,12 @@ unit-test-backend:
     - echo "Running unit tests"
     - npm run test
     - echo "Unit tests are complete"
-    - cd ..
+    - echo "Creating coverage report"
+    - npx nyc --reporter cobertura mocha
+    - echo "Report is done"
+  artifacts:
+    reports:
+      cobertura: coverage/cobertura-coverage.xml
 
 deploy-firestore:
   stage: deploy
