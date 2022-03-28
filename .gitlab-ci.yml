@@ -21,14 +21,13 @@ stages:     # List of stages for jobs, and their order of execution
   - test
   - deploy
 
-npm-functions:
+npm-backend:
   stage: npm
   script:
     - cd functions
-    - echo "Running npm install"
+    - echo "Running npm install for backend"
     - npm install
     - echo "npm install is complete"
-    - cd ..
   cache:
     paths:
       - functions/node_modules/
@@ -37,15 +36,36 @@ npm-functions:
     when: on_success
     paths:
       - functions/node_modules/
+  only:
+    refs:
+      - main
+    changes:
+      - functions/**/*
+
+npm-frontend:
+  stage: npm
+  script:
+    - cd app/traste
+    - echo "Running npm install for frontend"
+    - npm install
+    - echo "npm install is complete"
+  cache:
+    paths:
+      - app/traste/node_modules/
+  artifacts:
+    expire_in: 1 days
+    when: on_success
+    paths:
+      - app/traste/node_modules/
 
 eslint-backend:
   stage: lint
   dependencies: 
-    - npm-functions
+    - npm-backend
   script:
     # Install ESLint in this docker container
     - npm install -g eslint
-    # Configure ESLint (will read your .eslintrc file)
+    
     - cd functions
     - echo "Starting eslint fix for  index.js"
     - eslint --fix index.js
@@ -62,21 +82,42 @@ eslint-backend:
     - *git-script
     - echo "Done"
 
-unit-test-backend:
+unit-test-backend: # Runs only tests when changes to backend is made
   stage: test
   dependencies:
-    - npm-functions
+    - npm-backend
   script:
     - cd functions
-    - echo "Running unit tests"
+    - echo "Running unit tests for backend"
     - npm run coverage
-    - echo "Unit tests are complete"
+    - echo "Unit tests for backend are complete"
   coverage: '/Code coverage: \d+\.\d+/'
   artifacts:
     expire_in: 1 year
     when: on_success
     paths:
       - functions/coverage/
+  only:
+    refs:
+      - main
+    changes:
+      - functions/**/*
+
+unit-test-frontend: # Runs only tests when changes to frontend is made
+  stage: test
+  dependencies:
+    - npm-frontend
+  script:
+    - cd app/traste
+    - echo "Running unit tests for frontend"
+    - npm run test -- --coverage
+    - echo "Unit tests for frontend are complete"
+  coverage: '/Code coverage: \d+\.\d+/'
+  artifacts:
+    expire_in: 1 year
+    when: on_success
+    paths:
+      - app/traste/coverage/
   
 
 deploy-firestore:
