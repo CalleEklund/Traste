@@ -76,7 +76,7 @@ unit-test-backend:
     expire_in: 1 year
     when: on_success
     paths:
-      - functions/coverage/index.html
+      - functions/coverage/
   
 
 deploy-firestore:
