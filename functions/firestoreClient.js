@@ -1,5 +1,3 @@
-/* eslint-disable require-jsdoc */
-
 /*
 This file contains the Firebase Class.
 It initializes the firebase database and handles all the functions for adding,

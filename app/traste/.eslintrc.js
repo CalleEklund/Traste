@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = { 
   "parser": "@babel/eslint-parser",
   "settings": {
     "react": {
@@ -14,6 +14,7 @@ module.exports = {
   },
   "rules": {
     "quotes": ["error", "double"],
-    "linebreak-style": ["error", "unix"],
+    "linebreak-style":
+    ["error", (process.platform === "win32" ? "windows" : "unix")],
   },
 };

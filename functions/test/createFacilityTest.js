@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /*
 This is the test file for createFacility
 */
