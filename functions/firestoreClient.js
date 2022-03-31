@@ -1,6 +1,4 @@
-/* eslint-disable require-jsdoc */
-/* eslint-disable max-len */
-/* eslint linebreak-style: ["error", "windows"] */
+
 /*
 This file contains the Firebase Class.
 It initializes the firebase database and handles all the functions for adding,

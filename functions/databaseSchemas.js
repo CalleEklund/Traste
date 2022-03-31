@@ -1,9 +1,6 @@
-/* eslint-disable max-len */
 /*
 This file contains the schemas ov different structures in the database.
 */
-
-/* eslint linebreak-style: ["error", "windows"] */
 
 const reportSchema = {
   type: "object",

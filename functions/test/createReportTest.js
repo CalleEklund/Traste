@@ -1,6 +1,4 @@
 /* eslint-disable no-undef */
-/* eslint linebreak-style: ["error", "windows"] */
-
 /*
 This is the test file for createReport
 */
@@ -65,8 +63,8 @@ describe("The create function", () => {
       done();
     }).catch((err) => {
       expect(JSON.stringify({"error": err.message})).to.be.eq(JSON.stringify(
-          // eslint-disable-next-line max-len
-          {"error": "Value for argument \"documentPath\" is not a valid resource path. Path must be a non-empty string."}));
+          {"error": "Value for argument \"documentPath\" " + "\n" +
+          " is not a valid resource path. Path must be a non-empty string."}));
       done();
     });
   });

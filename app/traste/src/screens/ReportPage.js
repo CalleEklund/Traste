@@ -94,7 +94,7 @@ function FactPage(props) {
   const all = watch(control);
 
   async function getDataAxios(data) {
-    console.log('sent data:', data)
+    console.log("sent data:", data)
     await axios({
       method: "post",
       url: "http://localhost:5001/traste-71a71/europe-west3/app/createreport",

@@ -1,5 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
-
 /*
 This file contains functions for deplyoing the firebase database locally.
 */
