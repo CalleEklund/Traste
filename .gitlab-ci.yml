@@ -37,8 +37,6 @@ npm-backend:
     paths:
       - functions/node_modules/
   only:
-    refs:
-      - main
     changes:
       - functions/**/*
 
@@ -58,8 +56,6 @@ npm-frontend:
     paths:
       - app/traste/node_modules/
   only:
-    refs:
-      - main
     changes:
       - app/traste/**/*
 
@@ -70,31 +66,28 @@ eslint-backend:
   script:
     # Install ESLint in this docker container
     - npm install -g eslint
-    
     - cd functions
-    - echo "Starting eslint fix for  index.js"
-    - eslint --fix index.js
-    - echo "Eslint fix for index.js is done"
-
-    - echo "Starting eslint fix for firestoreClient.js"
-    - eslint --fix firestoreClient.js
-    - echo "Eslint fix for firestoreClient.js is done"
-
-    - echo "Starting eslint fix for databaseSchemas.js"
-    - eslint --fix databaseSchemas.js
-    - echo "Eslint fix for databaseSchemas.js is done"
-
-    - echo "Starting eslint fix for eslintrc.js"
-    - eslint --fix eslintrc.js
-    - echo "Eslint fix for eslintrc.js is done"
-    
-    - *git-script
+    - echo "Starting eslint check for all files in the backend"
+    - eslint .
     - echo "Done"
   only:
-    refs:
-      - main
     changes:
       - functions/**/*
+
+eslint-frontend:
+  stage: lint
+  dependencies: 
+    - npm-backend
+  script:
+    # Install ESLint in this docker container
+    - npm install -g eslint
+    - cd app/traste
+    - echo "Starting eslint check for all files in the frontend"
+    - eslint .
+    - echo "Done"
+  only:
+    changes:
+      - app/traste/**/*
 
 unit-test-backend: # Runs only tests when changes to backend is made
   stage: test
