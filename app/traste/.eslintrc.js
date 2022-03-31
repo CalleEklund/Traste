@@ -9,12 +9,6 @@ module.exports = {
     "browser": true,
     "es2021": true,
   },
-  "extends": [
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
-    "plugin:testing-library/react",
-    "plugin:jest/all",
-  ],
   "parserOptions": {
     "sourceType": "module",
   },
