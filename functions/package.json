@@ -27,9 +27,7 @@
     "mocha": "^9.2.1",
     "nyc": "^15.1.0",
     "firestoreClient" : "file:./",
-    "databaseSchemas": "file:./"
-
-    
+    "databaseSchemas": "file:./"   
   },
   "devDependencies": {
     "eslint": "^7.6.0",
