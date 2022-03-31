@@ -40,11 +40,7 @@ npm-frontend:
     when: on_success
     paths:
       - app/traste/node_modules/
-  only:
-    refs:
-      - main
-    changes:
-      - app/traste/**/*
+
 
 eslint-backend:
   stage: lint
@@ -74,11 +70,6 @@ eslint-frontend:
     - echo "Starting eslint check for all files in the frontend"
     - eslint .
     - echo "Done"
-  only:
-    refs:
-      - main
-    changes:
-      - app/traste/**/*
 
 unit-test-backend: # Runs only tests when changes to backend is made
   stage: test
