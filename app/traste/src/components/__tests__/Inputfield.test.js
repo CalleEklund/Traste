@@ -12,7 +12,7 @@ test("Should render inputfield", () => {
   render(<Inputfield {...propsData} />);
   const inputElement = screen.getByTestId("inputfield");
   expect(inputElement).toBeInTheDocument();
-  expect(inputElement).toHaveAccessibleName('Docket No.')
+  expect(inputElement).toHaveAccessibleName("Docket No.")
 });
 
 test("Should render inputfield", () => {
@@ -20,7 +20,7 @@ test("Should render inputfield", () => {
   render(<Inputfield {...propsData} />);
   const inputElement = screen.getByTestId("inputfield");
   expect(inputElement).toBeInTheDocument();
-  expect(inputElement).not.toHaveAccessibleName('DocketNo.')
+  expect(inputElement).not.toHaveAccessibleName("DocketNo.")
 });
 
 test("Matches snapshot", () => {

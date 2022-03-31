@@ -40,7 +40,7 @@ test("Should render Selection with selection length of 4", () => {
   const selectionElement = screen.getByTestId("selectionfield");
   expect(selectionElement).toBeInTheDocument();
   //expect(selectionElement).toHaveLength(propsData.length);
-  expect(selectionElement).toHaveAttribute('name',propsData.name)
+  expect(selectionElement).toHaveAttribute("name",propsData.name)
 });
 
 test("Matches snapshot", () => {
