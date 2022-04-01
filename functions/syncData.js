@@ -20,7 +20,6 @@ const getObjectValues = (obj) => (obj && typeof obj === "object") ?
  * @param {*} data Reportdata
  */
 async function syncData(data) {
-  console.log(data);
   const finalData = [getObjectValues(data)];
   await jwtAuthPromise;
   await sheets.spreadsheets.values.append({

@@ -14,7 +14,7 @@ module.exports = {
   ],
   rules: {
     "quotes": ["error", "double"],
-    "linebreak-style": ["error", "unix"],
+    "linebreak-style": 0,
     "require-jsdoc": "off",
     "no-undef": "off",
   },

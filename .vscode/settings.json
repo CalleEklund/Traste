@@ -6,4 +6,9 @@
         "javascript"
     ],
     "files.eol": "\n",
+    "eslint.workingDirectories": [
+        {
+            "mode": "auto"
+        }
+    ],
 }
