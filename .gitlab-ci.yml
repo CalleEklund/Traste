@@ -97,6 +97,8 @@ deploy-firestore:
 
 deploy-functions:   # This job runs in the deploy stage.
   stage: deploy     # It only runs when *both* jobs in the test stage complete successfully.
+  dependencies: 
+    - npm-backend
   before_script:
     - npm i -g firebase-tools
   script:
@@ -109,12 +111,14 @@ deploy-functions:   # This job runs in the deploy stage.
 
 deploy-hosting:
   stage: deploy
+  dependencies: 
+    - npm-frontend
   before_script:
     - npm i -g firebase-tools
   script:
-    - yarn
+    - cd app/traste
     - echo "Building application"
-    - yarn build
+    - npm run build
     - echo "Building is done"
     - echo "Starting to deploy application"
     - firebase deploy --only hosting --token $FIREBASE_TOKEN
