@@ -1,4 +1,4 @@
-/* eslint-disable require-jsdoc */
+/* eslint-disable */
 /* eslint-disable max-len */
 /* eslint linebreak-style: ["error", "windows"] */
 /*
@@ -53,24 +53,24 @@ class FirestoreClient {
     };
 
     const response = this.firestore.collection("Reports").doc(data.docketNumber).get()
-        .then(async (doc) =>{
-          if (doc.exists) {
-            return JSON.stringify({msg: "Report already exists"});
-          } else {
-            await this.firestore.collection("Reports").doc(data.docketNumber).set(reportData);
-            const wasteData = data.wasteData;
-            const reportRef = this.firestore.collection("Reports").doc(data.docketNumber);
+      .then(async (doc) => {
+        if (doc.exists) {
+          return JSON.stringify({ msg: "Report already exists" });
+        } else {
+          await this.firestore.collection("Reports").doc(data.docketNumber).set(reportData);
+          const wasteData = data.wasteData;
+          const reportRef = this.firestore.collection("Reports").doc(data.docketNumber);
 
-            if (wasteData && (typeof wasteData === "object")) {
-              // eslint-disable-next-line guard-for-in
-              for (const [key, value] of Object.entries(wasteData)) {
-                // console.log(`${key}: ${value}`);
-                await reportRef.collection("Contains").doc(key).set({percentage: parseInt(value)});
-              }
+          if (wasteData && (typeof wasteData === "object")) {
+            // eslint-disable-next-line guard-for-in
+            for (const [key, value] of Object.entries(wasteData)) {
+              // console.log(`${key}: ${value}`);
+              await reportRef.collection("Contains").doc(key).set({ percentage: parseInt(value) });
             }
-            return JSON.stringify({msg: "Report was made"});
           }
-        });
+          return JSON.stringify({ msg: "Report was made" });
+        }
+      });
     return response;
   }
 
@@ -86,14 +86,14 @@ class FirestoreClient {
       name: data.name, // STRING
     };
     const response = this.firestore.collection("Sites").doc(data.adress).get()
-        .then(async (doc) =>{
-          if (doc.exists) {
-            return JSON.stringify({msg: "Site already exists"});
-          } else {
-            await this.firestore.collection("Sites").doc(data.adress).set(reportData);
-            return JSON.stringify({msg: "Site was made"});
-          }
-        });
+      .then(async (doc) => {
+        if (doc.exists) {
+          return JSON.stringify({ msg: "Site already exists" });
+        } else {
+          await this.firestore.collection("Sites").doc(data.adress).set(reportData);
+          return JSON.stringify({ msg: "Site was made" });
+        }
+      });
     return response;
   }
   /*
@@ -108,14 +108,14 @@ class FirestoreClient {
       density: data.density, // DOUBLE
     };
     const response = this.firestore.collection("Waste").doc(data.materialName).get()
-        .then(async (doc) =>{
-          if (doc.exists) {
-            return JSON.stringify({msg: "Waste already exists"});
-          } else {
-            await this.firestore.collection("Waste").doc(data.materialName).set(reportData);
-            return JSON.stringify({msg: "Waste was added to the database"});
-          }
-        });
+      .then(async (doc) => {
+        if (doc.exists) {
+          return JSON.stringify({ msg: "Waste already exists" });
+        } else {
+          await this.firestore.collection("Waste").doc(data.materialName).set(reportData);
+          return JSON.stringify({ msg: "Waste was added to the database" });
+        }
+      });
     return response;
   }
 
@@ -130,14 +130,14 @@ class FirestoreClient {
       location: data.location, // STRING
     };
     const response = this.firestore.collection("Facilities").doc(data.facilityId).get()
-        .then(async (doc) =>{
-          if (doc.exists) {
-            return JSON.stringify({msg: "Facility already exists"});
-          } else {
-            await this.firestore.collection("Facilities").doc(data.facilityId).set(reportData);
-            return JSON.stringify({msg: "Facility was added to the database"});
-          }
-        });
+      .then(async (doc) => {
+        if (doc.exists) {
+          return JSON.stringify({ msg: "Facility already exists" });
+        } else {
+          await this.firestore.collection("Facilities").doc(data.facilityId).set(reportData);
+          return JSON.stringify({ msg: "Facility was added to the database" });
+        }
+      });
     return response;
   }
 
@@ -156,14 +156,14 @@ class FirestoreClient {
       facilityId: data.facilityId, // STRING
     };
     const response = this.firestore.collection("Employees").doc(data.employeeId).get()
-        .then(async (doc) =>{
-          if (doc.exists) {
-            return JSON.stringify({msg: "Employee already exists"});
-          } else {
-            await this.firestore.collection("Employees").doc(data.employeeId).set(reportData);
-            return JSON.stringify({msg: "Employee was added to the database"});
-          }
-        });
+      .then(async (doc) => {
+        if (doc.exists) {
+          return JSON.stringify({ msg: "Employee already exists" });
+        } else {
+          await this.firestore.collection("Employees").doc(data.employeeId).set(reportData);
+          return JSON.stringify({ msg: "Employee was added to the database" });
+        }
+      });
     return response;
   }
 }
