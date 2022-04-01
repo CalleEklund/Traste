@@ -2,23 +2,18 @@
 
 exports[`Matches snapshot 1`] = `
 <div
-  className="MuiFormControl-root MuiTextField-root css-1t8338x-MuiFormControl-root-MuiTextField-root"
+  className="MuiFormControl-root MuiTextField-root css-1q0uy3-MuiFormControl-root-MuiTextField-root"
 >
   <div
-    className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-adornedStart MuiInputBase-adornedEnd css-2ehmn7-MuiInputBase-root-MuiOutlinedInput-root"
+    className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-adornedEnd css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root"
     onClick={[Function]}
   >
-    <div
-      className="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-outlined MuiInputAdornment-sizeMedium css-1laqsz7-MuiInputAdornment-root"
-    />
     <input
       aria-invalid={false}
       autoFocus={false}
-      className="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedStart MuiInputBase-inputAdornedEnd css-152mnda-MuiInputBase-input-MuiOutlinedInput-input"
+      className="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
       data-testid="materialfield"
-      defaultValue={0}
       disabled={false}
-      id="estimate-undefined"
       onAnimationStart={[Function]}
       onBlur={[Function]}
       onChange={[Function]}
@@ -26,6 +21,7 @@ exports[`Matches snapshot 1`] = `
       required={false}
       style={
         Object {
+          "fontSize": 16,
           "textAlign": "right",
         }
       }

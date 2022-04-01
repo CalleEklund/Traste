@@ -14,7 +14,6 @@ exports[`Matches snapshot 1`] = `
       className="MuiOutlinedInput-input MuiInputBase-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
       data-testid="inputfield"
       disabled={false}
-      id="input-undefined"
       onAnimationStart={[Function]}
       onBlur={[Function]}
       onChange={[Function]}
