@@ -108,7 +108,7 @@ function ReportPage({snackBarHandler}) {
   async function sendReport(data) {
     await axios({
       method: 'post',
-      url: 'http://localhost:5001/traste-71a71/europe-west3/app/createreport',
+      url: 'https://europe-west3-traste-71a71.cloudfunctions.net/app/createreport',
       data: data,
     }).then(function(response) {
       console.log(response.data);
