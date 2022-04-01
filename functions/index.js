@@ -54,6 +54,7 @@ function validationErrorMiddleware(error, _request, response, next) {
 /*
 This is the function for posting on localhost/3000/createreport.
 This is for testing the createreport function.
+Also appends the data of the new report to google sheet
 */
 
 
