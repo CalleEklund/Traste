@@ -2,8 +2,8 @@ image: node:latest
 
 stages:     # List of stages for jobs, and their order of execution
   - npm
-  - lint
   - test
+  - lint
   - deploy
 
 npm-backend:
@@ -83,6 +83,8 @@ eslint-frontend:
 
 unit-test-backend: # Runs only tests when changes to backend is made
   stage: test
+  rules:
+    - when: never
   dependencies:
     - npm-backend
   script:
@@ -104,6 +106,8 @@ unit-test-backend: # Runs only tests when changes to backend is made
 
 unit-test-frontend: # Runs only tests when changes to frontend is made
   stage: test
+  rules:
+    - when: never
   dependencies:
     - npm-frontend
   script:
@@ -123,7 +127,6 @@ unit-test-frontend: # Runs only tests when changes to frontend is made
     changes:
       - app/traste/**/*
   
-
 deploy-firestore:
   stage: deploy
   before_script:
@@ -150,11 +153,6 @@ deploy-functions:   # This job runs in the deploy stage.
     - cd ..
     - firebase deploy --only functions --token $FIREBASE_TOKEN
     - echo "Functions successfully deployed."
-  only:
-    refs:
-      - main
-    changes:
-      - functions/**/*
 
 deploy-hosting:
   stage: deploy
@@ -168,8 +166,3 @@ deploy-hosting:
     - echo "Starting to deploy application"
     - firebase deploy --only hosting --token $FIREBASE_TOKEN
     - echo "Application is deployed"
-  only:
-    refs:
-      - main
-    changes:
-      - app/traste/**/*
