@@ -2,8 +2,5 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
     },
-    "eslint.validate": ["javascript"],
-    "eslint.workingDirectories": [
-        {"mode": "auto"}
-    ],
+    "files.eol": "\n",
 }
