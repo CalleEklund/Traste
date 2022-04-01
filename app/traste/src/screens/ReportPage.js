@@ -341,100 +341,108 @@ function ReportPage({snackBarHandler}) {
           Waste Types
         </Typography>
         {renderWasteList()}
-        <Stack
-          direction="column"
-          justifyContent="center"
-          alignContent="stretch"
-          sx={{marginTop: '15px', width: '100vw', flexGrow: '2'}}
-        >
-          <Stack
-            sx={{
-              flex: '1',
-              display: 'flex',
-              alignContent: 'center',
-              alignItems: 'center',
-              justifyContent: 'space-around',
-              backgroundColor: Colors.trasteNavyBlue,
-              color: 'white',
-              paddingTop: 1,
-              paddingBottom: 1,
-            }}
-            direction="row"
-          >
-            <Typography variant="h4">Waste total: </Typography>
-
-            <Box sx={{position: 'relative', display: 'inline-flex'}}>
-              <CircularProgress
-                variant="determinate"
-                value={total > 100 ? 100 : total}
-                size={60}
-                thickness={5}
-                sx={{color: total > 100 ? 'red' : Colors.trasteGreen}}
-              />
-              <Box
-                sx={{
-                  top: 0,
-                  left: 0,
-                  bottom: 0,
-                  right: 0,
-                  position: 'absolute',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Typography
-                  variant="caption"
-                  component="div"
-                  color="text.secondary"
-                  fontSize={16}
-                  fontWeight="bold"
-                  sx={{color: 'white'}}
-                >
-                  {`${Math.round(total)}%`}
-                </Typography>
-              </Box>
-            </Box>
-          </Stack>
-        </Stack>
       </Container>
-
-      <Button
-        endIcon={
-          <SendIcon
-            sx={{
-              color: Colors.trasteNavyBlue,
-              fontSize: '200px',
-              width: 40,
-              height: 40,
-            }}
-          />
-        }
-        disabled={total !== 100}
-        type="submit"
+      <Stack
+        direction="column"
+        justifyContent="center"
+        alignContent="stretch"
         sx={{
-          flex: '1',
-          display: 'flex',
+          marginTop: '15px',
+          width: '100vw',
+          flexGrow: '2',
           position: 'sticky',
-          bottom: 0,
-          alignItems: 'center',
-          aligntContent: 'stretch',
           justifyContent: 'space-around',
-          width: 1,
+          bottom: 0,
+          display: 'flex',
           zIndex: 2,
-          backgroundColor:
+          flex: '1',
+        }}
+      >
+        <Stack
+          sx={{
+            flex: '1',
+            display: 'flex',
+            alignContent: 'center',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            backgroundColor: Colors.trasteNavyBlue,
+            color: 'white',
+            paddingTop: 1,
+            paddingBottom: 1,
+          }}
+          direction="row"
+        >
+          <Typography variant="h4">Waste total: </Typography>
+
+          <Box sx={{position: 'relative', display: 'inline-flex'}}>
+            <CircularProgress
+              variant="determinate"
+              value={total > 100 ? 100 : total}
+              size={60}
+              thickness={5}
+              sx={{color: total > 100 ? 'red' : Colors.trasteGreen}}
+            />
+            <Box
+              sx={{
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography
+                variant="caption"
+                component="div"
+                color="text.secondary"
+                fontSize={16}
+                fontWeight="bold"
+                sx={{color: 'white'}}
+              >
+                {`${Math.round(total)}%`}
+              </Typography>
+            </Box>
+          </Box>
+        </Stack>
+        <Button
+          endIcon={
+            <SendIcon
+              sx={{
+                color: Colors.trasteNavyBlue,
+                fontSize: '200px',
+                width: 40,
+                height: 40,
+              }}
+            />
+          }
+          disabled={total !== 100}
+          type="submit"
+          sx={{
+            flex: '1',
+            display: 'flex',
+            position: 'sticky',
+            alignItems: 'center',
+            aligntContent: 'stretch',
+            justifyContent: 'space-around',
+            width: 1,
+            zIndex: 2,
+            backgroundColor:
             isValid && total === 100 ?
               Colors.trastePurple :
               Colors.trasteDadada,
-          borderRadius: '0',
-          paddingTop: 1,
-          paddingBottom: 1,
-        }}
-      >
-        <Typography variant="h4" sx={{color: Colors.trasteNavyBlue}}>
+            borderRadius: '0',
+            paddingTop: 1,
+            paddingBottom: 1,
+          }}
+        >
+          <Typography variant="h4" sx={{color: Colors.trasteNavyBlue}}>
           Send Report
-        </Typography>
-      </Button>
+          </Typography>
+        </Button>
+      </Stack>
     </form>
   );
 }
