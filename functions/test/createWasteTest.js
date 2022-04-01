@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-undef */
 /*
 This is the test file for createWaste
 */
@@ -16,7 +14,8 @@ describe("The createWaste function", () => {
     };
 
     FS.createWaste(data).then((res, body) => {
-      expect(res).to.be.eq(JSON.stringify({msg: "Waste was added to the database"}));
+      expect(res).to.be.eq(JSON.stringify(
+          {msg: "Waste was added to the database"}));
       done();
     }).catch(done);
   });
@@ -41,7 +40,9 @@ describe("The createWaste function", () => {
     FS.createWaste(data).then((res, body) => {
       done();
     }).catch((err) => {
-      expect(JSON.stringify({"error": err.message})).to.be.eq(JSON.stringify({"error": "Value for argument \"documentPath\" is not a valid resource path. Path must be a non-empty string."}));
+      expect(JSON.stringify({"error": err.message})).to.be.eq(JSON.stringify(
+          {"error": "Value for argument \"documentPath\" " + "\n" +
+          "is not a valid resource path. Path must be a non-empty string."}));
       done();
     });
   });

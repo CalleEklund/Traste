@@ -1,4 +1,5 @@
 module.exports = {
+  "parser": "@babel/eslint-parser",
   'env': {
     'browser': true,
     'es2021': true,
@@ -17,7 +18,8 @@ module.exports = {
   'plugins': [
     'react',
   ],
-  'rules': {
-    'linebreak-style': 0,
+  "rules": {
+    "quotes": ["error", "single"],
+    "linebreak-style": ["error", "unix"],
   },
 };

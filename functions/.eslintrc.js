@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"]*/
 module.exports = {
   root: true,
   env: {
@@ -15,7 +14,8 @@ module.exports = {
   ],
   rules: {
     "quotes": ["error", "double"],
-    "linebreak-style": ["error",
-      (process.platform === "win32" ? "windows" : "unix")],
+    "linebreak-style": ["error", "unix"],
+    "require-jsdoc": "off",
+    "no-undef": "off",
   },
 };
