@@ -3,7 +3,6 @@ image: node:latest
 stages:     # List of stages for jobs, and their order of execution
   - npm
   - lint
-  - test
   - deploy
 
 npm-backend:
@@ -80,50 +79,7 @@ eslint-frontend:
       - main
     changes:
       - app/traste/**/*
-
-unit-test-backend: # Runs only tests when changes to backend is made
-  stage: test
-  dependencies:
-    - npm-backend
-  script:
-    - cd functions
-    - echo "Running unit tests for backend"
-    - npm run coverage
-    - echo "Unit tests for backend are complete"
-  coverage: '/Code coverage: \d+\.\d+/'
-  artifacts:
-    expire_in: 1 year
-    when: on_success
-    paths:
-      - functions/coverage/
-  only:
-    refs:
-      - main
-    changes:
-      - functions/**/*
-
-unit-test-frontend: # Runs only tests when changes to frontend is made
-  stage: test
-  dependencies:
-    - npm-frontend
-  script:
-    - cd app/traste
-    - echo "Running unit tests for frontend"
-    - npm run test -- --coverage
-    - echo "Unit tests for frontend are complete"
-  coverage: '/Code coverage: \d+\.\d+/'
-  artifacts:
-    expire_in: 1 year
-    when: on_success
-    paths:
-      - app/traste/coverage/
-  only:
-    refs:
-      - main
-    changes:
-      - app/traste/**/*
   
-
 deploy-firestore:
   stage: deploy
   before_script:
@@ -150,11 +106,6 @@ deploy-functions:   # This job runs in the deploy stage.
     - cd ..
     - firebase deploy --only functions --token $FIREBASE_TOKEN
     - echo "Functions successfully deployed."
-  only:
-    refs:
-      - main
-    changes:
-      - functions/**/*
 
 deploy-hosting:
   stage: deploy
@@ -168,8 +119,3 @@ deploy-hosting:
     - echo "Starting to deploy application"
     - firebase deploy --only hosting --token $FIREBASE_TOKEN
     - echo "Application is deployed"
-  only:
-    refs:
-      - main
-    changes:
-      - app/traste/**/*
