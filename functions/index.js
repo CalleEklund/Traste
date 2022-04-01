@@ -6,6 +6,8 @@ const FirestoreClient = require("./firestoreClient.js");
 
 const FS = new FirestoreClient();
 
+const {syncData} = require("./syncData");
+
 const functions = require("firebase-functions");
 
 const express = require("express");
@@ -58,6 +60,7 @@ app.post("/createreport", validate({body: reportSchema}), (req, res) => {
   console.log(response);
   response = response.then(function(msg) {
     res.send(msg);
+    syncData(data);
   }).catch((err) => {
     res.send(JSON.stringify({"error": err.message}));
   });
