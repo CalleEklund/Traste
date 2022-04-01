@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-undef */
 /*
 This is the test file for createSite
 */
@@ -42,7 +40,8 @@ describe("The create site function", () => {
       done();
     }).catch((err) => {
       expect(JSON.stringify({"error": err.message})).to.be.eq(JSON.stringify(
-          {"error": "Value for argument \"documentPath\" is not a valid resource path. Path must be a non-empty string."}));
+          {"error": "Value for argument \"documentPath\"" + "\n" +
+          "is not a valid resource path. Path must be a non-empty string."}));
       done();
     });
   });
