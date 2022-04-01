@@ -13,6 +13,8 @@ module.exports = {
     "google",
   ],
   rules: {
-    quotes: ["error", "double"],
+    "quotes": ["error", "double"],
+    "linebreak-style": ["error",
+      (process.platform === "win32" ? "windows" : "unix")],
   },
 };

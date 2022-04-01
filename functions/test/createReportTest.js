@@ -21,6 +21,8 @@ describe("The create function", () => {
       "binSize": 5,
       "facility": "Andreas",
       "wasteData": {"wood": 0, "concrete": 100, "other": 0, "metal": 0},
+      "site": "Hemköp",
+      "date": "NULL",
     };
 
     FS.createReport(data).then((res, body) => {
