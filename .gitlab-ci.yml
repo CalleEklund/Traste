@@ -20,9 +20,6 @@ npm-backend:
     when: on_success
     paths:
       - functions/node_modules/
-  only:
-    changes:
-      - functions/**/*
 
 npm-frontend:
   stage: npm
@@ -39,12 +36,6 @@ npm-frontend:
     when: on_success
     paths:
       - app/traste/node_modules/
-  only:
-    refs:
-      - main
-    changes:
-      - app/traste/**/*
-
 
 eslint-backend:
   stage: lint
@@ -57,11 +48,6 @@ eslint-backend:
     - echo "Starting eslint check for all files in the backend"
     - eslint .
     - echo "Done"
-  only:
-    refs:
-      - main
-    changes:
-      - functions/**/*
 
 eslint-frontend:
   stage: lint
@@ -74,11 +60,6 @@ eslint-frontend:
     - echo "Starting eslint check for all files in the frontend"
     - eslint .
     - echo "Done"
-  only:
-    refs:
-      - main
-    changes:
-      - app/traste/**/*
   
 deploy-firestore:
   stage: deploy
@@ -108,6 +89,9 @@ deploy-functions:   # This job runs in the deploy stage.
     - cd ..
     - firebase deploy --only functions --token $FIREBASE_TOKEN
     - echo "Functions successfully deployed."
+  only:
+    refs:
+      - main
 
 deploy-hosting:
   stage: deploy
@@ -123,3 +107,6 @@ deploy-hosting:
     - echo "Starting to deploy application"
     - firebase deploy --only hosting --token $FIREBASE_TOKEN
     - echo "Application is deployed"
+  only:
+    refs:
+      - main
