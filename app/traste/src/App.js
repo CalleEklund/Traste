@@ -17,7 +17,6 @@ function App() {
 
   const handleClose = () => {
     setOpen(false);
-    console.log('snackbar closed');
   };
   const openSnackBar = () => {
     setOpen(true);

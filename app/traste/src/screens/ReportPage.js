@@ -15,11 +15,15 @@ import Selection from '../components/Selection';
 import {Colors} from '../assets/Colors';
 import SendIcon from '@mui/icons-material/Send';
 
+import PropTypes from 'prop-types';
+
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 import axios from 'axios';
+
+import {useNavigate} from 'react-router-dom';
 
 const binsizes = [
   {
@@ -60,9 +64,10 @@ const sites = [
 
 /**
  * ReportPage renders the report form for a waste report.
+ * @param {*} snackBarHandler Shows a snackbar pop up on report send.
  * @return {form} Returns the form that renders the report page.
  */
-function ReportPage() {
+function ReportPage({snackBarHandler}) {
   const wasteTypes = {
     Wood: 0,
     Plastic: 0,
@@ -70,6 +75,8 @@ function ReportPage() {
     Metal: 0,
     Other: 0,
   };
+
+  const navigate = useNavigate();
 
   const [total, setTotal] = useState(0);
   const {
@@ -128,6 +135,8 @@ function ReportPage() {
     };
     sendReport(data);
     console.log(data);
+    snackBarHandler();
+    navigate('/');
   };
 
   /**
@@ -429,4 +438,9 @@ function ReportPage() {
     </form>
   );
 }
+
+ReportPage.propTypes = {
+  snackBarHandler: PropTypes.any.isRequired,
+};
+
 export default ReportPage;
