@@ -12,8 +12,11 @@ import MaterialField from '../components/MaterialField';
 import {useForm, Controller} from 'react-hook-form';
 import Inputfield from '../components/Inputfield';
 import Selection from '../components/Selection';
+import {styled} from '@mui/material/styles';
 import {Colors} from '../assets/Colors';
 import SendIcon from '@mui/icons-material/Send';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import IconButton from '@mui/material/IconButton';
 
 import PropTypes from 'prop-types';
 
@@ -100,6 +103,10 @@ function ReportPage({snackBarHandler}) {
     },
   });
   const all = watch(control);
+
+  const Input = styled('input')({
+    display: 'none',
+  });
 
   /**
    * sendReport will send the data from the form to the backend.
@@ -266,20 +273,60 @@ function ReportPage({snackBarHandler}) {
             </LocalizationProvider>
           )}
         />
-
-        <Controller
-          name="docketNumber"
-          control={control}
-          rules={{required: 'Docket Number required'}}
-          render={({field: {onChange, value}, fieldState: {error}}) => (
-            <Inputfield
-              label="Docket No."
-              onChange={onChange}
-              value={value}
-              error={error}
-            />
-          )}
-        />
+        <Container
+          sx={{
+            display: 'flex',
+            alignItems: 'space-between',
+            flexDirection: 'row',
+            width: '100vw',
+          }}
+        >
+          <Controller
+            name="docketNumber"
+            control={control}
+            rules={{required: 'Docket Number required'}}
+            render={({field: {onChange, value}, fieldState: {error}}) => (
+              <Inputfield
+                label="Docket No."
+                onChange={onChange}
+                value={value}
+                error={error}
+              />
+            )}
+          />
+          <Stack
+            direction="column"
+            justifyContent="flex-end"
+            alignContent="stretch"
+            sx={{
+              width: '0.3vw',
+            }}
+          >
+            <label htmlFor="contained-button-file">
+              <Input accept="image/*" id="contained-button-file"
+                multiple type="file" />
+              <Button variant="contained" component="span"
+                sx={{
+                  backgroundColor: Colors.trasteNavyBlue,
+                  height: 20,
+                  width: '0.3vw',
+                }}>
+          Upload
+              </Button>
+            </label>
+            <label htmlFor="icon-button-file">
+              <Input accept="image/*" id="icon-button-file" type="file"
+                capture="environment"/>
+              <IconButton aria-label="upload picture" component="span"
+                sx={{
+                  color: Colors.trasteNavyBlue,
+                  width: '0.3vw',
+                }}>
+                <PhotoCamera />
+              </IconButton>
+            </label>
+          </Stack>
+        </Container>
         <Controller
           name="weight"
           control={control}
