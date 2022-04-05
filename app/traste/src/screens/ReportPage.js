@@ -12,8 +12,11 @@ import MaterialField from '../components/MaterialField';
 import {useForm, Controller} from 'react-hook-form';
 import Inputfield from '../components/Inputfield';
 import Selection from '../components/Selection';
+import {styled} from '@mui/material/styles';
 import {Colors} from '../assets/Colors';
 import SendIcon from '@mui/icons-material/Send';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import IconButton from '@mui/material/IconButton';
 
 import PropTypes from 'prop-types';
 
@@ -100,6 +103,10 @@ function ReportPage({snackBarHandler}) {
     },
   });
   const all = watch(control);
+
+  const Input = styled('input')({
+    display: 'none',
+  });
 
   /**
    * sendReport will send the data from the form to the backend.
@@ -266,20 +273,68 @@ function ReportPage({snackBarHandler}) {
             </LocalizationProvider>
           )}
         />
+        <Stack
+          style={{display: 'flex'}}
+          width='90vw'
+          direction='row'
+          spacing={2}
+          sx={{
+            alignItems: 'flex-start',
+          }}
+        >
+          <Controller
+            name="docketNumber"
+            control={control}
+            rules={{required: 'Docket Number required'}}
+            render={({field: {onChange, value}, fieldState: {error}}) => (
+              <Inputfield
+                label="Docket No."
+                onChange={onChange}
+                value={value}
+                error={error}
+                sx={{width: '85vw',
+                  marginTop: '15px',
+                  backgroundColor: 'rgba(255,255,255,0.3)'}}
+              />
+            )}
+          />
+          <Stack
+            direction="column"
+            sx={{
+              display: 'flex',
+              paddingTop: '15px',
+              alignItems: 'center',
+              direction: 'row',
+            }}
 
-        <Controller
-          name="docketNumber"
-          control={control}
-          rules={{required: 'Docket Number required'}}
-          render={({field: {onChange, value}, fieldState: {error}}) => (
-            <Inputfield
-              label="Docket No."
-              onChange={onChange}
-              value={value}
-              error={error}
-            />
-          )}
-        />
+          >
+            <label htmlFor="contained-button-file">
+              <Input accept="image/*" id="contained-button-file"
+                multiple type="file" />
+              <Button variant="contained" component="span"
+                sx={{
+                  'backgroundColor': Colors.trasteNavyBlue,
+                  ':hover': {backgroundColor: Colors.trastePurple},
+                  'height': 20,
+                  'width': '5vw',
+                }}>
+          Upload
+              </Button>
+            </label>
+            <label htmlFor="icon-button-file">
+              <Input accept="image/*" id="icon-button-file" type="file"
+                capture="environment"/>
+              <IconButton aria-label="upload picture" component="span"
+                sx={{
+                  'color': Colors.trasteNavyBlue,
+                  ':hover': {color: Colors.trastePurple},
+                  'width': '5vw',
+                }}>
+                <PhotoCamera />
+              </IconButton>
+            </label>
+          </Stack>
+        </Stack>
         <Controller
           name="weight"
           control={control}
