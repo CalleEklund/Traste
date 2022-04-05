@@ -8,8 +8,8 @@ changing and deleting entries in the database.
 const Firestore = require("@google-cloud/firestore");
 const path = require("path");
 
-import {initializeApp} from "firebase/app";
-import {getStorage} from "firebase/storage";
+const {initializeApp} = require("firebase/app");
+const {getStorage, ref, uploadBytes, connectStorageEmulator} = require("firebase/storage");
 
 const firebaseConfig = {
   apiKey: "AAAAm_Qkz68:APA91bEeboBLN9Is0JTqJGwQqoJIAeqatTlQ2WigbKxoC418apnP"+
@@ -21,12 +21,13 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 
 const storage = getStorage(firebaseApp);
+connectStorageEmulator(storage, "localhost", 9199);
 
 async function uploadImage(data) {
-  const storageRef = ref(storage, "");
+  const storageRef = ref(storage, "namn.png");
 
   // 'file' comes from the Blob or File API
-  await uploadBytes(storageRef, data).then((snapshot) => {
+  await uploadBytes(storageRef, data, {contentType: 'image/png',}).then((snapshot) => {
     console.log("Uploaded a blob or file!");
   });
 }

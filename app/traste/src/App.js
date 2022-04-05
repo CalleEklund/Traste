@@ -47,7 +47,13 @@ function App() {
         image.name,
     );
 
-    axios.post('http://localhost:5001/traste-71a71/europe-west3/app/uploadimage', formData);
+    axios.post('http://localhost:5001/traste-71a71/europe-west3/app/uploadimage',
+        image,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
     console.log('the uploaded file', image);
   }
 
