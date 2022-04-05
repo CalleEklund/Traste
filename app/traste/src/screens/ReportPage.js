@@ -273,12 +273,13 @@ function ReportPage({snackBarHandler}) {
             </LocalizationProvider>
           )}
         />
-        <Container
+        <Stack
+          style={{display: 'flex'}}
+          width='90vw'
+          direction='row'
+          spacing={2}
           sx={{
-            display: 'flex',
-            alignItems: 'space-between',
-            flexDirection: 'row',
-            width: '100vw',
+            alignItems: 'flex-start',
           }}
         >
           <Controller
@@ -291,25 +292,31 @@ function ReportPage({snackBarHandler}) {
                 onChange={onChange}
                 value={value}
                 error={error}
+                sx={{width: '85vw',
+                  marginTop: '15px',
+                  backgroundColor: 'rgba(255,255,255,0.3)'}}
               />
             )}
           />
           <Stack
             direction="column"
-            justifyContent="flex-end"
-            alignContent="stretch"
             sx={{
-              width: '0.3vw',
+              display: 'flex',
+              paddingTop: '15px',
+              alignItems: 'center',
+              direction: 'row',
             }}
+
           >
             <label htmlFor="contained-button-file">
               <Input accept="image/*" id="contained-button-file"
                 multiple type="file" />
               <Button variant="contained" component="span"
                 sx={{
-                  backgroundColor: Colors.trasteNavyBlue,
-                  height: 20,
-                  width: '0.3vw',
+                  'backgroundColor': Colors.trasteNavyBlue,
+                  ':hover': {backgroundColor: Colors.trastePurple},
+                  'height': 20,
+                  'width': '5vw',
                 }}>
           Upload
               </Button>
@@ -319,14 +326,15 @@ function ReportPage({snackBarHandler}) {
                 capture="environment"/>
               <IconButton aria-label="upload picture" component="span"
                 sx={{
-                  color: Colors.trasteNavyBlue,
-                  width: '0.3vw',
+                  'color': Colors.trasteNavyBlue,
+                  ':hover': {color: Colors.trastePurple},
+                  'width': '5vw',
                 }}>
                 <PhotoCamera />
               </IconButton>
             </label>
           </Stack>
-        </Container>
+        </Stack>
         <Controller
           name="weight"
           control={control}

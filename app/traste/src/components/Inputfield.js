@@ -9,18 +9,15 @@ import {TextField} from '@mui/material';
  * @param {*} onChange Handler.
  * @param {*} error What will be shown for the error.
  * @param {*} type What type of values. Usally number or text.
+ * @param {*} sx Styling
  * @return {TextField} Rendred field
  */
-function Inputfield({label, value, onChange, error, type}) {
+function Inputfield({label, value, onChange, error, type, sx}) {
   return (
     <TextField
       label={label}
       variant='outlined'
-      sx={{
-        marginTop: '15px',
-        backgroundColor: 'rgba(255,255,255,0.3)',
-        width: '90vw',
-      }}
+      sx={sx}
       value={value}
       type={type}
       onChange={onChange}
@@ -34,6 +31,11 @@ function Inputfield({label, value, onChange, error, type}) {
 Inputfield.defaultProps = {
   error: false,
   type: 'text',
+  sx: {
+    marginTop: '15px',
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    width: '90vw',
+  },
 };
 
 Inputfield.propTypes = {
@@ -42,6 +44,7 @@ Inputfield.propTypes = {
   onChange: PropTypes.func.isRequired,
   error: PropTypes.any.isRequired,
   type: PropTypes.string.isRequired,
+  sx: null,
 };
 
 export default Inputfield;
