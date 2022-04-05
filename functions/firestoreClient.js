@@ -8,6 +8,30 @@ changing and deleting entries in the database.
 const Firestore = require("@google-cloud/firestore");
 const path = require("path");
 
+import {initializeApp} from "firebase/app";
+import {getStorage} from "firebase/storage";
+
+const firebaseConfig = {
+  apiKey: "AAAAm_Qkz68:APA91bEeboBLN9Is0JTqJGwQqoJIAeqatTlQ2WigbKxoC418apnP"+
+  "g6RUbBKAwuB31JP81h3WgoDTrw00WOLS5sayASuGTPPQdIj-9RGgw14SOdAik9"+
+  "_VIRxNxFq5gdMVUtkh2W_KyAwp",
+  authDomain: "https://accounts.google.com/o/oauth2/auth",
+  storageBucket: "gs://traste-71a71.appspot.com",
+};
+const firebaseApp = initializeApp(firebaseConfig);
+
+const storage = getStorage(firebaseApp);
+
+async function uploadImage(data) {
+  const storageRef = ref(storage, "");
+
+  // 'file' comes from the Blob or File API
+  await uploadBytes(storageRef, data).then((snapshot) => {
+    console.log("Uploaded a blob or file!");
+  });
+}
+
+
 class FirestoreClient {
   constructor() {
     this.firestore = new Firestore({
@@ -174,6 +198,16 @@ class FirestoreClient {
         });
     return response;
   }
+
+  async uploadImage(data) {
+    const storage = this.firestore.getStorage();
+    const storageRef = ref(storage, "");
+
+    // 'file' comes from the Blob or File API
+    await uploadBytes(storageRef, data).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+    });
+  }
 }
 
 /*
@@ -206,4 +240,4 @@ async function deleteQueryBatch(db, query, resolve) {
   });
 }
 
-module.exports = FirestoreClient;
+module.exports = {FirestoreClient, uploadImage};

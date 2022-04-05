@@ -2,9 +2,11 @@
 This file contains functions for deplyoing the firebase database locally.
 */
 
-const FirestoreClient = require("./firestoreClient.js");
+
+const {FirestoreClient, uploadImage} = require("./firestoreClient.js");
 
 const FS = new FirestoreClient();
+
 
 const {syncData} = require("./syncData");
 
@@ -47,6 +49,13 @@ function validationErrorMiddleware(error, _request, response, next) {
   });
   next();
 }
+
+app.post("/uploadimage", (req, res)=>{
+  const data = req.body;
+  console.log("the data sent", data);
+  uploadImage(data);
+});
+
 
 /*
 This is the function for posting on localhost/3000/createreport.
