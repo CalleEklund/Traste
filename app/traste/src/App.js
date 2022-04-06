@@ -15,10 +15,13 @@ import axios from 'axios';
  * @return {Container} with paths to the different screens.
  */
 function App() {
+  const outData = new FormData();
+
   const history = useNavigate();
   const [open, setOpen] = useState();
 
-  const [image, setImage] = useState();
+  const [dockerImage, setDockerImage] = useState();
+  // const [wasteImage, setWasteImage] = useState();
 
   const handleClose = () => {
     setOpen(false);
@@ -42,27 +45,34 @@ function App() {
 
     const formData = new FormData();
     formData.append(
-        'imageName',
-        image,
-        image.name,
+        'imgs',
+        [dockerImage, dockerImage],
     );
 
+
+    const out = {
+      dImg: dockerImage,
+      wImg: dockerImage,
+    };
+
     axios.post('http://localhost:5001/traste-71a71/europe-west3/app/uploadimage',
-        image,
+        formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
-    console.log('the uploaded file', image);
+    console.log('the uploaded file', dockerImage);
   }
+
 
   return (
     <div>
       <h1>Upload image</h1>
       <input type="file" onChange={(e)=>{
-        setImage(e.target.files[0]);
+        setDockerImage(e.target.files[0]);
       }} />
+
       <button onClick={onFileUpload}>
                   Upload!
       </button>
