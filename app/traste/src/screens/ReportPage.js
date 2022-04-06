@@ -389,12 +389,61 @@ function ReportPage({snackBarHandler}) {
             />
           )}
         />
-        <Typography
-          variant="h3"
-          sx={{textAlign: 'center', marginTop: '10px', marginBottom: '10px'}}
+
+        <Stack
+          style={{display: 'flex'}}
+          width='90vw'
+          direction='row'
+          spacing={2}
+          sx={{
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+          }}
         >
+          <Typography
+            variant="h4"
+            sx={{textAlign: 'center', marginTop: '10px', marginBottom: '10px'}}
+          >
           Waste Types
-        </Typography>
+          </Typography>
+          <Stack
+            direction="column"
+            sx={{
+              display: 'flex',
+              paddingTop: '15px',
+              alignItems: 'center',
+              direction: 'row',
+            }}
+
+          >
+            <label htmlFor="contained-button-file">
+              <Input accept="image/*" id="contained-button-file"
+                multiple type="file" />
+              <Button variant="contained" component="span"
+                sx={{
+                  'backgroundColor': Colors.trasteNavyBlue,
+                  ':hover': {backgroundColor: Colors.trastePurple},
+                  'height': 20,
+                  'width': '5vw',
+                }}>
+          Upload
+              </Button>
+            </label>
+            <label htmlFor="icon-button-file">
+              <Input accept="image/*" id="icon-button-file" type="file"
+                capture="environment"/>
+              <IconButton aria-label="upload picture" component="span"
+                sx={{
+                  'color': Colors.trasteNavyBlue,
+                  ':hover': {color: Colors.trastePurple},
+                  'width': '5vw',
+                }}>
+                <PhotoCamera />
+              </IconButton>
+            </label>
+          </Stack>
+        </Stack>
+
         {renderWasteList()}
       </Container>
       <Stack
