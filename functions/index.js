@@ -21,6 +21,7 @@ const {siteSchema, reportSchema, wasteSchema, employeeSchema, facilitySchema} =
     require("./databaseSchemas");
 
 const app = express();
+
 app.use(cors);
 
 
@@ -50,10 +51,13 @@ function validationErrorMiddleware(error, _request, response, next) {
   next();
 }
 
-app.post("/uploadimage", (req, res)=>{
+app.post("/uploadimage", function(req, res) {
   const data = req.body;
-  console.log("the data sent", data);
-  uploadImage(data);
+  console.log("upload image", data);
+  const docketNum = "testab123";
+  uploadImage(data, docketNum).then((imageURL) =>{
+    console.log("/uploadimage url: ", imageURL);
+  });
 });
 
 
@@ -65,6 +69,9 @@ This is for testing the createreport function.
 
 app.post("/createreport", validate({body: reportSchema}), (req, res) => {
   const data = req.body;
+  // skicka upp bilder
+  // hämta url
+  // lägg in url
   let response = FS.createReport(data);
   console.log(response);
   response = response.then(function(msg) {
