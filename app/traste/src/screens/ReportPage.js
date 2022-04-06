@@ -12,8 +12,11 @@ import MaterialField from '../components/MaterialField';
 import {useForm, Controller} from 'react-hook-form';
 import Inputfield from '../components/Inputfield';
 import Selection from '../components/Selection';
+import {styled} from '@mui/material/styles';
 import {Colors} from '../assets/Colors';
 import SendIcon from '@mui/icons-material/Send';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import IconButton from '@mui/material/IconButton';
 
 import PropTypes from 'prop-types';
 
@@ -101,6 +104,10 @@ function ReportPage({snackBarHandler}) {
   });
   const all = watch(control);
 
+  const Input = styled('input')({
+    display: 'none',
+  });
+
   /**
    * sendReport will send the data from the form to the backend.
    * @param {*} data all data from the form.
@@ -110,12 +117,16 @@ function ReportPage({snackBarHandler}) {
       method: 'post',
       url: 'https://europe-west3-traste-71a71.cloudfunctions.net/app/createreport',
       data: data,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     }).then(function(response) {
       console.log(response.data);
     });
   }
 
   useEffect(() => {
+    console.log(all);
     let tmp = 0;
     Object.values(all.wasteData).forEach((item) => {
       if (!isNaN(parseInt(item))) {
@@ -266,20 +277,92 @@ function ReportPage({snackBarHandler}) {
             </LocalizationProvider>
           )}
         />
+        <Stack
+          style={{display: 'flex'}}
+          width='90vw'
+          direction='row'
+          spacing={2}
+          sx={{
+            alignItems: 'flex-start',
+          }}
+        >
+          <Controller
+            name="docketNumber"
+            control={control}
+            rules={{required: 'Docket Number required'}}
+            render={({field: {onChange, value}, fieldState: {error}}) => (
+              <Inputfield
+                label="Docket No."
+                onChange={onChange}
+                value={value}
+                error={error}
+                sx={{width: '85vw',
+                  marginTop: '15px',
+                  backgroundColor: 'rgba(255,255,255,0.3)'}}
+              />
+            )}
+          />
+          <Stack
+            direction="column"
+            sx={{
+              display: 'flex',
+              paddingTop: '15px',
+              alignItems: 'center',
+              direction: 'row',
+            }}
 
-        <Controller
-          name="docketNumber"
-          control={control}
-          rules={{required: 'Docket Number required'}}
-          render={({field: {onChange, value}, fieldState: {error}}) => (
-            <Inputfield
-              label="Docket No."
-              onChange={onChange}
-              value={value}
-              error={error}
-            />
-          )}
-        />
+          >
+            <label htmlFor="contained-button-file">
+              <Controller
+                name="docketPicture"
+                control={control}
+                rules={{required: 'Select an image'}}
+                render={({field: {onChange}, fieldState: {error}}) => (
+                  <Input
+                    accept="image/*"
+                    id="contained-button-file"
+                    multiple type="file"
+                    onChange={(e) => onChange(e.target.files[0])}
+                    error={error}
+                  />
+                )}
+              />
+              <Button variant="contained" component="span"
+                sx={{
+                  'backgroundColor': Colors.trasteNavyBlue,
+                  ':hover': {backgroundColor: Colors.trastePurple},
+                  'height': 20,
+                  'width': '5vw',
+                }}>
+          Upload
+              </Button>
+            </label>
+            <label htmlFor="icon-button-file">
+              <Controller
+                name="docketPicture"
+                control={control}
+                rules={{required: 'Select an image'}}
+                render={({field: {onChange}, fieldState: {error}}) => (
+                  <Input
+                    accept="image/*"
+                    id="contained-button-file"
+                    multiple type="file"
+                    onChange={(e) => onChange(e.target.files[0])}
+                    error={error}
+                  />
+                )}
+              />
+              <IconButton aria-label="upload picture" component="span"
+                sx={{
+                  'color': Colors.trasteNavyBlue,
+                  ':hover': {color: Colors.trastePurple},
+                  'width': '5vw',
+                }}>
+                <PhotoCamera />
+              </IconButton>
+            </label>
+          </Stack>
+        </Stack>
         <Controller
           name="weight"
           control={control}
@@ -334,12 +417,85 @@ function ReportPage({snackBarHandler}) {
             />
           )}
         />
-        <Typography
-          variant="h3"
-          sx={{textAlign: 'center', marginTop: '10px', marginBottom: '10px'}}
+
+        <Stack
+          style={{display: 'flex'}}
+          width='90vw'
+          direction='row'
+          spacing={2}
+          sx={{
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+          }}
         >
+          <Typography
+            variant="h4"
+            sx={{textAlign: 'center', marginTop: '10px', marginBottom: '10px'}}
+          >
           Waste Types
-        </Typography>
+          </Typography>
+          <Stack
+            direction="column"
+            sx={{
+              display: 'flex',
+              paddingTop: '15px',
+              alignItems: 'center',
+              direction: 'row',
+            }}
+
+          >
+            <label htmlFor="waste-button-file">
+              <Controller
+                name="wastePicture"
+                control={control}
+                rules={{required: 'Select an image'}}
+                render={({field: {onChange}, fieldState: {error}}) => (
+                  <Input
+                    accept="image/*"
+                    id="waste-button-file"
+                    multiple type="file"
+                    onChange={(e) => onChange(e.target.files[0])}
+                    error={error}
+                  />
+                )}
+              />
+              <Button variant="contained" component="span"
+                sx={{
+                  'backgroundColor': Colors.trasteNavyBlue,
+                  ':hover': {backgroundColor: Colors.trastePurple},
+                  'height': 20,
+                  'width': '5vw',
+                }}>
+          Upload
+              </Button>
+            </label>
+            <label htmlFor="waste-icon-button-file">
+              <Controller
+                name="wastePicture"
+                control={control}
+                rules={{required: 'Select an image'}}
+                render={({field: {onChange}, fieldState: {error}}) => (
+                  <Input
+                    accept="image/*"
+                    id="waste-icon-button-file"
+                    multiple type="file"
+                    onChange={(e) => onChange(e.target.files[0])}
+                    error={error}
+                  />
+                )}
+              />
+              <IconButton aria-label="upload picture" component="span"
+                sx={{
+                  'color': Colors.trasteNavyBlue,
+                  ':hover': {color: Colors.trastePurple},
+                  'width': '5vw',
+                }}>
+                <PhotoCamera />
+              </IconButton>
+            </label>
+          </Stack>
+        </Stack>
+
         {renderWasteList()}
       </Container>
       <Stack
