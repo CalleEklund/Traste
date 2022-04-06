@@ -117,12 +117,16 @@ function ReportPage({snackBarHandler}) {
       method: 'post',
       url: 'https://europe-west3-traste-71a71.cloudfunctions.net/app/createreport',
       data: data,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     }).then(function(response) {
       console.log(response.data);
     });
   }
 
   useEffect(() => {
+    console.log(all);
     let tmp = 0;
     Object.values(all.wasteData).forEach((item) => {
       if (!isNaN(parseInt(item))) {
@@ -309,8 +313,20 @@ function ReportPage({snackBarHandler}) {
 
           >
             <label htmlFor="contained-button-file">
-              <Input accept="image/*" id="contained-button-file"
-                multiple type="file" />
+              <Controller
+                name="docketPicture"
+                control={control}
+                rules={{required: 'Select an image'}}
+                render={({field: {onChange}, fieldState: {error}}) => (
+                  <Input
+                    accept="image/*"
+                    id="contained-button-file"
+                    multiple type="file"
+                    onChange={(e) => onChange(e.target.files[0])}
+                    error={error}
+                  />
+                )}
+              />
               <Button variant="contained" component="span"
                 sx={{
                   'backgroundColor': Colors.trasteNavyBlue,
@@ -322,8 +338,20 @@ function ReportPage({snackBarHandler}) {
               </Button>
             </label>
             <label htmlFor="icon-button-file">
-              <Input accept="image/*" id="icon-button-file" type="file"
-                capture="environment"/>
+              <Controller
+                name="docketPicture"
+                control={control}
+                rules={{required: 'Select an image'}}
+                render={({field: {onChange}, fieldState: {error}}) => (
+                  <Input
+                    accept="image/*"
+                    id="contained-button-file"
+                    multiple type="file"
+                    onChange={(e) => onChange(e.target.files[0])}
+                    error={error}
+                  />
+                )}
+              />
               <IconButton aria-label="upload picture" component="span"
                 sx={{
                   'color': Colors.trasteNavyBlue,
@@ -416,9 +444,21 @@ function ReportPage({snackBarHandler}) {
             }}
 
           >
-            <label htmlFor="contained-button-file">
-              <Input accept="image/*" id="contained-button-file"
-                multiple type="file" />
+            <label htmlFor="waste-button-file">
+              <Controller
+                name="wastePicture"
+                control={control}
+                rules={{required: 'Select an image'}}
+                render={({field: {onChange}, fieldState: {error}}) => (
+                  <Input
+                    accept="image/*"
+                    id="waste-button-file"
+                    multiple type="file"
+                    onChange={(e) => onChange(e.target.files[0])}
+                    error={error}
+                  />
+                )}
+              />
               <Button variant="contained" component="span"
                 sx={{
                   'backgroundColor': Colors.trasteNavyBlue,
@@ -429,9 +469,21 @@ function ReportPage({snackBarHandler}) {
           Upload
               </Button>
             </label>
-            <label htmlFor="icon-button-file">
-              <Input accept="image/*" id="icon-button-file" type="file"
-                capture="environment"/>
+            <label htmlFor="waste-icon-button-file">
+              <Controller
+                name="wastePicture"
+                control={control}
+                rules={{required: 'Select an image'}}
+                render={({field: {onChange}, fieldState: {error}}) => (
+                  <Input
+                    accept="image/*"
+                    id="waste-icon-button-file"
+                    multiple type="file"
+                    onChange={(e) => onChange(e.target.files[0])}
+                    error={error}
+                  />
+                )}
+              />
               <IconButton aria-label="upload picture" component="span"
                 sx={{
                   'color': Colors.trasteNavyBlue,
