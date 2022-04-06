@@ -9,7 +9,8 @@ const Firestore = require("@google-cloud/firestore");
 const path = require("path");
 
 const {initializeApp} = require("firebase/app");
-const {getStorage, ref, uploadBytes, connectStorageEmulator, getDownloadURL} = require("firebase/storage");
+const {getStorage, ref, uploadBytes, connectStorageEmulator, getDownloadURL} =
+require("firebase/storage");
 
 const firebaseConfig = {
   apiKey: "AAAAm_Qkz68:APA91bEeboBLN9Is0JTqJGwQqoJIAeqatTlQ2WigbKxoC418apnP"+
@@ -25,16 +26,23 @@ connectStorageEmulator(storage, "localhost", 9199);
 
 async function uploadImage(data, imgId) {
   const storageRef = ref(storage, imgId);
-  let out = "";
   // 'file' comes from the Blob or File API
-  await uploadBytes(storageRef, data, {contentType: "image/png"})
+
+  await uploadBytes(storageRef, data, {contentType: "image/png"});
+  console.log("between");
+
+  const out = await getDownloadURL(storageRef);
+  console.log("sent", out);
+  return JSON.stringify({imgUrl: out});
+
+  /*  uploadBytes(storageRef, data, {contentType: "image/png"})
       .then((snapshot) => {
         console.log("Uploaded a blob or file!");
-        getDownloadURL(storageRef).then((url)=>{
-          out = url;
+        await getDownloadURL(storageRef).then((url)=>{
+          console.log("firestoreclient", url);
+          return JSON.stringify({imgUrl: url});
         });
-      });
-  return JSON.stringify({imgUrl: out});
+      }); */
 }
 
 
