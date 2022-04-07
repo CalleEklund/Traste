@@ -28,6 +28,7 @@ import axios from 'axios';
 
 import {useNavigate} from 'react-router-dom';
 
+
 const binsizes = [
   {
     id: '0',
@@ -110,18 +111,52 @@ function ReportPage({snackBarHandler}) {
 
   /**
    * sendReport will send the data from the form to the backend.
+   * http://localhost:5001/traste-71a71/europe-west3/app/uploadimage
+   * https://europe-west3-traste-71a71.cloudfunctions.net/app/createreport
    * @param {*} data all data from the form.
    */
   async function sendReport(data) {
+    console.log('the data being sent before', data);
+
+    // docketpicutre upload
     await axios({
       method: 'post',
-      url: 'https://europe-west3-traste-71a71.cloudfunctions.net/app/createreport',
-      data: data,
+      url: 'http://localhost:5001/traste-71a71/europe-west3/app/uploadimage',
+      data: data.docketPicture,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     }).then(function(response) {
-      console.log(response.data);
+      console.log('resp', response.data);
+      data.docketPicture = response.data.imgUrl;
+    }).catch((e)=>{
+      console.log('error', e);
+    });
+
+
+    // wastepicture upload
+    await axios({
+      method: 'post',
+      url: 'http://localhost:5001/traste-71a71/europe-west3/app/uploadimage',
+      data: data.wastePicture,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }).then(function(response) {
+      console.log('resp', response.data);
+      data.wastePicture = response.data.imgUrl;
+    }).catch((e)=>{
+      console.log('error', e);
+    });
+
+    console.log('after', data);
+
+    await axios({
+      method: 'post',
+      url: 'http://localhost:5001/traste-71a71/europe-west3/app/createreport',
+      data: data,
+    }).then(function(response) {
+      console.log('resp', response.data);
     });
   }
 
@@ -322,7 +357,9 @@ function ReportPage({snackBarHandler}) {
                     accept="image/*"
                     id="contained-button-file"
                     multiple type="file"
-                    onChange={(e) => onChange(e.target.files[0])}
+                    onChange={(e) => {
+                      onChange(e.target.files.item(0));
+                    }}
                     error={error}
                   />
                 )}
@@ -347,7 +384,9 @@ function ReportPage({snackBarHandler}) {
                     accept="image/*"
                     id="contained-button-file"
                     multiple type="file"
-                    onChange={(e) => onChange(e.target.files[0])}
+                    onChange={(e) => {
+                      onChange(e.target.files[0]);
+                    }}
                     error={error}
                   />
                 )}
@@ -454,7 +493,7 @@ function ReportPage({snackBarHandler}) {
                     accept="image/*"
                     id="waste-button-file"
                     multiple type="file"
-                    onChange={(e) => onChange(e.target.files[0])}
+                    onChange={(e) => onChange(e.target.files.item(0))}
                     error={error}
                   />
                 )}

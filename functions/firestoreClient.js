@@ -8,6 +8,7 @@ changing and deleting entries in the database.
 const Firestore = require("@google-cloud/firestore");
 const path = require("path");
 
+const {v4: uuidv4} = require("uuid");
 const {initializeApp} = require("firebase/app");
 const {getStorage, ref, uploadBytes, connectStorageEmulator, getDownloadURL} =
 require("firebase/storage");
@@ -24,7 +25,9 @@ const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 connectStorageEmulator(storage, "localhost", 9199);
 
-async function uploadImage(data, imgId) {
+async function uploadImage(data) {
+  console.log("data", data);
+  const imgId = uuidv4();
   const storageRef = ref(storage, imgId);
   // 'file' comes from the Blob or File API
 

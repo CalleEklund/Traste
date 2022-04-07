@@ -54,9 +54,10 @@ function validationErrorMiddleware(error, _request, response, next) {
 app.post("/uploadimage", function(req, res) {
   const data = req.body;
   console.log("upload image", data);
-  const docketNum = "testab123";
-  uploadImage(data, docketNum).then((imageURL) =>{
+  // const docketNum = "testab123";
+  uploadImage(data).then((imageURL) =>{
     console.log("/uploadimage url: ", imageURL);
+    res.send(imageURL);
   });
 });
 
@@ -67,25 +68,11 @@ This is for testing the createreport function.
 */
 
 
-app.post("/createreport", validate({body: reportSchema}), (req, res) => {
+app.post("/createreport", (req, res) => {
   const data = req.body;
-  // skicka upp bilder
-  // hämta url
-  // lägg in url
-  /*
-  skicka docketpicture
-  uploadImage(data, docketNum).then((imageURL) =>{
-    console.log("/uploadimage url: ", imageURL);
-    ersätt docketImage med docketURL
-  });
-  skicka wastepicture
-  uploadImage(data, docketNum).then((imageURL) =>{
-    console.log("/uploadimage url: ", imageURL);
-    ersätt wasteImage med wasteURL
-  });
-  */
   let response = FS.createReport(data);
-  console.log(response);
+  console.log("/createreport", data);
+  console.log("cr resp", response);
   response = response.then(function(msg) {
     res.send(msg);
     syncData(data);

@@ -37,47 +37,10 @@ function App() {
     history(-1);
   }
 
-  /**
-   * a
-   */
-  function onFileUpload() {
-    console.log('upload file');
-
-    const formData = new FormData();
-    formData.append(
-        'imgs',
-        [dockerImage, dockerImage],
-    );
-
-
-    const out = {
-      dImg: dockerImage,
-      wImg: dockerImage,
-    };
-
-    axios.post('http://localhost:5001/traste-71a71/europe-west3/app/uploadimage',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-    console.log('the uploaded file', dockerImage);
-  }
-
 
   return (
-    <div>
-      <h1>Upload image</h1>
-      <input type="file" onChange={(e)=>{
-        setDockerImage(e.target.files[0]);
-      }} />
 
-      <button onClick={onFileUpload}>
-                  Upload!
-      </button>
-    </div>
-    /* <Container
+    <Container
       disableGutters={true}
       sx={{height: '100vh', display: 'flex', flexDirection: 'column'}}
     >
@@ -111,7 +74,7 @@ function App() {
           element={<ReportPage snackBarHandler={openSnackBar} />}
         />
       </Routes>
-    </Container>*/
+    </Container>
   );
 }
 

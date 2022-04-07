@@ -44,7 +44,7 @@ Inputfield.propTypes = {
   onChange: PropTypes.func.isRequired,
   error: PropTypes.any.isRequired,
   type: PropTypes.string.isRequired,
-  sx: null,
+  sx: PropTypes.object,
 };
 
 export default Inputfield;
