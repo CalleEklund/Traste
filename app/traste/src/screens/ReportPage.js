@@ -15,6 +15,7 @@ import Selection from '../components/Selection';
 import {styled} from '@mui/material/styles';
 import {Colors} from '../assets/Colors';
 import SendIcon from '@mui/icons-material/Send';
+import CheckIcon from '@mui/icons-material/Check';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import IconButton from '@mui/material/IconButton';
 
@@ -81,6 +82,9 @@ function ReportPage({snackBarHandler}) {
   };
 
   const navigate = useNavigate();
+
+  const [docketCheck, setDocketCheck] = useState(0);
+  const [wasteCheck, setWasteCheck] = useState(0);
 
   const [total, setTotal] = useState(0);
   const {
@@ -359,6 +363,7 @@ function ReportPage({snackBarHandler}) {
                     multiple type="file"
                     onChange={(e) => {
                       onChange(e.target.files.item(0));
+                      setDocketCheck(1);
                     }}
                     error={error}
                   />
@@ -374,32 +379,49 @@ function ReportPage({snackBarHandler}) {
           Upload
               </Button>
             </label>
-            <label htmlFor="icon-button-file">
-              <Controller
-                name="docketPicture"
-                control={control}
-                rules={{required: 'Select an image'}}
-                render={({field: {onChange}, fieldState: {error}}) => (
-                  <Input
-                    accept="image/*"
-                    id="contained-button-file"
-                    multiple type="file"
-                    onChange={(e) => {
-                      onChange(e.target.files[0]);
-                    }}
-                    error={error}
-                  />
-                )}
-              />
-              <IconButton aria-label="upload picture" component="span"
+            <Stack
+              style={{display: 'flex'}}
+              width='5vw'
+              direction='row'
+              spacing={2}
+              sx={{
+                alignItems: 'flex-start',
+                justifyContent: 'space-evenly',
+              }}>
+              <label htmlFor="icon-button-file">
+                <Controller
+                  name="docketPicture"
+                  control={control}
+                  rules={{required: 'Select an image'}}
+                  render={({field: {onChange}, fieldState: {error}}) => (
+                    <Input
+                      accept="image/*"
+                      id="icon-button-file"
+                      multiple type="file"
+                      onChange={(e) => {
+                        onChange(e.target.files[0]);
+                        setDocketCheck(1);
+                      }}
+                      error={error}
+                    />
+                  )}
+                />
+                <IconButton aria-label="upload picture" component="span"
+                  sx={{
+                    'color': Colors.trasteNavyBlue,
+                    ':hover': {color: Colors.trastePurple},
+                    'width': '5vw',
+                  }}>
+                  <PhotoCamera />
+                </IconButton>
+              </label>
+              <CheckIcon
                 sx={{
-                  'color': Colors.trasteNavyBlue,
-                  ':hover': {color: Colors.trastePurple},
-                  'width': '5vw',
-                }}>
-                <PhotoCamera />
-              </IconButton>
-            </label>
+                  paddingTop: 0.9,
+                  color: () => (docketCheck === 1 ?
+                    Colors.trasteNavyBlue : Colors.trasteGreen),
+                }}></CheckIcon>
+            </Stack>
           </Stack>
         </Stack>
         <Controller
@@ -493,7 +515,10 @@ function ReportPage({snackBarHandler}) {
                     accept="image/*"
                     id="waste-button-file"
                     multiple type="file"
-                    onChange={(e) => onChange(e.target.files.item(0))}
+                    onChange={(e) => {
+                      onChange(e.target.files.item(0));
+                      setWasteCheck(1);
+                    }}
                     error={error}
                   />
                 )}
@@ -508,30 +533,49 @@ function ReportPage({snackBarHandler}) {
           Upload
               </Button>
             </label>
-            <label htmlFor="waste-icon-button-file">
-              <Controller
-                name="wastePicture"
-                control={control}
-                rules={{required: 'Select an image'}}
-                render={({field: {onChange}, fieldState: {error}}) => (
-                  <Input
-                    accept="image/*"
-                    id="waste-icon-button-file"
-                    multiple type="file"
-                    onChange={(e) => onChange(e.target.files[0])}
-                    error={error}
-                  />
-                )}
-              />
-              <IconButton aria-label="upload picture" component="span"
+            <Stack
+              style={{display: 'flex'}}
+              width='5vw'
+              direction='row'
+              spacing={2}
+              sx={{
+                alignItems: 'flex-start',
+                justifyContent: 'space-evenly',
+              }}>
+              <label htmlFor="waste-icon-button-file">
+                <Controller
+                  name="wastePicture"
+                  control={control}
+                  rules={{required: 'Select an image'}}
+                  render={({field: {onChange}, fieldState: {error}}) => (
+                    <Input
+                      accept="image/*"
+                      id="waste-icon-button-file"
+                      multiple type="file"
+                      onChange={(e) => {
+                        onChange(e.target.files.item(0));
+                        setWasteCheck(1);
+                      }}
+                      error={error}
+                    />
+                  )}
+                />
+                <IconButton aria-label="upload picture" component="span"
+                  sx={{
+                    'color': Colors.trasteNavyBlue,
+                    ':hover': {color: Colors.trastePurple},
+                    'width': '5vw',
+                  }}>
+                  <PhotoCamera />
+                </IconButton>
+              </label>
+              <CheckIcon
                 sx={{
-                  'color': Colors.trasteNavyBlue,
-                  ':hover': {color: Colors.trastePurple},
-                  'width': '5vw',
-                }}>
-                <PhotoCamera />
-              </IconButton>
-            </label>
+                  paddingTop: 0.9,
+                  color: () => (wasteCheck === 1 ?
+                    Colors.trasteNavyBlue : Colors.trasteGreen),
+                }}></CheckIcon>
+            </Stack>
           </Stack>
         </Stack>
 
