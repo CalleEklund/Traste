@@ -4,12 +4,18 @@ exports[`Matches snapshot 1`] = `
 <div
   className="MuiFormControl-root MuiTextField-root css-1q0uy3-MuiFormControl-root-MuiTextField-root"
 >
+  <label
+    className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary Mui-error MuiFormLabel-filled css-1sumxir-MuiFormLabel-root-MuiInputLabel-root"
+    data-shrink={true}
+  >
+    Wood
+  </label>
   <div
-    className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-adornedEnd css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root"
+    className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary Mui-error MuiInputBase-formControl MuiInputBase-adornedEnd css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root"
     onClick={[Function]}
   >
     <input
-      aria-invalid={false}
+      aria-invalid={true}
       autoFocus={false}
       className="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
       data-testid="materialfield"
@@ -26,6 +32,7 @@ exports[`Matches snapshot 1`] = `
         }
       }
       type="number"
+      value="string"
     />
     <div
       className="MuiInputAdornment-root MuiInputAdornment-positionStart MuiInputAdornment-outlined MuiInputAdornment-sizeMedium css-ittuaa-MuiInputAdornment-root"
@@ -42,12 +49,10 @@ exports[`Matches snapshot 1`] = `
       className="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
     >
       <legend
-        className="css-nnbavb"
+        className="css-1z7n62"
       >
-        <span
-          className="notranslate"
-        >
-          ​
+        <span>
+          Wood
         </span>
       </legend>
     </fieldset>

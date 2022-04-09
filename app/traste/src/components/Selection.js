@@ -29,10 +29,11 @@ function Selection({label, value, onChange, error, data}) {
       // helperText={error ? error.message : null}
     >
       {
-        /** Placeholde ifall det inte finns någon data */
+        /** Placeholder ifall det inte finns någon data */
         data !== undefined ? (
           data.map((option) => (
-            <MenuItem key={option.id} value={option.label}>
+            <MenuItem
+              key={option.id} value={option.label}>
               {option.label}
             </MenuItem>
           ))
@@ -54,7 +55,7 @@ Selection.propTypes = {
   value: PropTypes.any.isRequired,
   onChange: PropTypes.func.isRequired,
   error: PropTypes.any.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
 };
 
 export default Selection;
