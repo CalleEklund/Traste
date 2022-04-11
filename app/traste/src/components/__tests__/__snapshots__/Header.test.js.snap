@@ -13,6 +13,7 @@ exports[`Matches snapshot 1`] = `
       className="MuiSvgIcon-root MuiSvgIcon-fontSizeLarge css-tzssek-MuiSvgIcon-root"
       data-testid="KeyboardBackspaceIcon"
       focusable="false"
+      onClick={[Function]}
       viewBox="0 0 24 24"
     >
       <path

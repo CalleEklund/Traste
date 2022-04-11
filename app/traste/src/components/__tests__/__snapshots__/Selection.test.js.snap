@@ -4,8 +4,14 @@ exports[`Matches snapshot 1`] = `
 <div
   className="MuiFormControl-root MuiTextField-root css-1hg5lel-MuiFormControl-root-MuiTextField-root"
 >
+  <label
+    className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary Mui-error css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root"
+    data-shrink={false}
+  >
+    Selection
+  </label>
   <div
-    className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
+    className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary Mui-error MuiInputBase-formControl css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
     onClick={[Function]}
     variant="outlined"
   >
@@ -36,6 +42,7 @@ exports[`Matches snapshot 1`] = `
       onChange={[Function]}
       required={false}
       tabIndex={-1}
+      value=""
     />
     <svg
       aria-hidden={true}
@@ -53,12 +60,10 @@ exports[`Matches snapshot 1`] = `
       className="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
     >
       <legend
-        className="css-nnbavb"
+        className="css-173wfxe"
       >
-        <span
-          className="notranslate"
-        >
-          ​
+        <span>
+          Selection
         </span>
       </legend>
     </fieldset>

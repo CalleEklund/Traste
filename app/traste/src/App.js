@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, {useState} from 'react';
 import MenuPage from './screens/MenuPage';
 import {Container, Snackbar, Alert} from '@mui/material';
@@ -7,13 +8,20 @@ import Header from './components/Header';
 
 import {Colors} from './assets/Colors';
 
+import axios from 'axios';
+
 /**
  * Main file for controling the flow of the app.
  * @return {Container} with paths to the different screens.
  */
 function App() {
+  const outData = new FormData();
+
   const history = useNavigate();
   const [open, setOpen] = useState();
+
+  const [dockerImage, setDockerImage] = useState();
+  // const [wasteImage, setWasteImage] = useState();
 
   const handleClose = () => {
     setOpen(false);
@@ -29,7 +37,9 @@ function App() {
     history(-1);
   }
 
+
   return (
+
     <Container
       disableGutters={true}
       sx={{height: '100vh', display: 'flex', flexDirection: 'column'}}

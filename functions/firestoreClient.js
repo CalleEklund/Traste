@@ -8,6 +8,47 @@ changing and deleting entries in the database.
 const Firestore = require("@google-cloud/firestore");
 const path = require("path");
 
+const {v4: uuidv4} = require("uuid");
+const {initializeApp} = require("firebase/app");
+const {getStorage, ref, uploadBytes, connectStorageEmulator, getDownloadURL} =
+require("firebase/storage");
+
+const firebaseConfig = {
+  apiKey: "AAAAm_Qkz68:APA91bEeboBLN9Is0JTqJGwQqoJIAeqatTlQ2WigbKxoC418apnP"+
+  "g6RUbBKAwuB31JP81h3WgoDTrw00WOLS5sayASuGTPPQdIj-9RGgw14SOdAik9"+
+  "_VIRxNxFq5gdMVUtkh2W_KyAwp",
+  authDomain: "https://accounts.google.com/o/oauth2/auth",
+  storageBucket: "gs://traste-71a71.appspot.com",
+};
+const firebaseApp = initializeApp(firebaseConfig);
+
+const storage = getStorage(firebaseApp);
+connectStorageEmulator(storage, "localhost", 9199);
+
+async function uploadImage(data) {
+  console.log("data", data);
+  const imgId = uuidv4();
+  const storageRef = ref(storage, imgId);
+  // 'file' comes from the Blob or File API
+
+  await uploadBytes(storageRef, data, {contentType: "image/png"});
+  console.log("between");
+
+  const out = await getDownloadURL(storageRef);
+  console.log("sent", out);
+  return JSON.stringify({imgUrl: out});
+
+  /*  uploadBytes(storageRef, data, {contentType: "image/png"})
+      .then((snapshot) => {
+        console.log("Uploaded a blob or file!");
+        await getDownloadURL(storageRef).then((url)=>{
+          console.log("firestoreclient", url);
+          return JSON.stringify({imgUrl: url});
+        });
+      }); */
+}
+
+
 class FirestoreClient {
   constructor() {
     this.firestore = new Firestore({
@@ -174,6 +215,16 @@ class FirestoreClient {
         });
     return response;
   }
+
+  async uploadImage(data) {
+    const storage = this.firestore.getStorage();
+    const storageRef = ref(storage, "");
+
+    // 'file' comes from the Blob or File API
+    await uploadBytes(storageRef, data).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+    });
+  }
 }
 
 /*
@@ -206,4 +257,4 @@ async function deleteQueryBatch(db, query, resolve) {
   });
 }
 
-module.exports = FirestoreClient;
+module.exports = {FirestoreClient, uploadImage};

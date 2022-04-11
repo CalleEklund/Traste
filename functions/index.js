@@ -2,9 +2,11 @@
 This file contains functions for deplyoing the firebase database locally.
 */
 
-const FirestoreClient = require("./firestoreClient.js");
+
+const {FirestoreClient, uploadImage} = require("./firestoreClient.js");
 
 const FS = new FirestoreClient();
+
 
 const {syncData} = require("./syncData");
 
@@ -19,6 +21,7 @@ const {siteSchema, reportSchema, wasteSchema, employeeSchema, facilitySchema} =
     require("./databaseSchemas");
 
 const app = express();
+
 app.use(cors);
 
 
@@ -48,16 +51,28 @@ function validationErrorMiddleware(error, _request, response, next) {
   next();
 }
 
+app.post("/uploadimage", function(req, res) {
+  const data = req.body;
+  console.log("upload image", data);
+  // const docketNum = "testab123";
+  uploadImage(data).then((imageURL) =>{
+    console.log("/uploadimage url: ", imageURL);
+    res.send(imageURL);
+  });
+});
+
+
 /*
 This is the function for posting on localhost/3000/createreport.
 This is for testing the createreport function.
 */
 
 
-app.post("/createreport", validate({body: reportSchema}), (req, res) => {
+app.post("/createreport", (req, res) => {
   const data = req.body;
   let response = FS.createReport(data);
-  console.log(response);
+  console.log("/createreport", data);
+  console.log("cr resp", response);
   response = response.then(function(msg) {
     res.send(msg);
     syncData(data);

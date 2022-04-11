@@ -10,7 +10,7 @@ import {TextField} from '@mui/material';
  * @param {*} error What will be shown for the error.
  * @param {*} type What type of values. Usally number or text.
  * @param {*} sx Styling
- * @return {TextField} Rendred field
+ * @return {TextField} Rendered field
  */
 function Inputfield({label, value, onChange, error, type, sx}) {
   return (
@@ -44,7 +44,7 @@ Inputfield.propTypes = {
   onChange: PropTypes.func.isRequired,
   error: PropTypes.any.isRequired,
   type: PropTypes.string.isRequired,
-  sx: null,
+  sx: PropTypes.object,
 };
 
 export default Inputfield;

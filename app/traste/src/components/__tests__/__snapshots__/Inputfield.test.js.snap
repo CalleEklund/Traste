@@ -4,12 +4,18 @@ exports[`Matches snapshot 1`] = `
 <div
   className="MuiFormControl-root MuiTextField-root css-1hg5lel-MuiFormControl-root-MuiTextField-root"
 >
+  <label
+    className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary Mui-error MuiFormLabel-filled css-1sumxir-MuiFormLabel-root-MuiInputLabel-root"
+    data-shrink={true}
+  >
+    Docket No.
+  </label>
   <div
-    className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
+    className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary Mui-error MuiInputBase-formControl css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
     onClick={[Function]}
   >
     <input
-      aria-invalid={false}
+      aria-invalid={true}
       autoFocus={false}
       className="MuiOutlinedInput-input MuiInputBase-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
       data-testid="inputfield"
@@ -20,18 +26,17 @@ exports[`Matches snapshot 1`] = `
       onFocus={[Function]}
       required={false}
       type="text"
+      value="string"
     />
     <fieldset
       aria-hidden={true}
       className="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
     >
       <legend
-        className="css-nnbavb"
+        className="css-1z7n62"
       >
-        <span
-          className="notranslate"
-        >
-          ​
+        <span>
+          Docket No.
         </span>
       </legend>
     </fieldset>
