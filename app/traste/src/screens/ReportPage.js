@@ -8,7 +8,6 @@ import {
   Box,
   CircularProgress,
 } from '@mui/material';
-import MaterialField from '../components/MaterialField';
 import {useForm, Controller} from 'react-hook-form';
 import Inputfield from '../components/Inputfield';
 import Selection from '../components/Selection';
@@ -25,47 +24,12 @@ import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
-import axios from 'axios';
-
 import {useNavigate} from 'react-router-dom';
 
-
-const binsizes = [
-  {
-    id: '0',
-    label: 5,
-  },
-  {
-    id: '1',
-    label: 10,
-  },
-  {
-    id: '2',
-    label: 15,
-  },
-  {
-    id: '3',
-    label: 20,
-  },
-];
-const sites = [
-  {
-    id: '0',
-    label: 'Linköping',
-  },
-  {
-    id: '1',
-    label: 'Norrköping',
-  },
-  {
-    id: '2',
-    label: 'Gustavsberg',
-  },
-  {
-    id: '3',
-    label: 'Vetlanda',
-  },
-];
+// Own files
+import trasteApi from '../api/trasteApi';
+import { binsizes, wasteTypes, sites } from '../assets/Constants';
+import WasteList from '../components/WasteList';
 
 /**
  * ReportPage renders the report form for a waste report.
@@ -73,13 +37,17 @@ const sites = [
  * @return {form} Returns the form that renders the report page.
  */
 function ReportPage({snackBarHandler}) {
-  const wasteTypes = {
-    Wood: 0,
-    Plastic: 0,
-    Concrete: 0,
-    Metal: 0,
-    Other: 0,
-  };
+
+  useEffect(() => {
+    console.log(all);
+    let tmp = 0;
+    Object.values(all.wasteData).forEach((item) => {
+      if (!isNaN(parseInt(item))) {
+        tmp += parseInt(item, 10);
+      }
+    });
+    setTotal(tmp);
+  }, [all]);
 
   const navigate = useNavigate();
 
@@ -114,6 +82,17 @@ function ReportPage({snackBarHandler}) {
   });
 
   /**
+   * uploadPicture will upload an image to firebase storage.
+   * @param {Object} picture Picture to be uploaded.
+   */
+  async function uploadPicture(picture) {
+    const res = await trasteApi.post('/uploadimage', { data: picture, headers: { 'Content-Type': 'multipart/form-data' }}).catch((e) => {
+      console.log('error', e);
+    });
+    return res.data.imgUrl;
+  }
+
+  /**
    * sendReport will send the data from the form to the backend.
    * http://localhost:5001/traste-71a71/europe-west3/app/uploadimage
    * https://europe-west3-traste-71a71.cloudfunctions.net/app/createreport
@@ -121,59 +100,15 @@ function ReportPage({snackBarHandler}) {
    */
   async function sendReport(data) {
     console.log('the data being sent before', data);
+    let outData = { ...data };
 
-    // docketpicutre upload
-    await axios({
-      method: 'post',
-      url: 'http://localhost:5001/traste-71a71/europe-west3/app/uploadimage',
-      data: data.docketPicture,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).then(function(response) {
-      console.log('resp', response.data);
-      data.docketPicture = response.data.imgUrl;
-    }).catch((e)=>{
-      console.log('error', e);
-    });
+    // Upload pictures to Firebase Storage.
+    outData.docketPicture = uploadPicture(data.docketPicture);
+    outData.wastePicture = uploadPicture(data.wastePicture);
 
-
-    // wastepicture upload
-    await axios({
-      method: 'post',
-      url: 'http://localhost:5001/traste-71a71/europe-west3/app/uploadimage',
-      data: data.wastePicture,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).then(function(response) {
-      console.log('resp', response.data);
-      data.wastePicture = response.data.imgUrl;
-    }).catch((e)=>{
-      console.log('error', e);
-    });
-
-    console.log('after', data);
-
-    await axios({
-      method: 'post',
-      url: 'http://localhost:5001/traste-71a71/europe-west3/app/createreport',
-      data: data,
-    }).then(function(response) {
-      console.log('resp', response.data);
-    });
+    // Create new report.
+    await trasteApi.post('/createreport', { data: data });
   }
-
-  useEffect(() => {
-    console.log(all);
-    let tmp = 0;
-    Object.values(all.wasteData).forEach((item) => {
-      if (!isNaN(parseInt(item))) {
-        tmp += parseInt(item, 10);
-      }
-    });
-    setTotal(tmp);
-  }, [all]);
 
   // fungerar inte för t.ex. 10e+12
   const onlyNumbers = (score) => !isNaN(parseInt(score)) && isFinite(score);
@@ -189,95 +124,6 @@ function ReportPage({snackBarHandler}) {
     navigate('/');
   };
 
-  /**
-   * Renders the inputboxes for the different types of wastes.
-   * @return {Stack} is returned containing all MaterialFields.
-   */
-  function renderWasteList() {
-    const outputlist = [];
-    for (let i = 0; i < Object.keys(wasteTypes).length; i += 2) {
-      if (i + 1 >= Object.keys(wasteTypes).length) {
-        outputlist.push(
-            <Stack direction="row" key={i + 'stack'}>
-              <Controller
-                name={'wasteData.' + Object.keys(wasteTypes)[i]}
-                control={control}
-                rules={{
-                  validate: onlyNumbers,
-                  max: {value: 100, message: 'Too large of a number'},
-                  min: {value: 0, message: 'No negative numbers'},
-                }}
-                render={({
-                  field: {onChange, value},
-                  fieldState: {error},
-                }) => (
-                  <MaterialField
-                    key={i}
-                    label={Object.keys(wasteTypes)[i]}
-                    onChange={onChange}
-                    value={value}
-                    error={error}
-                  />
-                )}
-              />
-            </Stack>,
-        );
-      } else {
-        outputlist.push(
-            <Stack direction="row" spacing={2} key={i + 'stack'}>
-              <Controller
-                name={'wasteData.' + Object.keys(wasteTypes)[i]}
-                control={control}
-                rules={{
-                  validate: onlyNumbers,
-                  max: {value: 100, message: 'Too large of a number'},
-                  min: {value: 0, message: 'No negative numbers'},
-                }}
-                render={({
-                  field: {onChange, value},
-                  fieldState: {error},
-                }) => (
-                  <MaterialField
-                    key={i}
-                    label={Object.keys(wasteTypes)[i]}
-                    onChange={onChange}
-                    value={value}
-                    error={error}
-                  />
-                )}
-              />
-              <Controller
-                name={'wasteData.' + Object.keys(wasteTypes)[i + 1]}
-                control={control}
-                rules={{
-                  validate: onlyNumbers,
-                  max: {value: 100, message: 'Too large of a number'},
-                  min: {value: 0, message: 'No negative numbers'},
-                }}
-                render={({
-                  field: {onChange, value},
-                  fieldState: {error},
-                }) => (
-                  <MaterialField
-                    key={i + 1}
-                    label={Object.keys(wasteTypes)[i + 1]}
-                    onChange={onChange}
-                    value={value}
-                    error={error}
-                  />
-                )}
-              />
-            </Stack>,
-        );
-      }
-    }
-
-    return (
-      <Stack direction="column" spacing={2} sx={{width: '90vw'}}>
-        {outputlist}
-      </Stack>
-    );
-  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -579,7 +425,7 @@ function ReportPage({snackBarHandler}) {
           </Stack>
         </Stack>
 
-        {renderWasteList()}
+        <WasteList />
       </Container>
       <Stack
         direction="column"
