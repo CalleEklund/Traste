@@ -1,7 +1,7 @@
 import React from 'react';
 import {Controller} from 'react-hook-form';
 import {Stack} from '@mui/material';
-import MaterialField from '../components/MaterialField';
+import MaterialField from './MaterialField';
 import PropTypes from 'prop-types';
 
 import {wasteTypes} from '../assets/Constants';
