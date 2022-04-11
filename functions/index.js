@@ -2,13 +2,12 @@
 This file contains functions for deplyoing the firebase database locally.
 */
 
-
 const {FirestoreClient, uploadImage} = require("./firestoreClient.js");
 
 const FS = new FirestoreClient();
 
 
-const {syncData} = require("./syncData");
+// const {syncData} = require("./syncData");
 
 const functions = require("firebase-functions");
 
@@ -53,10 +52,7 @@ function validationErrorMiddleware(error, _request, response, next) {
 
 app.post("/uploadimage", function(req, res) {
   const data = req.body;
-  console.log("upload image", data);
-  // const docketNum = "testab123";
   uploadImage(data).then((imageURL) =>{
-    console.log("/uploadimage url: ", imageURL);
     res.send(imageURL);
   });
 });
@@ -68,17 +64,21 @@ This is for testing the createreport function.
 */
 
 
-app.post("/createreport", (req, res) => {
+app.post("/createreport", validate({body: reportSchema}), (req, res) => {
   const data = req.body;
-  let response = FS.createReport(data);
-  console.log("/createreport", data);
-  console.log("cr resp", response);
-  response = response.then(function(msg) {
-    res.send(msg);
-    syncData(data);
-  }).catch((err) => {
-    res.send(JSON.stringify({"error": err.message}));
-  });
+  if (validatePicureUrl(data.docketPicture) &&
+  validatePicureUrl(data.wastePicture)) {
+    const response = FS.createReport(data);
+    response.then(function(msg) {
+      res.send(msg);
+      // syncData(data);
+    }).catch((err) => {
+      res.send(JSON.stringify({"error": err.message}));
+    });
+  } else {
+    res.statusCode = 400;
+    res.send(JSON.stringify({"error": "Invalid url"}));
+  }
 });
 
 /*
@@ -144,6 +144,18 @@ app.post("/createemployee", validate({body: employeeSchema}), (req, res) => {
     res.send(JSON.stringify({"error": err.message}));
   });
 });
+
+function validatePicureUrl(picture) {
+  let url;
+
+  try {
+    url = new URL(picture);
+  } catch (error) {
+    return false;
+  }
+  console.log(url.protocol);
+  return url.protocol === "http:" || url.protocol === "https:";
+}
 
 app.use(validationErrorMiddleware);
 

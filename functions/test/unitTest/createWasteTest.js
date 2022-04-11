@@ -46,10 +46,4 @@ describe("The createWaste function", () => {
       done();
     });
   });
-
-  it("Should delete all waste documents", function(done) {
-    FS.deleteCollection("Waste", 10).then((res, body) =>{
-      done();
-    });
-  });
 });

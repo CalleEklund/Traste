@@ -4,7 +4,6 @@ It initializes the firebase database and handles all the functions for adding,
 changing and deleting entries in the database.
 */
 
-
 const Firestore = require("@google-cloud/firestore");
 const path = require("path");
 
@@ -25,27 +24,21 @@ const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 connectStorageEmulator(storage, "localhost", 9199);
 
+/**
+ * Upload image is the functions used to communicate
+ * with cloud storage.
+ * @param {*} data
+ * @returns url to the image in cloud storage
+ */
+
 async function uploadImage(data) {
   console.log("data", data);
   const imgId = uuidv4();
   const storageRef = ref(storage, imgId);
   // 'file' comes from the Blob or File API
-
   await uploadBytes(storageRef, data, {contentType: "image/png"});
-  console.log("between");
-
   const out = await getDownloadURL(storageRef);
-  console.log("sent", out);
   return JSON.stringify({imgUrl: out});
-
-  /*  uploadBytes(storageRef, data, {contentType: "image/png"})
-      .then((snapshot) => {
-        console.log("Uploaded a blob or file!");
-        await getDownloadURL(storageRef).then((url)=>{
-          console.log("firestoreclient", url);
-          return JSON.stringify({imgUrl: url});
-        });
-      }); */
 }
 
 

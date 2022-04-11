@@ -10,8 +10,8 @@ describe("The create function", () => {
   it("Should return report was made", function(done) {
     const data = {
       "docketNumber": "f",
-      "docketPicture": "Andreas",
-      "wastePicture": "andreas",
+      "docketPicture": "asdk124",
+      "wastePicture": "asdk123",
       "name": "Andreas",
       "weight": 10,
       "timeStamps": "erik",
@@ -64,12 +64,6 @@ describe("The create function", () => {
       expect(JSON.stringify({"error": err.message})).to.be.eq(JSON.stringify(
           {"error": "Value for argument \"documentPath\" " + "\n" +
           " is not a valid resource path. Path must be a non-empty string."}));
-      done();
-    });
-  });
-
-  it("Should delete all reports", function(done) {
-    FS.deleteCollection("Reports", 10).then((res, body) =>{
       done();
     });
   });

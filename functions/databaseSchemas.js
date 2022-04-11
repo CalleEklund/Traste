@@ -27,6 +27,14 @@ const reportSchema = {
       type: "string",
       minLength: 1,
     },
+    docketPicture: {
+      type: "string",
+      minLength: 1,
+    },
+    wastePicture: {
+      type: "string",
+      minLength: 1,
+    },
     binSize: {
       type: "integer",
       minimum: 1,

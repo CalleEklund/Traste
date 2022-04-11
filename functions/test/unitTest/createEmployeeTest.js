@@ -61,10 +61,4 @@ describe("The create function", () => {
       done();
     });
   });
-
-  it("Should delete all reports", function(done) {
-    FS.deleteCollection("Employees", 10).then((res, body) =>{
-      done();
-    });
-  });
 });
