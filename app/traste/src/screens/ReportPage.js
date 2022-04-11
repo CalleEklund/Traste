@@ -11,7 +11,6 @@ import {
 import {useForm, Controller} from 'react-hook-form';
 import Inputfield from '../components/Inputfield';
 import Selection from '../components/Selection';
-import {styled} from '@mui/material/styles';
 import {Colors} from '../assets/Colors';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -74,10 +73,6 @@ function ReportPage({snackBarHandler}) {
     setTotal(tmp);
   }, [all]);
 
-  // Used for Input component.
-  const Input = styled('input')({
-    display: 'none',
-  });
 
   /**
    * uploadPicture will upload an image to firebase storage.
@@ -193,8 +188,8 @@ function ReportPage({snackBarHandler}) {
 
           <CameraButtons
             control={control}
-            docketCheck={docketCheck}
-            setDocketCheck={setDocketCheck}
+            useStateValue={docketCheck}
+            setUseStateFunc={setDocketCheck}
           />
         </Stack>
 
@@ -268,11 +263,11 @@ function ReportPage({snackBarHandler}) {
             sx={{textAlign: 'center', marginTop: '10px', marginBottom: '10px'}}>
             Waste Types
           </Typography>
-          
+
           <CameraButtons
             control={control}
-            docketCheck={docketCheck}
-            setDocketCheck={setDocketCheck}
+            useStateValue={wasteCheck}
+            setUseStateFunc={setWasteCheck}
           />
         </Stack>
 
@@ -337,7 +332,7 @@ function ReportPage({snackBarHandler}) {
                 color="text.secondary"
                 fontSize={16}
                 fontWeight="bold"
-                sx={{color: 'white'}}>                 
+                sx={{color: 'white'}}>
                 {`${Math.round(total)}%`}
               </Typography>
             </Box>
@@ -375,11 +370,11 @@ function ReportPage({snackBarHandler}) {
             paddingBottom: 1,
           }}>
 
-          <Typography 
-          variant="h4"
-          sx={{color: Colors.trasteNavyBlue}}>
+          <Typography
+            variant="h4"
+            sx={{color: Colors.trasteNavyBlue}}>
           Send Report
-          </Typography>        
+          </Typography>
         </Button>
       </Stack>
     </form>
