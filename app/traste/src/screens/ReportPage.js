@@ -28,7 +28,7 @@ import {useNavigate} from 'react-router-dom';
 
 // Own files
 import trasteApi from '../api/trasteApi';
-import { binsizes, wasteTypes, sites } from '../assets/Constants';
+import {binsizes, wasteTypes, sites} from '../assets/Constants';
 import WasteList from '../components/WasteList';
 
 /**
@@ -37,18 +37,6 @@ import WasteList from '../components/WasteList';
  * @return {form} Returns the form that renders the report page.
  */
 function ReportPage({snackBarHandler}) {
-
-  useEffect(() => {
-    console.log(all);
-    let tmp = 0;
-    Object.values(all.wasteData).forEach((item) => {
-      if (!isNaN(parseInt(item))) {
-        tmp += parseInt(item, 10);
-      }
-    });
-    setTotal(tmp);
-  }, [all]);
-
   const navigate = useNavigate();
 
   const [docketCheck, setDocketCheck] = useState(0);
@@ -77,6 +65,17 @@ function ReportPage({snackBarHandler}) {
   });
   const all = watch(control);
 
+  useEffect(() => {
+    console.log(all);
+    let tmp = 0;
+    Object.values(all.wasteData).forEach((item) => {
+      if (!isNaN(parseInt(item))) {
+        tmp += parseInt(item, 10);
+      }
+    });
+    setTotal(tmp);
+  }, [all]);
+
   const Input = styled('input')({
     display: 'none',
   });
@@ -86,7 +85,8 @@ function ReportPage({snackBarHandler}) {
    * @param {Object} picture Picture to be uploaded.
    */
   async function uploadPicture(picture) {
-    const res = await trasteApi.post('/uploadimage', { data: picture, headers: { 'Content-Type': 'multipart/form-data' }}).catch((e) => {
+    const res = await trasteApi.post('/uploadimage', {data: picture, headers:
+      {'Content-Type': 'multipart/form-data'}}).catch((e) => {
       console.log('error', e);
     });
     return res.data.imgUrl;
@@ -100,14 +100,14 @@ function ReportPage({snackBarHandler}) {
    */
   async function sendReport(data) {
     console.log('the data being sent before', data);
-    let outData = { ...data };
+    const outData = {...data};
 
     // Upload pictures to Firebase Storage.
     outData.docketPicture = uploadPicture(data.docketPicture);
     outData.wastePicture = uploadPicture(data.wastePicture);
 
     // Create new report.
-    await trasteApi.post('/createreport', { data: data });
+    await trasteApi.post('/createreport', {data: data});
   }
 
   // fungerar inte för t.ex. 10e+12
@@ -425,7 +425,7 @@ function ReportPage({snackBarHandler}) {
           </Stack>
         </Stack>
 
-        <WasteList />
+        <WasteList control={control} onlyNumbers={onlyNumbers} />
       </Container>
       <Stack
         direction="column"
