@@ -30,6 +30,7 @@ import {useNavigate} from 'react-router-dom';
 import trasteApi from '../api/trasteApi';
 import {binsizes, wasteTypes, sites} from '../assets/Constants';
 import WasteList from '../components/WasteList';
+import CameraButtons from '../components/CameraButtons';
 
 /**
  * ReportPage renders the report form for a waste report.
@@ -76,6 +77,7 @@ function ReportPage({snackBarHandler}) {
     setTotal(tmp);
   }, [all]);
 
+  // Used for Input component.
   const Input = styled('input')({
     display: 'none',
   });
@@ -108,10 +110,14 @@ function ReportPage({snackBarHandler}) {
 
     // Create new report.
     await trasteApi.post('/createreport', {data: data});
+    // Kolla responsens statuskod
+    // Kolla responsensens msg, kan vara 'Report was made' eller
+    // 'Report already exists'.
   }
 
   // fungerar inte för t.ex. 10e+12
   const onlyNumbers = (score) => !isNaN(parseInt(score)) && isFinite(score);
+
   const onSubmit = (data) => {
     data = {
       ...data,
@@ -187,88 +193,12 @@ function ReportPage({snackBarHandler}) {
               />
             )}
           />
-          <Stack
-            direction="column"
-            sx={{
-              display: 'flex',
-              paddingTop: '15px',
-              alignItems: 'center',
-              direction: 'row',
-            }}
-
-          >
-            <label htmlFor="contained-button-file">
-              <Controller
-                name="docketPicture"
-                control={control}
-                rules={{required: 'Select an image'}}
-                render={({field: {onChange}, fieldState: {error}}) => (
-                  <Input
-                    accept="image/*"
-                    id="contained-button-file"
-                    multiple type="file"
-                    onChange={(e) => {
-                      onChange(e.target.files.item(0));
-                      setDocketCheck(1);
-                    }}
-                    error={error}
-                  />
-                )}
-              />
-              <Button variant="contained" component="span"
-                sx={{
-                  'backgroundColor': Colors.trasteNavyBlue,
-                  ':hover': {backgroundColor: Colors.trastePurple},
-                  'height': 20,
-                  'width': '5vw',
-                }}>
-          Upload
-              </Button>
-            </label>
-            <Stack
-              style={{display: 'flex'}}
-              width='5vw'
-              direction='row'
-              spacing={2}
-              sx={{
-                alignItems: 'flex-start',
-                justifyContent: 'space-evenly',
-              }}>
-              <label htmlFor="icon-button-file">
-                <Controller
-                  name="docketPicture"
-                  control={control}
-                  rules={{required: 'Select an image'}}
-                  render={({field: {onChange}, fieldState: {error}}) => (
-                    <Input
-                      accept="image/*"
-                      id="icon-button-file"
-                      multiple type="file"
-                      onChange={(e) => {
-                        onChange(e.target.files[0]);
-                        setDocketCheck(1);
-                      }}
-                      error={error}
-                    />
-                  )}
-                />
-                <IconButton aria-label="upload picture" component="span"
-                  sx={{
-                    'color': Colors.trasteNavyBlue,
-                    ':hover': {color: Colors.trastePurple},
-                    'width': '5vw',
-                  }}>
-                  <PhotoCamera />
-                </IconButton>
-              </label>
-              <CheckIcon
-                sx={{
-                  paddingTop: 0.9,
-                  color: () => (docketCheck === 1 ?
-                    Colors.trasteNavyBlue : Colors.trasteGreen),
-                }}></CheckIcon>
-            </Stack>
-          </Stack>
+          <CameraButtons
+            control={control}
+            onChange={onChange}
+            error={error}
+            docketCheck={docketCheck}
+            setDocketCheck={setDocketCheck}/>
         </Stack>
         <Controller
           name="weight"
