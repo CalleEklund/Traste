@@ -1,4 +1,4 @@
-import {render, screen, cleanup} from '@testing-library/react';
+import {render, cleanup} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import renderer from 'react-test-renderer';
 import Selection from '../Selection';
