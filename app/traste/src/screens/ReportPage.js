@@ -25,7 +25,7 @@ import {useNavigate} from 'react-router-dom';
 // Own files
 import trasteApi from '../api/trasteApi';
 import {binsizes, wasteTypes, sites} from '../assets/Constants';
-import WasteList from '../components/WasteList';
+import WasteInputField from '../components/WasteInputField';
 import CameraButtons from '../components/CameraButtons';
 
 /**
@@ -271,7 +271,7 @@ function ReportPage({snackBarHandler}) {
           />
         </Stack>
 
-        <WasteList control={control} onlyNumbers={onlyNumbers} />
+        <WasteInputField control={control} onlyNumbers={onlyNumbers} />
       </Container>
 
       <Stack
@@ -373,7 +373,7 @@ function ReportPage({snackBarHandler}) {
           <Typography
             variant="h4"
             sx={{color: Colors.trasteNavyBlue}}>
-          Send Report
+            Send Report
           </Typography>
         </Button>
       </Stack>
