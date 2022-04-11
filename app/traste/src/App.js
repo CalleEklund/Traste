@@ -19,6 +19,9 @@ function App() {
 
   const history = useNavigate();
   const [open, setOpen] = useState();
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('success');
+  const [sx, setSx] = useState({});
 
   const [dockerImage, setDockerImage] = useState();
   // const [wasteImage, setWasteImage] = useState();
@@ -26,8 +29,15 @@ function App() {
   const handleClose = () => {
     setOpen(false);
   };
-  const openSnackBar = () => {
+
+  const openSnackBar = (message, severity, sx) => {
     setOpen(true);
+    setMessage(message);
+    setSeverity(severity);
+
+    if (sx !== undefined) { // Not required to input sx.
+      setSx(sx);
+    }
   };
 
   /**
@@ -52,18 +62,12 @@ function App() {
         key={1}
         autoHideDuration={6000}
         anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-        sx={{marginTop: '7vh'}}
-      >
+        sx={{marginTop: '7vh'}}>
+
         <Alert
-          severity="success"
-          sx={{
-            width: '100%',
-            backgroundColor: Colors.trasteGreen,
-            color: '#103849',
-            fontSize: 18,
-          }}
-        >
-          Report Sent!
+          severity={severity}
+          sx={sx}>
+          {message}
         </Alert>
       </Snackbar>
 

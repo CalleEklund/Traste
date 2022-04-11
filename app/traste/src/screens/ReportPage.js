@@ -103,9 +103,6 @@ function ReportPage({snackBarHandler}) {
 
     // Create new report and return response.
     return await trasteApi.post('/createreport', {data: data});
-    // Kolla responsens statuskod
-    // Kolla responsensens msg, kan vara 'Report was made' eller
-    // 'Report already exists'.
   }
 
   // fungerar inte för t.ex. 10e+12
@@ -120,12 +117,29 @@ function ReportPage({snackBarHandler}) {
 
     sendReport(data).then((res) => {
       if (res.status === 200) {
-        snackBarHandler();
+        if (res.body.msg === 'Report was made') {
+          snackBarHandler(
+              'Report was sent!',
+              'success',
+              {
+                width: '100%',
+                backgroundColor: Colors.trasteGreen,
+                color: '#103849',
+                fontSize: 18,
+              },
+          );
+        } else { // When res.body.msg === 'Report already exists'.
+          snackBarHandler(
+              'An report with that docketnumber already exists!',
+              'warning',
+          );
+        }
       }
     }).catch( (error) => {
-      navigate('/');
-      console.log('ERRROOR: ' + error);
+      snackBarHandler('An Error occured, report was not sent',
+          'error');
     });
+    navigate('/');
   };
 
   return (
