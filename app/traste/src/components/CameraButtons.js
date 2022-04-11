@@ -13,7 +13,8 @@ import {Colors} from '../assets/Colors';
  * uploading pictures.
  * @return {Stack} Rendered Stack.
  */
-function CameraButtons({control, useStateValue, setUseStateFunc}) {
+function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
+  name, iconId}) {
   // Used for Input component.
   const Input = styled('input')({
     display: 'none',
@@ -31,16 +32,16 @@ function CameraButtons({control, useStateValue, setUseStateFunc}) {
 
       {/* contained-button-file is a button that
       a user can clicka to upload an picture. */}
-      <label htmlFor="contained-button-file">
+      <label htmlFor={buttonId}>
         <Controller
-          name="docketPicture"
+          name={name}
           control={control}
           rules={{required: 'Select an image'}}
           render={({field: {onChange}, fieldState: {error}}) => (
 
             <Input
               accept="image/*"
-              id="contained-button-file"
+              id={buttonId}
               multiple type="file"
               onChange={(e) => {
                 onChange(e.target.files.item(0));
@@ -75,16 +76,16 @@ function CameraButtons({control, useStateValue, setUseStateFunc}) {
 
         {/* icon-button-file is a camera icon when
         clicked opens an user's camera on the phone. */}
-        <label htmlFor="icon-button-file">
+        <label htmlFor={iconId}>
           <Controller
-            name="docketPicture"
+            name={name}
             control={control}
             rules={{required: 'Select an image'}}
             render={({field: {onChange}, fieldState: {error}}) => (
 
               <Input
                 accept="image/*"
-                id="icon-button-file"
+                id={iconId}
                 multiple type="file"
                 onChange={(e) => {
                   onChange(e.target.files[0]);
@@ -121,8 +122,11 @@ function CameraButtons({control, useStateValue, setUseStateFunc}) {
 
 CameraButtons.propTypes = {
   control: PropTypes.any.isRequired,
-  useStateValue: PropTypes.any,
-  setUseStateFunc: PropTypes.any,
+  useStateValue: PropTypes.any.isRequired,
+  setUseStateFunc: PropTypes.any.isRequired,
+  buttonId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  iconId: PropTypes.string.isRequired,
 };
 
 export default CameraButtons;

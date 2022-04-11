@@ -91,6 +91,7 @@ function ReportPage({snackBarHandler}) {
    * http://localhost:5001/traste-71a71/europe-west3/app/uploadimage
    * https://europe-west3-traste-71a71.cloudfunctions.net/app/createreport
    * @param {*} data All data from the form.
+   * @return {Object} The response message from traste API.
    */
   async function sendReport(data) {
     console.log('the data being sent before', data);
@@ -100,8 +101,8 @@ function ReportPage({snackBarHandler}) {
     outData.docketPicture = uploadPicture(data.docketPicture);
     outData.wastePicture = uploadPicture(data.wastePicture);
 
-    // Create new report.
-    await trasteApi.post('/createreport', {data: data});
+    // Create new report and return response.
+    return await trasteApi.post('/createreport', {data: data});
     // Kolla responsens statuskod
     // Kolla responsensens msg, kan vara 'Report was made' eller
     // 'Report already exists'.
@@ -116,10 +117,15 @@ function ReportPage({snackBarHandler}) {
       timeStamps: new Date().toUTCString(),
       date: new Date(data.date).toDateString(),
     };
-    sendReport(data);
-    console.log(data);
-    snackBarHandler();
-    navigate('/');
+
+    sendReport(data).then((res) => {
+      if (res.status === 200) {
+        snackBarHandler();
+      }
+    }).catch( (error) => {
+      navigate('/');
+      console.log('ERRROOR: ' + error);
+    });
   };
 
   return (
@@ -190,6 +196,9 @@ function ReportPage({snackBarHandler}) {
             control={control}
             useStateValue={docketCheck}
             setUseStateFunc={setDocketCheck}
+            buttonId={'contained-button-file'}
+            name={'docketPicture'}
+            iconId={'icon-button-file'}
           />
         </Stack>
 
@@ -268,6 +277,9 @@ function ReportPage({snackBarHandler}) {
             control={control}
             useStateValue={wasteCheck}
             setUseStateFunc={setWasteCheck}
+            buttonId={'waste-button-file'}
+            name={'wastePicture'}
+            iconId={'waste-icon-button-file'}
           />
         </Stack>
 
