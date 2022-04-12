@@ -5,6 +5,7 @@ This file contains functions for deplyoing the firebase database locally.
 const {FirestoreClient, uploadImage} = require("./firestoreClient.js");
 
 const FS = new FirestoreClient();
+const bodyParser = require("body-parser");
 
 
 // const {syncData} = require("./syncData");
@@ -22,6 +23,10 @@ const {siteSchema, reportSchema, wasteSchema, employeeSchema, facilitySchema} =
 const app = express();
 
 app.use(cors);
+
+// Fixing bug where body cant be parsed when testing the integration.
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 
 const {validate} = new Validator();
@@ -64,86 +69,19 @@ This is for testing the createreport function.
 */
 
 
-app.post("/createreport", (req, res) => {
+app.post("/createreport", validate({body: reportSchema}), (req, res) => {
   const data = req.body;
-  console.log("test data", req.data);
   if (validatePicureUrl(data.docketPicture) &&
   validatePicureUrl(data.wastePicture)) {
     const response = FS.createReport(data);
     response.then(function(msg) {
       res.send(msg);
       // syncData(data);
-    }).catch((err) => {
-      res.send(JSON.stringify({"error": err.message}));
     });
   } else {
     res.statusCode = 400;
     res.send(JSON.stringify({"error": "Invalid url"}));
   }
-});
-
-/*
-This is the function for posting on localhost/3000/createsite.
-This is for testing the createsite function.
-*/
-app.post("/createsite", validate({body: siteSchema}), (req, res) => {
-  const data = req.body;
-  console.log("HEJ");
-
-  let response = FS.createSite(data);
-  console.log(response);
-  response = response.then(function(msg) {
-    res.header("Access-Control-Allow-Origin", "*" );
-    res.send(msg);
-  }).catch((err) => {
-    res.header("Access-Control-Allow-Origin", "*" );
-    res.send(JSON.stringify({"error": err.message}));
-  });
-});
-
-/*
-This is the function for posting on localhost/3000/createwaste.
-This is for testing the createwaste function.
-*/
-app.post("/createwaste", validate({body: wasteSchema}), (req, res) => {
-  const data = req.body;
-  let response = FS.createWaste(data);
-  console.log(response);
-  response = response.then(function(msg) {
-    res.send(msg);
-  }).catch((err) => {
-    res.send(JSON.stringify({"error": err.message}));
-  });
-});
-
-/*
-This is the function for posting on localhost/3000/createfacility
-This is for testing.
-*/
-app.post("/createfacility", validate({body: facilitySchema}), (req, res) => {
-  const data = req.body;
-  let response = FS.createFacility(data);
-  console.log(response);
-  response = response.then(function(msg) {
-    res.send(msg);
-  }).catch((err) => {
-    res.send(JSON.stringify({"error": err.message}));
-  });
-});
-
-/*
-This is the function for posting on localhost/3000/createemployee
-This is for testing.
-*/
-app.post("/createemployee", validate({body: employeeSchema}), (req, res) => {
-  const data = req.body;
-  let response = FS.createEmployee(data);
-  console.log(response);
-  response = response.then(function(msg) {
-    res.send(msg);
-  }).catch((err) => {
-    res.send(JSON.stringify({"error": err.message}));
-  });
 });
 
 function validatePicureUrl(picture) {
@@ -154,23 +92,9 @@ function validatePicureUrl(picture) {
   } catch (error) {
     return false;
   }
-  console.log(url.protocol);
   return url.protocol === "http:" || url.protocol === "https:";
 }
 
 app.use(validationErrorMiddleware);
-
-app.get("/test", (req, res)=>{
-  res.send({"msg": "OK!"});
-});
-
-app.post("/simple", (req, res)=>{
-  console.log("/simple body", req);
-  res.send({"msg": "OK!!"});
-});
-
-app.listen(3000, ()=>{
-  console.log("server is running");
-});
 
 exports.app = functions.region("europe-west3").https.onRequest(app);

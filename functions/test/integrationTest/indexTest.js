@@ -18,96 +18,114 @@ const data = {
   Wood: "100",
   binSize: 15,
   date: "Fri Mar 04 2022",
-  docketNumber: "Andreas.se",
+  docketNumber: "testinput",
   docketPicture: "https://Andreas.se",
   name: "NULL",
   site: "Norrköping",
   timeStamps: "NULL",
   wasteData: {"Wood": 0, "Plastic": 0, "Concrete": 0, "Metal": 0, "Other": 0},
-  wastePicture: "http://google.com",
+  wastePicture: "http://google.rasmus",
   weight: 100,
 };
 const data2 = {
-  "Concrete": "0",
-  "Metal": "0",
-  "Other": "0",
-  "Plastic": "0",
-  "Wood": "100",
-  "binSize": 15,
-  "date": "Fri Mar 04 2022",
-  "docketNumber": "Andreas.se",
-  "docketPicture": "https://Andreas.se",
-  "name": "NULL",
-  "site": "Norrköping",
-  "timeStamps": "NULL",
-  "wasteData": {"Wood": 0, "Plastic": 0, "Concrete": 0, "Metal": 0, "Other": 0},
-  "wastePicture": "http://google.com",
-  "weight": "100",
+  Concrete: "0",
+  Metal: "0",
+  Other: "0",
+  Plastic: "0",
+  Wood: "100",
+  binSize: 15,
+  date: "Fri Mar 04 2022",
+  docketNumber: "linus.se",
+  docketPicture: "https://erik.com",
+  name: "NULL",
+  site: "Norrköping",
+  timeStamps: "NULL",
+  wasteData: {"Wood": 0, "Plastic": 0, "Concrete": 0, "Metal": 0, "Other": 0},
+  wastePicture: "https://rasmuscalle.com",
+  weight: "100",
+};
+const data3 = {
+  Concrete: "0",
+  Metal: "0",
+  Other: "0",
+  Plastic: "0",
+  Wood: "100",
+  binSize: 15,
+  date: "Fri Mar 04 2022",
+  docketNumber: "testinput",
+  docketPicture: "/Andreas.se",
+  name: "NULL",
+  site: "Norrköping",
+  timeStamps: "NULL",
+  wasteData: {"Wood": 0, "Plastic": 0, "Concrete": 0, "Metal": 0, "Other": 0},
+  wastePicture: "http://google.rasmus",
+  weight: 100,
 };
 
+// lägg till after för att ta rapporten
 describe("Integration Test for post function create report ", () => {
-  /* it("Test endpoint", ()=>{
-    chai.request(app).get("/test").end((err, res)=>{
-      assert.equal(res.statusCode, 200);
-    });
-  });*/
-  it("simple post", (done)=>{
-    chai.request(app).post("/simple") .send({"myparam": "test"})
-        .end(function(error, response, body) {
-          console.log(body);
+  it("Should return that a report was made with status code 200", (done) => {
+    chai
+        .request(app)
+        .post("/createreport")
+        .send(data).end(function(error, response, body) {
           if (error) {
             done(error);
           } else {
+            assert.equal(response.text,
+                JSON.stringify({msg: "Report was made"}));
+            assert.equal(response.status, 200);
             done();
           }
         });
   });
 
-  /*
-  it("Should return status code 200", (done) => {
+  it("Should return that a report allready exists with status code 200",
+      (done) => {
+        chai
+            .request(app)
+            .post("/createreport")
+            .send(data).end(function(error, response, body) {
+              if (error) {
+                done(error);
+              } else {
+                assert.equal(response.text,
+                    JSON.stringify({msg: "Report already exists"}));
+                assert.equal(response.status, 200);
+                done();
+              }
+            });
+      });
+  it("Should return status code 400, for wrong data type", (done) => {
     chai
         .request(app)
         .post("/createreport")
-        .send({
-          Concrete: "0",
-          Metal: "0",
-          Other: "0",
-          Plastic: "0",
-          Wood: "100",
-          binSize: 15,
-          date: "Fri Mar 04 2022",
-          docketNumber: "Andreas.se",
-          docketPicture: "https://Andreas.se",
-          name: "NULL",
-          site: "Norrköping",
-          timeStamps: "NULL",
-          wasteData: {"Wood": 0, "Plastic": 0, "Concrete": 0,
-            "Metal": 0, "Other": 0},
-          wastePicture: "http://google.com",
-          weight: 100,
-        }) .end(function(error, response, body) {
+        .send(data2).end(function(error, response, body) {
           if (error) {
             done(error);
           } else {
+            assert.equal(response.body.errors.body[0].message,
+                "should be integer");
             done();
           }
         });
-    console.log("resbody", res.body);
-    assert.equal(res.statusCode, 200);
-  });*/
-  /*  it("Should return status code 400, for wrong data type", async () => {
-    const res = await chai
+  });
+
+  it("Should return status code 400, for wrong image format", (done) => {
+    chai
         .request(app)
         .post("/createreport")
-        .send(data2);
-    assert.equal(res.statusCode, 400);
-    assert.equal(res.body, {"error": "Invalid url"});
-  }); */
+        .send(data3).end(function(error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            assert.equal(response.statusCode, 400);
+            assert.equal(response.text,
+                JSON.stringify({"error": "Invalid url"}));
+            done();
+          }
+        });
+  });
 });
-
-/* assert.isNotNull(res.body.number);
-assert.isNumber(res.body.number);
-assert.isAtLeast(res.body.number, 0);
-assert.isAtMost(res.body.number, 100); */
 
 
