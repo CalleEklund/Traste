@@ -35,7 +35,7 @@ import CameraButtons from './CameraButtons';
  * @return {form} Returns the form that renders the report page.
  */
 function ReportForm({handleSubmit, onSubmit, control, total, isValid,
-  onlyNumbers, handleClickOpen}) {
+  onlyNumbers, handleClickOpen, setDocketURL, setWasteURL}) {
   const [docketCheck, setDocketCheck] = useState(0);
   const [wasteCheck, setWasteCheck] = useState(0);
 
@@ -111,6 +111,7 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
             buttonId={'contained-button-file'}
             name={'docketPicture'}
             iconId={'icon-button-file'}
+            setURL={setDocketURL}
           />
         </Stack>
 
@@ -192,6 +193,7 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
             buttonId={'waste-button-file'}
             name={'wastePicture'}
             iconId={'waste-icon-button-file'}
+            setURL={setWasteURL}
           />
         </Stack>
 
@@ -315,6 +317,8 @@ ReportForm.propTypes = {
   isValid: PropTypes.bool.isRequired,
   onlyNumbers: PropTypes.func.isRequired,
   handleClickOpen: PropTypes.func.isRequired,
+  setDocketURL: PropTypes.func.isRequired,
+  setWasteURL: PropTypes.func.isRequired,
 };
 
 export default ReportForm;

@@ -5,7 +5,8 @@ import {useState} from 'react';
 import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import Typography from '@mui/material/Typography';
+import {Divider, List, ListItem,
+  ListItemText, CardMedia, Container} from '@mui/material';
 
 
 import PropTypes from 'prop-types';
@@ -27,6 +28,9 @@ function ReportPage({snackBarHandler}) {
   const navigate = useNavigate();
 
   const [total, setTotal] = useState(0);
+
+  const [docketURL, setDocketURL] = useState('');
+  const [wasteURL, setWasteURL] = useState('');
 
   const [open, setOpen] = useState(false);
 
@@ -153,28 +157,85 @@ function ReportPage({snackBarHandler}) {
         isValid={isValid}
         onlyNumbers={onlyNumbers}
         handleClickOpen={handleClickOpen}
+        setDocketURL={setDocketURL}
+        setWasteURL={setWasteURL}
       />
 
       <BootstrapDialog
         onClose={handleClosed}
         aria-labelledby="customized-dialog-title"
         open={open}
+        fullScreen='true'
       >
         <BootstrapDialogTitle id="customized-dialog-title"
           onClose={handleClosed}
         >
-          Modal title
+          Waste Report
         </BootstrapDialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            skit
-          </Typography>
-          <Typography gutterBottom>
-            mer skit
-          </Typography>
-          <Typography gutterBottom>
-            ännu
-          </Typography>
+        <DialogContent dividers sx={{}}>
+          <List sx={{pt: 0}}>
+            <ListItem autoFocus>
+              <ListItemText primary="Date"
+                secondary={all.date}/>
+            </ListItem>
+            <ListItem autoFocus>
+              <ListItemText primary="Docket number"
+                secondary={all.docketNumber}/>
+            </ListItem>
+            <ListItem autoFocus>
+              <ListItemText primary="Weight"
+                secondary={all.weight}/>
+            </ListItem>
+            <ListItem autoFocus>
+              <ListItemText primary="Bin size"
+                secondary={all.binSize}/>
+            </ListItem>
+            <ListItem autoFocus>
+              <ListItemText primary="Site"
+                secondary={all.site}/>
+            </ListItem>
+          </List>
+          <Divider/>
+          <List sx={{pt: 0}}>
+            <ListItem autoFocus>
+              <ListItemText primary="Wood"
+                secondary={all.wasteData['Wood'] + '%'}/>
+            </ListItem>
+            <ListItem autoFocus>
+              <ListItemText primary="Plastic"
+                secondary={all.wasteData['Plastic'] + '%'}
+              />
+            </ListItem>
+            <ListItem autoFocus>
+              <ListItemText primary="Concrete"
+                secondary={all.wasteData['Concrete'] + '%'}
+              />
+            </ListItem>
+            <ListItem autoFocus>
+              <ListItemText primary="Metal"
+                secondary={all.wasteData['Metal'] + '%'}
+              />
+            </ListItem>
+            <ListItem autoFocus>
+              <ListItemText primary="Other"
+                secondary={all.wasteData['Other'] + '%'}
+              />
+            </ListItem>
+          </List>
+          <Divider/>
+          <Container style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column'}}>
+            <CardMedia
+              image={docketURL}
+              sx={{height: '50vh',
+                width: '80vw'}} />
+            <CardMedia
+              image={wasteURL}
+              sx={{height: '50vh',
+                width: '80vw'}} />
+          </Container>
         </DialogContent>
         <DialogActions>
           <Button autoFocus type="submit" onClick={handleClosed}

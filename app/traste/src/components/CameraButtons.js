@@ -14,7 +14,7 @@ import {Colors} from '../assets/Colors';
  * @return {Stack} Rendered Stack.
  */
 function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
-  name, iconId}) {
+  name, iconId, setURL}) {
   // Used for Input component.
   const Input = styled('input')({
     display: 'none',
@@ -31,7 +31,7 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
       }}>
 
       {/* contained-button-file is a button that
-      a user can clicka to upload an picture. */}
+      a user can click to upload an picture. */}
       <label htmlFor={buttonId}>
         <Controller
           name={name}
@@ -46,6 +46,7 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
               onChange={(e) => {
                 onChange(e.target.files.item(0));
                 setUseStateFunc(1);
+                setURL(URL.createObjectURL(e.target.files[0]));
               }}
               error={error}
             />
@@ -90,6 +91,7 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
                 onChange={(e) => {
                   onChange(e.target.files[0]);
                   setUseStateFunc(1);
+                  setURL(URL.createObjectURL(e.target.files[0]));
                 }}
                 error={error}
               />
@@ -127,6 +129,7 @@ CameraButtons.propTypes = {
   buttonId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   iconId: PropTypes.string.isRequired,
+  setURL: PropTypes.func.isRequired,
 };
 
 export default CameraButtons;
