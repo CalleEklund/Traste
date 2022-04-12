@@ -3,7 +3,7 @@ This is the test file for createEmployee
 */
 
 const {expect} = require("chai");
-const FirestoreClient = require("../firestoreClient");
+const FirestoreClient = require("../../firestoreClient");
 const FS = new FirestoreClient();
 
 describe("The create function", () => {
@@ -58,12 +58,6 @@ describe("The create function", () => {
           {"error":
           "Value for argument \"documentPath\" " + "\n" +
           "is not a valid resource path. Path must be a non-empty string."}));
-      done();
-    });
-  });
-
-  it("Should delete all reports", function(done) {
-    FS.deleteCollection("Employees", 10).then((res, body) =>{
       done();
     });
   });
