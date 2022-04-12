@@ -62,8 +62,11 @@ function ReportPage({snackBarHandler}) {
   });
   const all = watch(control);
 
+  /**
+   * Keeps track of changes to the wastedata inputs and then updated the
+   * total procentage of materials.
+   */
   useEffect(() => {
-    console.log(all);
     let tmp = 0;
     Object.values(all.wasteData).forEach((item) => {
       if (!isNaN(parseInt(item))) {
@@ -79,12 +82,10 @@ function ReportPage({snackBarHandler}) {
    * @param {Object} picture Picture to be uploaded.
    */
   async function uploadPicture(picture) {
-    console.log('uploadPic RP, pic:', picture);
     const res = await uploadImageAPI
         .post('/uploadimage', picture).catch((e) => {
           console.log('error', e);
         });
-    console.log('RP upload res.data:', res.data);
     return res.data.imgUrl;
   }
 
@@ -96,18 +97,11 @@ function ReportPage({snackBarHandler}) {
    * @return {Object} The response message from traste API.
    */
   async function sendReport(data) {
-    console.log('the data being sent before', data);
     const outData = {...data};
 
-    console.log('data innan tillagda bilder:', data);
-    console.log('outData innan tillagda bilder:', outData);
-
-    console.log('dock pic:', data.docketPicture);
     // Upload pictures to Firebase Storage.
     outData.docketPicture = await uploadPicture(data.docketPicture);
     outData.wastePicture = await uploadPicture(data.wastePicture);
-
-    console.log('outData efter tillagda bilder:', outData);
 
     // Create new report and return response.
     return await createReportAPI.post('/createreport', outData);
@@ -124,7 +118,6 @@ function ReportPage({snackBarHandler}) {
     };
 
     sendReport(data).then((res) => {
-      console.log('res:', res);
       if (res.status === 200) {
         if (res.data.msg === 'Report was made') {
           snackBarHandler(
