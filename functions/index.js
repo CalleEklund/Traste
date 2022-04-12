@@ -71,6 +71,7 @@ This is for testing the createreport function.
 
 app.post("/createreport", validate({body: reportSchema}), (req, res) => {
   const data = req.body;
+  console.log("/createrep, data:", data);
   if (validatePicureUrl(data.docketPicture) &&
   validatePicureUrl(data.wastePicture)) {
     const response = FS.createReport(data);
