@@ -1,3 +1,4 @@
+import {Colors} from './Colors.js';
 
 export const binsizes = [
   {

@@ -79,10 +79,17 @@ function ReportPage({snackBarHandler}) {
    * @param {Object} picture Picture to be uploaded.
    */
   async function uploadPicture(picture) {
-    const res = await trasteApi.post('/uploadimage', {data: picture, headers:
-      {'Content-Type': 'multipart/form-data'}}).catch((e) => {
+    console.log('uploadPic RP, pic:', picture);
+    const res = await trasteApi.post('/uploadimage',
+        {
+          data: picture,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }).catch((e) => {
       console.log('error', e);
     });
+    console.log('RP upload res.data:', res.data);
     return res.data.imgUrl;
   }
 
@@ -97,12 +104,18 @@ function ReportPage({snackBarHandler}) {
     console.log('the data being sent before', data);
     const outData = {...data};
 
+    console.log('data innan tillagda bilder:', data);
+    console.log('outData innan tillagda bilder:', outData);
+
+    console.log('dock pic:', data.docketPicture);
     // Upload pictures to Firebase Storage.
-    outData.docketPicture = uploadPicture(data.docketPicture);
-    outData.wastePicture = uploadPicture(data.wastePicture);
+    outData.docketPicture = await uploadPicture(data.docketPicture);
+    outData.wastePicture = await uploadPicture(data.wastePicture);
+
+    console.log('outData efter tillagda bilder:', outData);
 
     // Create new report and return response.
-    return await trasteApi.post('/createreport', {data: data});
+    return await trasteApi.post('/createreport', {data: outData});
   }
 
   // fungerar inte för t.ex. 10e+12
