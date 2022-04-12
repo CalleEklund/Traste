@@ -9,6 +9,7 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "test-int": "mocha test/integrationTest",
+    "test-unit": "mocha test/unitTest",
     "coverage-int": "nyc --reporter=html npm run test-int",
     "test-coverage": "npx nyc --reporter cobertura mocha"
   },

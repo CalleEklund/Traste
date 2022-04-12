@@ -106,6 +106,18 @@ class FirestoreClient {
         });
     return response;
   }
+  /*
+   * Returns all reports in the collection Reports
+   */
+  async getAllReports() {
+    const ref = this.firestore.collection("Reports");
+    const snapshot = await ref.get();
+    const outList = [];
+    snapshot.forEach((doc)=>{
+      outList.push(doc.data());
+    });
+    return JSON.stringify(outList);
+  }
 }
 
 /*

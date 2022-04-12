@@ -85,6 +85,15 @@ app.post("/createreport", validate({body: reportSchema}), (req, res) => {
   }
 });
 
+/**
+ * Returns all reports and sends it to HistoryPage
+ */
+app.get("/getAllReports", async (req, res)=>{
+  const resp = await FS.getAllReports();
+  res.send(resp);
+});
+
+
 function validatePicureUrl(picture) {
   let url;
 
