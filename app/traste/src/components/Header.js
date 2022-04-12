@@ -12,7 +12,7 @@ import {Colors} from '../assets/Colors';
 /**
  * The main header for the app. Used to navigate the app.
  * @param {goBackHandler} props Contains the handler for navigating back
- * in the document
+ * in the document.
  * @return {AppBar} with logo and title.
  */
 function Header({goBackHandler}) {

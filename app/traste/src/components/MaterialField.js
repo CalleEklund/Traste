@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {transparentWhite} from '../assets/Colors';
 
 import {TextField, InputAdornment} from '@mui/material';
 
@@ -43,14 +44,13 @@ function MaterialField({label, value, onChange, error}) {
         onChange(tmpval);
       }}
       sx={{
-        backgroundColor: 'rgba(255,255,255,0.3)',
+        backgroundColor: transparentWhite,
       }}
       inputProps={{
         'style': {textAlign: 'right', fontSize: 16},
         'data-testid': 'materialfield',
       }}
       error={!!error}
-      // helperText={error ? error.message : null}
     />
   );
 }

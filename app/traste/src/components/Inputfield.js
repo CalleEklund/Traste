@@ -9,8 +9,8 @@ import {TextField} from '@mui/material';
  * @param {*} onChange Handler.
  * @param {*} error What will be shown for the error.
  * @param {*} type What type of values. Usally number or text.
- * @param {*} sx Styling
- * @return {TextField} Rendered field
+ * @param {*} sx Styling.
+ * @return {TextField} Rendered field.
  */
 function Inputfield({label, value, onChange, error, type, sx}) {
   return (
