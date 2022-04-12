@@ -17,7 +17,7 @@ const cors = require("cors")({origin: true});
 const {Validator, ValidationError} =
     require("express-json-validator-middleware");
 
-const {siteSchema, reportSchema, wasteSchema, employeeSchema, facilitySchema} =
+const {reportSchema} =
     require("./databaseSchemas");
 
 const app = express();
