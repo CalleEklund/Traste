@@ -4,6 +4,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import * as React from 'react';
+import {Colors} from './Colors.js';
 
 export const binsizes = [
   {
@@ -51,8 +52,15 @@ export const sites = [
   },
 ];
 
+export const successSx = {
+  width: '100%',
+  backgroundColor: Colors.trasteGreen,
+  color: '#103849',
+  fontSize: 18,
+};
+
 export default {
-  binsizes, wasteTypes, sites,
+  binsizes, wasteTypes, sites, successSx,
 };
 
 export const BootstrapDialog = styled(Dialog)(({theme}) => ({

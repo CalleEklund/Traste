@@ -10,7 +10,7 @@ import {wasteTypes} from '../assets/Constants';
  * Custom Stack for displaying waste data in a list.
  * @return {Stack} Rendered Stack.
  */
-function WasteList({control, onlyNumbers}) {
+function WasteInputField({control, onlyNumbers}) {
   const outputlist = [];
   for (let i = 0; i < Object.keys(wasteTypes).length; i += 2) {
     if (i + 1 >= Object.keys(wasteTypes).length) {
@@ -96,10 +96,10 @@ function WasteList({control, onlyNumbers}) {
   );
 }
 
-WasteList.propTypes = {
+WasteInputField.propTypes = {
   control: PropTypes.any.isRequired,
   onlyNumbers: PropTypes.func.isRequired,
 };
 
-export default WasteList;
+export default WasteInputField;
 

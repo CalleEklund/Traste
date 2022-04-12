@@ -1,6 +1,5 @@
 import {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
-import {Colors} from '../assets/Colors';
 import * as React from 'react';
 import {useState} from 'react';
 import Button from '@mui/material/Button';
@@ -14,10 +13,10 @@ import PropTypes from 'prop-types';
 import {useNavigate} from 'react-router-dom';
 
 // Own files
-import trasteApi from '../api/trasteApi';
-import {wasteTypes} from '../assets/Constants';
 import ReportForm from '../components/ReportForm.js';
 import {BootstrapDialog, BootstrapDialogTitle} from '../assets/Constants';
+import {uploadImageAPI, createReportAPI} from '../api/trasteApi';
+import {wasteTypes, successSx} from '../assets/Constants';
 
 /**
  * ReportPage renders the report form for a waste report.
@@ -77,10 +76,12 @@ function ReportPage({snackBarHandler}) {
    * @param {Object} picture Picture to be uploaded.
    */
   async function uploadPicture(picture) {
-    const res = await trasteApi.post('/uploadimage', {data: picture, headers:
-      {'Content-Type': 'multipart/form-data'}}).catch((e) => {
-      console.log('error', e);
-    });
+    console.log('uploadPic RP, pic:', picture);
+    const res = await uploadImageAPI
+        .post('/uploadimage', picture).catch((e) => {
+          console.log('error', e);
+        });
+    console.log('RP upload res.data:', res.data);
     return res.data.imgUrl;
   }
 
@@ -95,12 +96,18 @@ function ReportPage({snackBarHandler}) {
     console.log('the data being sent before', data);
     const outData = {...data};
 
+    console.log('data innan tillagda bilder:', data);
+    console.log('outData innan tillagda bilder:', outData);
+
+    console.log('dock pic:', data.docketPicture);
     // Upload pictures to Firebase Storage.
-    outData.docketPicture = uploadPicture(data.docketPicture);
-    outData.wastePicture = uploadPicture(data.wastePicture);
+    outData.docketPicture = await uploadPicture(data.docketPicture);
+    outData.wastePicture = await uploadPicture(data.wastePicture);
+
+    console.log('outData efter tillagda bilder:', outData);
 
     // Create new report and return response.
-    return await trasteApi.post('/createreport', {data: data});
+    return await createReportAPI.post('/createreport', outData);
   }
 
   // fungerar inte för t.ex. 10e+12
@@ -114,17 +121,13 @@ function ReportPage({snackBarHandler}) {
     };
 
     sendReport(data).then((res) => {
+      console.log('res:', res);
       if (res.status === 200) {
-        if (res.body.msg === 'Report was made') {
+        if (res.data.msg === 'Report was made') {
           snackBarHandler(
               'Report was sent!',
               'success',
-              {
-                width: '100%',
-                backgroundColor: Colors.trasteGreen,
-                color: '#103849',
-                fontSize: 18,
-              },
+              successSx,
           );
         } else { // When res.body.msg === 'Report already exists'.
           snackBarHandler(
