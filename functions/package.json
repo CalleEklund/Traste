@@ -8,8 +8,8 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "test-integration": "mocha test/integrationTest",
-    "coverage-integration": "nyc --reporter=html npm run test/integrationTest",
+    "test-int": "mocha test/integrationTest",
+    "coverage-int": "nyc --reporter=html npm run test/integrationTest",
     "test-coverage": "npx nyc --reporter cobertura mocha"
   },
   "engines": {

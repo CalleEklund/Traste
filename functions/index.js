@@ -64,8 +64,9 @@ This is for testing the createreport function.
 */
 
 
-app.post("/createreport", validate({body: reportSchema}), (req, res) => {
+app.post("/createreport", (req, res) => {
   const data = req.body;
+  console.log("test data", req.data);
   if (validatePicureUrl(data.docketPicture) &&
   validatePicureUrl(data.wastePicture)) {
     const response = FS.createReport(data);
@@ -158,5 +159,18 @@ function validatePicureUrl(picture) {
 }
 
 app.use(validationErrorMiddleware);
+
+app.get("/test", (req, res)=>{
+  res.send({"msg": "OK!"});
+});
+
+app.post("/simple", (req, res)=>{
+  console.log("/simple body", req);
+  res.send({"msg": "OK!!"});
+});
+
+app.listen(3000, ()=>{
+  console.log("server is running");
+});
 
 exports.app = functions.region("europe-west3").https.onRequest(app);
