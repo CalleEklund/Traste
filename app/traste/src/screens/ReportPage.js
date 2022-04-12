@@ -27,6 +27,7 @@ import trasteApi from '../api/trasteApi';
 import {binsizes, wasteTypes, sites} from '../assets/Constants';
 import WasteInputField from '../components/WasteInputField';
 import CameraButtons from '../components/CameraButtons';
+import CustomizedDialogs from '../components/confirmation';
 
 /**
  * ReportPage renders the report form for a waste report.
@@ -40,6 +41,16 @@ function ReportPage({snackBarHandler}) {
   const [wasteCheck, setWasteCheck] = useState(0);
 
   const [total, setTotal] = useState(0);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClosed = () => {
+    setOpen(false);
+  };
+
   const {
     handleSubmit,
     control,
@@ -114,6 +125,8 @@ function ReportPage({snackBarHandler}) {
       timeStamps: new Date().toUTCString(),
       date: new Date(data.date).toDateString(),
     };
+
+    handleClosed();
 
     sendReport(data).then((res) => {
       if (res.status === 200) {
@@ -377,7 +390,7 @@ function ReportPage({snackBarHandler}) {
             />
           }
           disabled={total !== 100}
-          type="submit"
+          // type="submit"
           sx={{
             flex: '1',
             display: 'flex',
@@ -394,7 +407,9 @@ function ReportPage({snackBarHandler}) {
             borderRadius: '0',
             paddingTop: 1,
             paddingBottom: 1,
-          }}>
+          }}
+          onClick={handleClickOpen}
+        >
 
           <Typography
             variant="h4"
@@ -402,6 +417,10 @@ function ReportPage({snackBarHandler}) {
             Send Report
           </Typography>
         </Button>
+        <CustomizedDialogs
+          closeHandler={handleClosed}
+          open={open}
+        />
       </Stack>
     </form>
   );
