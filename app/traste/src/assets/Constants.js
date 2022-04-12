@@ -45,6 +45,13 @@ export const sites = [
   },
 ];
 
+export const successSx = {
+  width: '100%',
+  backgroundColor: Colors.trasteGreen,
+  color: '#103849',
+  fontSize: 18,
+};
+
 export default {
-  binsizes, wasteTypes, sites,
+  binsizes, wasteTypes, sites, successSx,
 };

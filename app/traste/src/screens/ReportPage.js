@@ -24,7 +24,7 @@ import {useNavigate} from 'react-router-dom';
 
 // Own files
 import trasteApi from '../api/trasteApi';
-import {binsizes, wasteTypes, sites} from '../assets/Constants';
+import {binsizes, wasteTypes, sites, successSx} from '../assets/Constants';
 import WasteInputField from '../components/WasteInputField';
 import CameraButtons from '../components/CameraButtons';
 
@@ -121,12 +121,7 @@ function ReportPage({snackBarHandler}) {
           snackBarHandler(
               'Report was sent!',
               'success',
-              {
-                width: '100%',
-                backgroundColor: Colors.trasteGreen,
-                color: '#103849',
-                fontSize: 18,
-              },
+              successSx,
           );
         } else { // When res.body.msg === 'Report already exists'.
           snackBarHandler(
