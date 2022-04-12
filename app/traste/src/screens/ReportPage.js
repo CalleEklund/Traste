@@ -8,16 +8,11 @@ import {
   Box,
   CircularProgress,
 } from '@mui/material';
-import MaterialField from '../components/MaterialField';
 import {useForm, Controller} from 'react-hook-form';
 import Inputfield from '../components/Inputfield';
 import Selection from '../components/Selection';
-import {styled} from '@mui/material/styles';
 import {Colors} from '../assets/Colors';
 import SendIcon from '@mui/icons-material/Send';
-import CheckIcon from '@mui/icons-material/Check';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import IconButton from '@mui/material/IconButton';
 
 import PropTypes from 'prop-types';
 
@@ -25,47 +20,13 @@ import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
-import axios from 'axios';
-
 import {useNavigate} from 'react-router-dom';
 
-
-const binsizes = [
-  {
-    id: '0',
-    label: 5,
-  },
-  {
-    id: '1',
-    label: 10,
-  },
-  {
-    id: '2',
-    label: 15,
-  },
-  {
-    id: '3',
-    label: 20,
-  },
-];
-const sites = [
-  {
-    id: '0',
-    label: 'Linköping',
-  },
-  {
-    id: '1',
-    label: 'Norrköping',
-  },
-  {
-    id: '2',
-    label: 'Gustavsberg',
-  },
-  {
-    id: '3',
-    label: 'Vetlanda',
-  },
-];
+// Own files
+import {uploadImageAPI, createReportAPI} from '../api/trasteApi';
+import {binsizes, wasteTypes, sites, successSx} from '../assets/Constants';
+import WasteInputField from '../components/WasteInputField';
+import CameraButtons from '../components/CameraButtons';
 
 /**
  * ReportPage renders the report form for a waste report.
@@ -73,14 +34,6 @@ const sites = [
  * @return {form} Returns the form that renders the report page.
  */
 function ReportPage({snackBarHandler}) {
-  const wasteTypes = {
-    Wood: 0,
-    Plastic: 0,
-    Concrete: 0,
-    Metal: 0,
-    Other: 0,
-  };
-
   const navigate = useNavigate();
 
   const [docketCheck, setDocketCheck] = useState(0);
@@ -109,61 +62,6 @@ function ReportPage({snackBarHandler}) {
   });
   const all = watch(control);
 
-  const Input = styled('input')({
-    display: 'none',
-  });
-
-  /**
-   * sendReport will send the data from the form to the backend.
-   * http://localhost:5001/traste-71a71/europe-west3/app/uploadimage
-   * https://europe-west3-traste-71a71.cloudfunctions.net/app/createreport
-   * @param {*} data all data from the form.
-   */
-  async function sendReport(data) {
-    console.log('the data being sent before', data);
-
-    // docketpicutre upload
-    await axios({
-      method: 'post',
-      url: 'http://localhost:5001/traste-71a71/europe-west3/app/uploadimage',
-      data: data.docketPicture,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).then(function(response) {
-      console.log('resp', response.data);
-      data.docketPicture = response.data.imgUrl;
-    }).catch((e)=>{
-      console.log('error', e);
-    });
-
-
-    // wastepicture upload
-    await axios({
-      method: 'post',
-      url: 'http://localhost:5001/traste-71a71/europe-west3/app/uploadimage',
-      data: data.wastePicture,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).then(function(response) {
-      console.log('resp', response.data);
-      data.wastePicture = response.data.imgUrl;
-    }).catch((e)=>{
-      console.log('error', e);
-    });
-
-    console.log('after', data);
-
-    await axios({
-      method: 'post',
-      url: 'http://localhost:5001/traste-71a71/europe-west3/app/createreport',
-      data: data,
-    }).then(function(response) {
-      console.log('resp', response.data);
-    });
-  }
-
   useEffect(() => {
     console.log(all);
     let tmp = 0;
@@ -175,109 +73,78 @@ function ReportPage({snackBarHandler}) {
     setTotal(tmp);
   }, [all]);
 
+
+  /**
+   * uploadPicture will upload an image to firebase storage.
+   * @param {Object} picture Picture to be uploaded.
+   */
+  async function uploadPicture(picture) {
+    console.log('uploadPic RP, pic:', picture);
+    const res = await uploadImageAPI
+        .post('/uploadimage', picture).catch((e) => {
+          console.log('error', e);
+        });
+    console.log('RP upload res.data:', res.data);
+    return res.data.imgUrl;
+  }
+
+  /**
+   * sendReport will send the data from the form to the backend.
+   * http://localhost:5001/traste-71a71/europe-west3/app/uploadimage
+   * https://europe-west3-traste-71a71.cloudfunctions.net/app/createreport
+   * @param {*} data All data from the form.
+   * @return {Object} The response message from traste API.
+   */
+  async function sendReport(data) {
+    console.log('the data being sent before', data);
+    const outData = {...data};
+
+    console.log('data innan tillagda bilder:', data);
+    console.log('outData innan tillagda bilder:', outData);
+
+    console.log('dock pic:', data.docketPicture);
+    // Upload pictures to Firebase Storage.
+    outData.docketPicture = await uploadPicture(data.docketPicture);
+    outData.wastePicture = await uploadPicture(data.wastePicture);
+
+    console.log('outData efter tillagda bilder:', outData);
+
+    // Create new report and return response.
+    return await createReportAPI.post('/createreport', outData);
+  }
+
   // fungerar inte för t.ex. 10e+12
   const onlyNumbers = (score) => !isNaN(parseInt(score)) && isFinite(score);
+
   const onSubmit = (data) => {
     data = {
       ...data,
       timeStamps: new Date().toUTCString(),
       date: new Date(data.date).toDateString(),
     };
-    sendReport(data);
-    console.log(data);
-    snackBarHandler();
+
+    sendReport(data).then((res) => {
+      console.log('res:', res);
+      if (res.status === 200) {
+        if (res.data.msg === 'Report was made') {
+          snackBarHandler(
+              'Report was sent!',
+              'success',
+              successSx,
+          );
+        } else { // When res.body.msg === 'Report already exists'.
+          snackBarHandler(
+              'An report with that docketnumber already exists!',
+              'warning',
+          );
+        }
+      }
+    }).catch( (error) => {
+      snackBarHandler('An Error occured, report was not sent',
+          'error');
+    });
     navigate('/');
   };
-
-  /**
-   * Renders the inputboxes for the different types of wastes.
-   * @return {Stack} is returned containing all MaterialFields.
-   */
-  function renderWasteList() {
-    const outputlist = [];
-    for (let i = 0; i < Object.keys(wasteTypes).length; i += 2) {
-      if (i + 1 >= Object.keys(wasteTypes).length) {
-        outputlist.push(
-            <Stack direction="row" key={i + 'stack'}>
-              <Controller
-                name={'wasteData.' + Object.keys(wasteTypes)[i]}
-                control={control}
-                rules={{
-                  validate: onlyNumbers,
-                  max: {value: 100, message: 'Too large of a number'},
-                  min: {value: 0, message: 'No negative numbers'},
-                }}
-                render={({
-                  field: {onChange, value},
-                  fieldState: {error},
-                }) => (
-                  <MaterialField
-                    key={i}
-                    label={Object.keys(wasteTypes)[i]}
-                    onChange={onChange}
-                    value={value}
-                    error={error}
-                  />
-                )}
-              />
-            </Stack>,
-        );
-      } else {
-        outputlist.push(
-            <Stack direction="row" spacing={2} key={i + 'stack'}>
-              <Controller
-                name={'wasteData.' + Object.keys(wasteTypes)[i]}
-                control={control}
-                rules={{
-                  validate: onlyNumbers,
-                  max: {value: 100, message: 'Too large of a number'},
-                  min: {value: 0, message: 'No negative numbers'},
-                }}
-                render={({
-                  field: {onChange, value},
-                  fieldState: {error},
-                }) => (
-                  <MaterialField
-                    key={i}
-                    label={Object.keys(wasteTypes)[i]}
-                    onChange={onChange}
-                    value={value}
-                    error={error}
-                  />
-                )}
-              />
-              <Controller
-                name={'wasteData.' + Object.keys(wasteTypes)[i + 1]}
-                control={control}
-                rules={{
-                  validate: onlyNumbers,
-                  max: {value: 100, message: 'Too large of a number'},
-                  min: {value: 0, message: 'No negative numbers'},
-                }}
-                render={({
-                  field: {onChange, value},
-                  fieldState: {error},
-                }) => (
-                  <MaterialField
-                    key={i + 1}
-                    label={Object.keys(wasteTypes)[i + 1]}
-                    onChange={onChange}
-                    value={value}
-                    error={error}
-                  />
-                )}
-              />
-            </Stack>,
-        );
-      }
-    }
-
-    return (
-      <Stack direction="column" spacing={2} sx={{width: '90vw'}}>
-        {outputlist}
-      </Stack>
-    );
-  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -286,8 +153,8 @@ function ReportPage({snackBarHandler}) {
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
-        }}
-      >
+        }}>
+
         <Controller
           name="date"
           control={control}
@@ -316,6 +183,7 @@ function ReportPage({snackBarHandler}) {
             </LocalizationProvider>
           )}
         />
+
         <Stack
           style={{display: 'flex'}}
           width='90vw'
@@ -323,8 +191,8 @@ function ReportPage({snackBarHandler}) {
           spacing={2}
           sx={{
             alignItems: 'flex-start',
-          }}
-        >
+          }}>
+
           <Controller
             name="docketNumber"
             control={control}
@@ -341,89 +209,17 @@ function ReportPage({snackBarHandler}) {
               />
             )}
           />
-          <Stack
-            direction="column"
-            sx={{
-              display: 'flex',
-              paddingTop: '15px',
-              alignItems: 'center',
-              direction: 'row',
-            }}
 
-          >
-            <label htmlFor="contained-button-file">
-              <Controller
-                name="docketPicture"
-                control={control}
-                rules={{required: 'Select an image'}}
-                render={({field: {onChange}, fieldState: {error}}) => (
-                  <Input
-                    accept="image/*"
-                    id="contained-button-file"
-                    multiple type="file"
-                    onChange={(e) => {
-                      onChange(e.target.files.item(0));
-                      setDocketCheck(1);
-                    }}
-                    error={error}
-                  />
-                )}
-              />
-              <Button variant="contained" component="span"
-                sx={{
-                  'backgroundColor': Colors.trasteNavyBlue,
-                  ':hover': {backgroundColor: Colors.trastePurple},
-                  'height': 20,
-                  'width': '5vw',
-                }}>
-          Upload
-              </Button>
-            </label>
-            <Stack
-              style={{display: 'flex'}}
-              width='5vw'
-              direction='row'
-              spacing={2}
-              sx={{
-                alignItems: 'flex-start',
-                justifyContent: 'space-evenly',
-              }}>
-              <label htmlFor="icon-button-file">
-                <Controller
-                  name="docketPicture"
-                  control={control}
-                  rules={{required: 'Select an image'}}
-                  render={({field: {onChange}, fieldState: {error}}) => (
-                    <Input
-                      accept="image/*"
-                      id="icon-button-file"
-                      multiple type="file"
-                      onChange={(e) => {
-                        onChange(e.target.files[0]);
-                        setDocketCheck(1);
-                      }}
-                      error={error}
-                    />
-                  )}
-                />
-                <IconButton aria-label="upload picture" component="span"
-                  sx={{
-                    'color': Colors.trasteNavyBlue,
-                    ':hover': {color: Colors.trastePurple},
-                    'width': '5vw',
-                  }}>
-                  <PhotoCamera />
-                </IconButton>
-              </label>
-              <CheckIcon
-                sx={{
-                  paddingTop: 0.9,
-                  color: () => (docketCheck === 1 ?
-                    Colors.trasteNavyBlue : Colors.trasteGreen),
-                }}></CheckIcon>
-            </Stack>
-          </Stack>
+          <CameraButtons
+            control={control}
+            useStateValue={docketCheck}
+            setUseStateFunc={setDocketCheck}
+            buttonId={'contained-button-file'}
+            name={'docketPicture'}
+            iconId={'icon-button-file'}
+          />
         </Stack>
+
         <Controller
           name="weight"
           control={control}
@@ -464,6 +260,7 @@ function ReportPage({snackBarHandler}) {
             />
           )}
         />
+
         <Controller
           name="site"
           control={control}
@@ -487,100 +284,26 @@ function ReportPage({snackBarHandler}) {
           sx={{
             alignItems: 'flex-start',
             justifyContent: 'space-between',
-          }}
-        >
+          }}>
           <Typography
             variant="h4"
-            sx={{textAlign: 'center', marginTop: '10px', marginBottom: '10px'}}
-          >
-          Waste Types
+            sx={{textAlign: 'center', marginTop: '10px', marginBottom: '10px'}}>
+            Waste Types
           </Typography>
-          <Stack
-            direction="column"
-            sx={{
-              display: 'flex',
-              paddingTop: '15px',
-              alignItems: 'center',
-              direction: 'row',
-            }}
 
-          >
-            <label htmlFor="waste-button-file">
-              <Controller
-                name="wastePicture"
-                control={control}
-                rules={{required: 'Select an image'}}
-                render={({field: {onChange}, fieldState: {error}}) => (
-                  <Input
-                    accept="image/*"
-                    id="waste-button-file"
-                    multiple type="file"
-                    onChange={(e) => {
-                      onChange(e.target.files.item(0));
-                      setWasteCheck(1);
-                    }}
-                    error={error}
-                  />
-                )}
-              />
-              <Button variant="contained" component="span"
-                sx={{
-                  'backgroundColor': Colors.trasteNavyBlue,
-                  ':hover': {backgroundColor: Colors.trastePurple},
-                  'height': 20,
-                  'width': '5vw',
-                }}>
-          Upload
-              </Button>
-            </label>
-            <Stack
-              style={{display: 'flex'}}
-              width='5vw'
-              direction='row'
-              spacing={2}
-              sx={{
-                alignItems: 'flex-start',
-                justifyContent: 'space-evenly',
-              }}>
-              <label htmlFor="waste-icon-button-file">
-                <Controller
-                  name="wastePicture"
-                  control={control}
-                  rules={{required: 'Select an image'}}
-                  render={({field: {onChange}, fieldState: {error}}) => (
-                    <Input
-                      accept="image/*"
-                      id="waste-icon-button-file"
-                      multiple type="file"
-                      onChange={(e) => {
-                        onChange(e.target.files.item(0));
-                        setWasteCheck(1);
-                      }}
-                      error={error}
-                    />
-                  )}
-                />
-                <IconButton aria-label="upload picture" component="span"
-                  sx={{
-                    'color': Colors.trasteNavyBlue,
-                    ':hover': {color: Colors.trastePurple},
-                    'width': '5vw',
-                  }}>
-                  <PhotoCamera />
-                </IconButton>
-              </label>
-              <CheckIcon
-                sx={{
-                  paddingTop: 0.9,
-                  color: () => (wasteCheck === 1 ?
-                    Colors.trasteNavyBlue : Colors.trasteGreen),
-                }}></CheckIcon>
-            </Stack>
-          </Stack>
+          <CameraButtons
+            control={control}
+            useStateValue={wasteCheck}
+            setUseStateFunc={setWasteCheck}
+            buttonId={'waste-button-file'}
+            name={'wastePicture'}
+            iconId={'waste-icon-button-file'}
+          />
         </Stack>
 
-        {renderWasteList()}
+        <WasteInputField control={control} onlyNumbers={onlyNumbers} />
       </Container>
+
       <Stack
         direction="column"
         justifyContent="center"
@@ -595,8 +318,8 @@ function ReportPage({snackBarHandler}) {
           display: 'flex',
           zIndex: 2,
           flex: '1',
-        }}
-      >
+        }}>
+
         <Stack
           sx={{
             flex: '1',
@@ -609,8 +332,8 @@ function ReportPage({snackBarHandler}) {
             paddingTop: 1,
             paddingBottom: 1,
           }}
-          direction="row"
-        >
+          direction="row">
+
           <Typography variant="h4">Waste total: </Typography>
 
           <Box sx={{position: 'relative', display: 'inline-flex'}}>
@@ -631,21 +354,21 @@ function ReportPage({snackBarHandler}) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-              }}
-            >
+              }}>
+
               <Typography
                 variant="caption"
                 component="div"
                 color="text.secondary"
                 fontSize={16}
                 fontWeight="bold"
-                sx={{color: 'white'}}
-              >
+                sx={{color: 'white'}}>
                 {`${Math.round(total)}%`}
               </Typography>
             </Box>
           </Box>
         </Stack>
+
         <Button
           endIcon={
             <SendIcon
@@ -675,10 +398,12 @@ function ReportPage({snackBarHandler}) {
             borderRadius: '0',
             paddingTop: 1,
             paddingBottom: 1,
-          }}
-        >
-          <Typography variant="h4" sx={{color: Colors.trasteNavyBlue}}>
-          Send Report
+          }}>
+
+          <Typography
+            variant="h4"
+            sx={{color: Colors.trasteNavyBlue}}>
+            Send Report
           </Typography>
         </Button>
       </Stack>

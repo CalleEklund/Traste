@@ -106,16 +106,6 @@ class FirestoreClient {
         });
     return response;
   }
-
-  async uploadImage(data) {
-    const storage = this.firestore.getStorage();
-    const storageRef = ref(storage, "");
-
-    // 'file' comes from the Blob or File API
-    await uploadBytes(storageRef, data).then((snapshot) => {
-      console.log("Uploaded a blob or file!");
-    });
-  }
 }
 
 /*
