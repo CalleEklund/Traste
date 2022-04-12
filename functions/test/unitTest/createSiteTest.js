@@ -45,10 +45,4 @@ describe("The create site function", () => {
       done();
     });
   });
-
-  it("Should delete all reports", function(done) {
-    FS.deleteCollection("Sites", 10).then((res, body) =>{
-      done();
-    });
-  });
 });

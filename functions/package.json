@@ -8,8 +8,8 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "test": "mocha test",
-    "coverage": "nyc --reporter=html npm run test",
+    "test-int": "mocha test/integrationTest",
+    "coverage-int": "nyc --reporter=html npm run test-int",
     "test-coverage": "npx nyc --reporter cobertura mocha"
   },
   "engines": {
@@ -19,6 +19,7 @@
   "dependencies": {
     "busboy": "^1.5.0",
     "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
     "connect-busboy": "^1.0.0",
     "cors": "^2.8.5",
     "databaseSchemas": "file:./",

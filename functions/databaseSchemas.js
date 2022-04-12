@@ -4,8 +4,8 @@ This file contains the schemas ov different structures in the database.
 
 const reportSchema = {
   type: "object",
-  required: ["docketNumber", "name", "weight", "timeStamps",
-    "date", "binSize", "site"],
+  required: ["docketNumber", "docketPicture",
+    "wastePicture", "name", "weight", "timeStamps", "date", "binSize", "site"],
   properties: {
     docketNumber: {
       type: "string",
@@ -24,6 +24,14 @@ const reportSchema = {
       minLength: 1,
     },
     date: {
+      type: "string",
+      minLength: 1,
+    },
+    docketPicture: {
+      type: "string",
+      minLength: 1,
+    },
+    wastePicture: {
       type: "string",
       minLength: 1,
     },

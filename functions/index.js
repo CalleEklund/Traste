@@ -2,13 +2,13 @@
 This file contains functions for deplyoing the firebase database locally.
 */
 
-
 const {FirestoreClient, uploadImage} = require("./firestoreClient.js");
 
 const FS = new FirestoreClient();
+const bodyParser = require("body-parser");
 
 
-const {syncData} = require("./syncData");
+// const {syncData} = require("./syncData");
 
 const functions = require("firebase-functions");
 
@@ -17,12 +17,16 @@ const cors = require("cors")({origin: true});
 const {Validator, ValidationError} =
     require("express-json-validator-middleware");
 
-const {siteSchema, reportSchema, wasteSchema, employeeSchema, facilitySchema} =
+const {reportSchema} =
     require("./databaseSchemas");
 
 const app = express();
 
 app.use(cors);
+
+// Fixing bug where body cant be parsed when testing the integration.
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 
 const {validate} = new Validator();
@@ -53,10 +57,7 @@ function validationErrorMiddleware(error, _request, response, next) {
 
 app.post("/uploadimage", function(req, res) {
   const data = req.body;
-  console.log("upload image", data);
-  // const docketNum = "testab123";
   uploadImage(data).then((imageURL) =>{
-    console.log("/uploadimage url: ", imageURL);
     res.send(imageURL);
   });
 });
@@ -68,82 +69,31 @@ This is for testing the createreport function.
 */
 
 
-app.post("/createreport", (req, res) => {
+app.post("/createreport", validate({body: reportSchema}), (req, res) => {
   const data = req.body;
-  let response = FS.createReport(data);
-  console.log("/createreport", data);
-  console.log("cr resp", response);
-  response = response.then(function(msg) {
-    res.send(msg);
-    syncData(data);
-  }).catch((err) => {
-    res.send(JSON.stringify({"error": err.message}));
-  });
+  if (validatePicureUrl(data.docketPicture) &&
+  validatePicureUrl(data.wastePicture)) {
+    const response = FS.createReport(data);
+    response.then(function(msg) {
+      res.send(msg);
+      // syncData(data);
+    });
+  } else {
+    res.statusCode = 400;
+    res.send(JSON.stringify({"error": "Invalid url"}));
+  }
 });
 
-/*
-This is the function for posting on localhost/3000/createsite.
-This is for testing the createsite function.
-*/
-app.post("/createsite", validate({body: siteSchema}), (req, res) => {
-  const data = req.body;
-  console.log("HEJ");
+function validatePicureUrl(picture) {
+  let url;
 
-  let response = FS.createSite(data);
-  console.log(response);
-  response = response.then(function(msg) {
-    res.header("Access-Control-Allow-Origin", "*" );
-    res.send(msg);
-  }).catch((err) => {
-    res.header("Access-Control-Allow-Origin", "*" );
-    res.send(JSON.stringify({"error": err.message}));
-  });
-});
-
-/*
-This is the function for posting on localhost/3000/createwaste.
-This is for testing the createwaste function.
-*/
-app.post("/createwaste", validate({body: wasteSchema}), (req, res) => {
-  const data = req.body;
-  let response = FS.createWaste(data);
-  console.log(response);
-  response = response.then(function(msg) {
-    res.send(msg);
-  }).catch((err) => {
-    res.send(JSON.stringify({"error": err.message}));
-  });
-});
-
-/*
-This is the function for posting on localhost/3000/createfacility
-This is for testing.
-*/
-app.post("/createfacility", validate({body: facilitySchema}), (req, res) => {
-  const data = req.body;
-  let response = FS.createFacility(data);
-  console.log(response);
-  response = response.then(function(msg) {
-    res.send(msg);
-  }).catch((err) => {
-    res.send(JSON.stringify({"error": err.message}));
-  });
-});
-
-/*
-This is the function for posting on localhost/3000/createemployee
-This is for testing.
-*/
-app.post("/createemployee", validate({body: employeeSchema}), (req, res) => {
-  const data = req.body;
-  let response = FS.createEmployee(data);
-  console.log(response);
-  response = response.then(function(msg) {
-    res.send(msg);
-  }).catch((err) => {
-    res.send(JSON.stringify({"error": err.message}));
-  });
-});
+  try {
+    url = new URL(picture);
+  } catch (error) {
+    return false;
+  }
+  return url.protocol === "http:" || url.protocol === "https:";
+}
 
 app.use(validationErrorMiddleware);
 
