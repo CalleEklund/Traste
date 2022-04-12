@@ -1,44 +1,31 @@
-import React, {useState, useEffect} from 'react';
-import {
-  Typography,
-  Stack,
-  Container,
-  TextField,
-  Button,
-  Box,
-  CircularProgress,
-} from '@mui/material';
-import {useForm, Controller} from 'react-hook-form';
-import Inputfield from '../components/Inputfield';
-import Selection from '../components/Selection';
+import {useEffect} from 'react';
+import {useForm} from 'react-hook-form';
 import {Colors} from '../assets/Colors';
-import SendIcon from '@mui/icons-material/Send';
+import * as React from 'react';
+import {useState} from 'react';
+import Button from '@mui/material/Button';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Typography from '@mui/material/Typography';
+
 
 import PropTypes from 'prop-types';
-
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 import {useNavigate} from 'react-router-dom';
 
 // Own files
 import trasteApi from '../api/trasteApi';
-import {binsizes, wasteTypes, sites} from '../assets/Constants';
-import WasteInputField from '../components/WasteInputField';
-import CameraButtons from '../components/CameraButtons';
-import CustomizedDialogs from '../components/confirmation';
+import {wasteTypes} from '../assets/Constants';
+import ReportForm from '../components/ReportForm.js';
+import {BootstrapDialog, BootstrapDialogTitle} from '../assets/Constants';
 
 /**
  * ReportPage renders the report form for a waste report.
  * @param {*} snackBarHandler Shows a snackbar pop up on report send.
- * @return {form} Returns the form that renders the report page.
+ * @return {div}
  */
 function ReportPage({snackBarHandler}) {
   const navigate = useNavigate();
-
-  const [docketCheck, setDocketCheck] = useState(0);
-  const [wasteCheck, setWasteCheck] = useState(0);
 
   const [total, setTotal] = useState(0);
 
@@ -126,8 +113,6 @@ function ReportPage({snackBarHandler}) {
       date: new Date(data.date).toDateString(),
     };
 
-    handleClosed();
-
     sendReport(data).then((res) => {
       if (res.status === 200) {
         if (res.body.msg === 'Report was made') {
@@ -156,278 +141,52 @@ function ReportPage({snackBarHandler}) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Container
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}>
+    <div>
+      <ReportForm
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+        control={control}
+        total={total}
+        isValid={isValid}
+        onlyNumbers={onlyNumbers}
+        handleClickOpen={handleClickOpen}
+      />
 
-        <Controller
-          name="date"
-          control={control}
-          rules={{required: 'Select a valid date'}}
-          render={({field: {onChange, value}}) => (
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <MobileDatePicker
-                label="Date"
-                name="Date"
-                value={value}
-                autoOK
-                minDate={new Date('2000-01-01T03:00:00')}
-                maxDate={new Date()}
-                onChange={onChange}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    sx={{
-                      marginTop: '15px',
-                      backgroundColor: 'rgba(255,255,255,0.3)',
-                      width: '90vw',
-                    }}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-          )}
-        />
-
-        <Stack
-          style={{display: 'flex'}}
-          width='90vw'
-          direction='row'
-          spacing={2}
-          sx={{
-            alignItems: 'flex-start',
-          }}>
-
-          <Controller
-            name="docketNumber"
-            control={control}
-            rules={{required: 'Docket Number required'}}
-            render={({field: {onChange, value}, fieldState: {error}}) => (
-              <Inputfield
-                label="Docket No."
-                onChange={onChange}
-                value={value}
-                error={error}
-                sx={{width: '85vw',
-                  marginTop: '15px',
-                  backgroundColor: 'rgba(255,255,255,0.3)'}}
-              />
-            )}
-          />
-
-          <CameraButtons
-            control={control}
-            useStateValue={docketCheck}
-            setUseStateFunc={setDocketCheck}
-            buttonId={'contained-button-file'}
-            name={'docketPicture'}
-            iconId={'icon-button-file'}
-          />
-        </Stack>
-
-        <Controller
-          name="weight"
-          control={control}
-          rules={{
-            required: 'Enter a valid number',
-            validate: onlyNumbers,
-          }}
-          render={({field: {onChange, value}, fieldState: {error}}) => (
-            <Inputfield
-              label="Weight"
-              onChange={(e) => {
-                let tmpval = e.target.value;
-                if (isNaN(parseInt(e.target.value, 10))) {
-                  tmpval = 0;
-                } else {
-                  tmpval = parseInt(tmpval, 10);
-                }
-                onChange(tmpval);
-              }}
-              value={value}
-              error={error}
-              type="number"
-            />
-          )}
-        />
-
-        <Controller
-          name="binSize"
-          control={control}
-          rules={{required: 'Select a bin size'}}
-          render={({field: {onChange, value}, fieldState: {error}}) => (
-            <Selection
-              label="Bin Size"
-              data={binsizes}
-              onChange={onChange}
-              value={value}
-              error={error}
-            />
-          )}
-        />
-
-        <Controller
-          name="site"
-          control={control}
-          rules={{required: 'Select a site'}}
-          render={({field: {onChange, value}, fieldState: {error}}) => (
-            <Selection
-              label="Site"
-              data={sites}
-              onChange={onChange}
-              value={value}
-              error={error}
-            />
-          )}
-        />
-
-        <Stack
-          style={{display: 'flex'}}
-          width='90vw'
-          direction='row'
-          spacing={2}
-          sx={{
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-          }}>
-          <Typography
-            variant="h4"
-            sx={{textAlign: 'center', marginTop: '10px', marginBottom: '10px'}}>
-            Waste Types
-          </Typography>
-
-          <CameraButtons
-            control={control}
-            useStateValue={wasteCheck}
-            setUseStateFunc={setWasteCheck}
-            buttonId={'waste-button-file'}
-            name={'wastePicture'}
-            iconId={'waste-icon-button-file'}
-          />
-        </Stack>
-
-        <WasteInputField control={control} onlyNumbers={onlyNumbers} />
-      </Container>
-
-      <Stack
-        direction="column"
-        justifyContent="center"
-        alignContent="stretch"
-        sx={{
-          marginTop: '15px',
-          width: '100vw',
-          flexGrow: '2',
-          position: 'sticky',
-          justifyContent: 'space-around',
-          bottom: 0,
-          display: 'flex',
-          zIndex: 2,
-          flex: '1',
-        }}>
-
-        <Stack
-          sx={{
-            flex: '1',
-            display: 'flex',
-            alignContent: 'center',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            backgroundColor: Colors.trasteNavyBlue,
-            color: 'white',
-            paddingTop: 1,
-            paddingBottom: 1,
-          }}
-          direction="row">
-
-          <Typography variant="h4">Waste total: </Typography>
-
-          <Box sx={{position: 'relative', display: 'inline-flex'}}>
-            <CircularProgress
-              variant="determinate"
-              value={total > 100 ? 100 : total}
-              size={60}
-              thickness={5}
-              sx={{color: total > 100 ? 'red' : Colors.trasteGreen}}
-            />
-            <Box
-              sx={{
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                position: 'absolute',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-
-              <Typography
-                variant="caption"
-                component="div"
-                color="text.secondary"
-                fontSize={16}
-                fontWeight="bold"
-                sx={{color: 'white'}}>
-                {`${Math.round(total)}%`}
-              </Typography>
-            </Box>
-          </Box>
-        </Stack>
-
-        <Button
-          endIcon={
-            <SendIcon
-              sx={{
-                color: Colors.trasteNavyBlue,
-                fontSize: '200px',
-                width: 40,
-                height: 40,
-              }}
-            />
-          }
-          disabled={total !== 100}
-          // type="submit"
-          sx={{
-            flex: '1',
-            display: 'flex',
-            position: 'sticky',
-            alignItems: 'center',
-            aligntContent: 'stretch',
-            justifyContent: 'space-around',
-            width: 1,
-            zIndex: 2,
-            backgroundColor:
-            isValid && total === 100 ?
-              Colors.trastePurple :
-              Colors.trasteDadada,
-            borderRadius: '0',
-            paddingTop: 1,
-            paddingBottom: 1,
-          }}
-          onClick={handleClickOpen}
+      <BootstrapDialog
+        onClose={handleClosed}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+      >
+        <BootstrapDialogTitle id="customized-dialog-title"
+          onClose={handleClosed}
         >
-
-          <Typography
-            variant="h4"
-            sx={{color: Colors.trasteNavyBlue}}>
-            Send Report
+          Modal title
+        </BootstrapDialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            skit
           </Typography>
-        </Button>
-        <CustomizedDialogs
-          closeHandler={handleClosed}
-          open={open}
-        />
-      </Stack>
-    </form>
+          <Typography gutterBottom>
+            mer skit
+          </Typography>
+          <Typography gutterBottom>
+            ännu
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus type="submit" onClick={handleClosed}
+            form='report-form'>
+            Send report
+          </Button>
+        </DialogActions>
+      </BootstrapDialog>
+    </div>
   );
 }
 
 ReportPage.propTypes = {
   snackBarHandler: PropTypes.any.isRequired,
 };
+
 
 export default ReportPage;
