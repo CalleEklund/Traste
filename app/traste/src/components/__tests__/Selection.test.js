@@ -3,6 +3,11 @@ import '@testing-library/jest-dom';
 import renderer from 'react-test-renderer';
 import Selection from '../Selection';
 import React from 'react';
+import {configure, shallow, mount} from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import {MenuItem} from '@mui/material';
+
+configure({adapter: new Adapter()});
 
 afterEach(() => {
   cleanup();
@@ -34,33 +39,37 @@ const data = [
   },
 ];
 
-const onChange = jest.fn();
+test('Check that MenuItem, in the Selection component, has' +
+'text No data because data props is null', () => {
+  const onChange = jest.fn();
+  const wrapper = shallow(<Selection
+    title={propsData.title}
+    name={propsData.name}
+    {...propsData}
+    onChange={onChange}
+  />);
 
-test('Should render Selection with selection length of 4', () => {
-  render(
-      <Selection
-        title={propsData.title}
-        name={propsData.name}
-        data={data}
-        {...propsData}
-        onChange={onChange}
-      />,
-  );
+  expect(wrapper.find(MenuItem)).toHaveLength(1);
+  expect(wrapper.find(MenuItem).text()).toBe('No data');
 });
 
-test('Should render Selection with selection length of 0', () => {
-  render(
-      <Selection
-        title={propsData.title}
-        name={propsData.name}
-        {...propsData}
-        onChange={onChange}
-      />,
-  );
+test('Check so that Selection component contains 4 values', () => {
+  const onChange = jest.fn();
+  const wrapper = shallow(<Selection
+    title={propsData.title}
+    name={propsData.name}
+    data={data}
+    {...propsData}
+    onChange={onChange}
+  />);
+
+  expect(wrapper.find(MenuItem)).toHaveLength(4);
 });
 
 
 test('Matches snapshot', () => {
+  const onChange = jest.fn();
+
   const tree = renderer.create(<Selection
     title={propsData.title}
     name={propsData.name}

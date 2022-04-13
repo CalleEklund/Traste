@@ -27,7 +27,7 @@ function Selection({label, value, onChange, error, data}) {
       error={!!error}
     >
       {
-        /** Placeholder ifall det inte finns någon data */
+        /** Placeholder if there´s no data available */
         data !== undefined ? (
           data.map((option) => (
             <MenuItem
@@ -36,7 +36,7 @@ function Selection({label, value, onChange, error, data}) {
             </MenuItem>
           ))
         ) : (
-          <MenuItem key={0}>Ingen data</MenuItem>
+          <MenuItem key={0}>No data</MenuItem>
         )
       }
     </TextField>

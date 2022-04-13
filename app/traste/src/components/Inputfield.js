@@ -18,7 +18,6 @@ function Inputfield({label, value, onChange, error, type, sx}) {
       label={label}
       variant='outlined'
       fullWidth
-      marginRight='15px'
       sx={sx}
       value={value}
       type={type}
