@@ -65,8 +65,6 @@ eslint-frontend:
 
 unit-test-backend: 
   stage: unit-test-backend
-  rules:
-    - when: never
   dependencies:
     - npm-backend
   script:
@@ -83,8 +81,6 @@ unit-test-backend:
 
 unit-test-frontend:
   stage: unit-test-frontend
-  rules:
-    - when: never
   dependencies:
     - npm-frontend
   script:
