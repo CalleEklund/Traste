@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {TextField, MenuItem} from '@mui/material';
-import {Colors} from '../assets/Colors';
 
 /**
  * Custom TextField for displaying a selectionbox with different alternatives.
