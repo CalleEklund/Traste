@@ -15,6 +15,7 @@ import {TextField, InputAdornment} from '@mui/material';
 function MaterialField({label, value, onChange, error}) {
   return (
     <TextField
+      fullWidth
       label={label}
       InputProps={{
         endAdornment: (

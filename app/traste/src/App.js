@@ -53,7 +53,8 @@ function App() {
 
     <Container
       disableGutters={true}
-      sx={{height: '100vh', display: 'flex', flexDirection: 'column'}}
+      sx={{height: '100vh', display: 'flex', flexDirection: 'column',
+        bgcolor: Colors.trasteGreen}}
     >
       <Header goBackHandler={goBack} />
 

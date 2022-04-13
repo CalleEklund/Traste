@@ -17,6 +17,8 @@ function Inputfield({label, value, onChange, error, type, sx}) {
     <TextField
       label={label}
       variant='outlined'
+      fullWidth
+      marginRight='15px'
       sx={sx}
       value={value}
       type={type}
@@ -33,7 +35,6 @@ Inputfield.defaultProps = {
   sx: {
     marginTop: '15px',
     backgroundColor: 'rgba(255,255,255,0.3)',
-    width: '90vw',
   },
 };
 
