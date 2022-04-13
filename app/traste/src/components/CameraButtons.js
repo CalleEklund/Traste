@@ -14,7 +14,7 @@ import {Colors} from '../assets/Colors';
  * @return {Stack} Rendered Stack.
  */
 function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
-  name, iconId}) {
+  name, iconId, setURL}) {
   // Used for Input component.
   const Input = styled('input')({
     display: 'none',
@@ -23,15 +23,15 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
   return (
     <Stack
       direction="column"
+      fullWidth
       sx={{
         display: 'flex',
         paddingTop: '15px',
         alignItems: 'center',
-        direction: 'row',
       }}>
 
-      {/* contained-button-file is a button that
-      a user can clicka to upload an picture. */}
+      {/* buttonId is a button that
+      an user can click to upload a picture. */}
       <label htmlFor={buttonId}>
         <Controller
           name={name}
@@ -46,6 +46,7 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
               onChange={(e) => {
                 onChange(e.target.files.item(0));
                 setUseStateFunc(1);
+                setURL(URL.createObjectURL(e.target.files[0]));
               }}
               error={error}
             />
@@ -58,7 +59,6 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
             'backgroundColor': Colors.trasteNavyBlue,
             ':hover': {backgroundColor: Colors.trastePurple},
             'height': 20,
-            'width': '5vw',
           }}>
           Upload
         </Button>
@@ -66,7 +66,7 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
 
       <Stack
         style={{display: 'flex'}}
-        width='5vw'
+        fullWidth
         direction='row'
         spacing={2}
         sx={{
@@ -74,8 +74,8 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
           justifyContent: 'space-evenly',
         }}>
 
-        {/* icon-button-file is a camera icon when
-        clicked opens an user's camera on the phone. */}
+        {/* iconId is a camera icon.
+        When clicked opens an user's camera on the phone. */}
         <label htmlFor={iconId}>
           <Controller
             name={name}
@@ -90,6 +90,7 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
                 onChange={(e) => {
                   onChange(e.target.files[0]);
                   setUseStateFunc(1);
+                  setURL(URL.createObjectURL(e.target.files[0]));
                 }}
                 error={error}
               />
@@ -102,7 +103,6 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
             sx={{
               'color': Colors.trasteNavyBlue,
               ':hover': {color: Colors.trastePurple},
-              'width': '5vw',
             }}>
             <PhotoCamera />
           </IconButton>
@@ -127,6 +127,7 @@ CameraButtons.propTypes = {
   buttonId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   iconId: PropTypes.string.isRequired,
+  setURL: PropTypes.func.isRequired,
 };
 
 export default CameraButtons;

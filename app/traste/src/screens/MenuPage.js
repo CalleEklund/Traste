@@ -7,7 +7,7 @@ import {Colors} from '../assets/Colors';
 
 /**
  * Menu page that contains "Add report"-button and "Show history"-button.
- * @return {Container} The page with the two buttons
+ * @return {Container} The page with the two buttons.
  */
 function MenuPage() {
   const navigate = useNavigate();
