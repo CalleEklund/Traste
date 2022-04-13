@@ -11,6 +11,7 @@
     "test-int": "mocha test/integrationTest",
     "test-unit": "mocha test/unitTest",
     "coverage-int": "nyc --reporter=html npm run test-int",
+    "coverage-unit": "nyc --reporter=html npm run test-unit",
     "test-coverage": "npx nyc --reporter cobertura mocha"
   },
   "engines": {
