@@ -14,6 +14,14 @@ npm-backend:
     - echo "Running npm install for backend"
     - npm install
     - echo "npm install is complete"
+  cache:
+    paths:
+      - functions/node_modules/
+  artifacts:
+    expire_in: 1 days
+    when: on_success
+    paths:
+      - functions/node_modules/
 
 npm-frontend:
   stage: npm
@@ -22,6 +30,14 @@ npm-frontend:
     - echo "Running npm install for frontend"
     - npm install
     - echo "npm install is complete"
+  cache:
+    paths:
+      - app/traste/node_modules/
+  artifacts:
+    expire_in: 1 days
+    when: on_success
+    paths:
+      - app/traste/node_modules/
 
 eslint-backend:
   stage: lint
