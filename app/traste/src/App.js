@@ -9,6 +9,7 @@ import Header from './components/Header';
 import {Colors} from './assets/Colors';
 
 import axios from 'axios';
+import HistoryPage from './screens/HistoryPage';
 
 /**
  * Main file for controling the flow of the app.
@@ -76,6 +77,10 @@ function App() {
         <Route
           path="/reportpage"
           element={<ReportPage snackBarHandler={openSnackBar} />}
+        />
+        <Route
+          path="/historypage"
+          element={<HistoryPage/>}
         />
       </Routes>
     </Container>
