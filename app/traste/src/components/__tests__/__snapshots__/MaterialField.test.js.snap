@@ -2,7 +2,7 @@
 
 exports[`Matches snapshot 1`] = `
 <div
-  className="MuiFormControl-root MuiTextField-root css-1q0uy3-MuiFormControl-root-MuiTextField-root"
+  className="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-fhe0il-MuiFormControl-root-MuiTextField-root"
 >
   <label
     className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary Mui-error MuiFormLabel-filled css-1sumxir-MuiFormLabel-root-MuiInputLabel-root"
@@ -11,7 +11,7 @@ exports[`Matches snapshot 1`] = `
     Wood
   </label>
   <div
-    className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary Mui-error MuiInputBase-formControl MuiInputBase-adornedEnd css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root"
+    className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary Mui-error MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root"
     onClick={[Function]}
   >
     <input
