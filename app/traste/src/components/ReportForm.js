@@ -194,7 +194,6 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
             sx={{align: 'center', marginTop: '20px', marginBottom: '0px'}}>
             Waste Types
           </Typography>
-
           <CameraButtons
             control={control}
             useStateValue={wasteCheck}

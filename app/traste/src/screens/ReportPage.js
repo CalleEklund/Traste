@@ -52,8 +52,8 @@ function ReportPage({snackBarHandler}) {
     defaultValues: {
       date: new Date().toDateString(),
       docketNumber: '',
-      docketPicture: 'NULL',
-      wastePicture: 'NULL',
+      docketPicture: null,
+      wastePicture: null,
       name: 'NULL',
       weight: '',
       binSize: '',
