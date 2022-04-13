@@ -6,4 +6,5 @@ export const Colors = {
   trasteDarkPurple: '#170055',
   trasteBlue: '#3e00ff',
   trastePurple: '#ae00fb',
+  transparentWhite: 'rgba(255,255,255,0.3)',
 };
