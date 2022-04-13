@@ -30,8 +30,8 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
         alignItems: 'center',
       }}>
 
-      {/* contained-button-file is a button that
-      a user can click to upload an picture. */}
+      {/* buttonId is a button that
+      an user can click to upload a picture. */}
       <label htmlFor={buttonId}>
         <Controller
           name={name}
@@ -74,8 +74,8 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
           justifyContent: 'space-evenly',
         }}>
 
-        {/* icon-button-file is a camera icon when
-        clicked opens an user's camera on the phone. */}
+        {/* iconId is a camera icon.
+        When clicked opens an user's camera on the phone. */}
         <label htmlFor={iconId}>
           <Controller
             name={name}

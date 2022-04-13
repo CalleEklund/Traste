@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {TextField, MenuItem} from '@mui/material';
+import {Colors} from '../assets/Colors';
 
 /**
  * Custom TextField for displaying a selectionbox with different alternatives.
@@ -23,10 +24,8 @@ function Selection({label, value, onChange, error, data}) {
         marginTop: '15px',
         backgroundColor: 'rgba(255,255,255,0.3)',
       }}
-      // required
       inputProps={{'data-testid': 'selectionfield'}}
       error={!!error}
-      // helperText={error ? error.message : null}
     >
       {
         /** Placeholder ifall det inte finns någon data */
