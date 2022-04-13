@@ -83,7 +83,7 @@ function ReportPage({snackBarHandler}) {
    */
   async function uploadPicture(picture) {
     const res = await uploadImageAPI
-        .post(picture).catch((e) => {
+        .post('', picture).catch((e) => {
           console.log('error', e);
         });
     return res.data.imgUrl;
@@ -104,7 +104,7 @@ function ReportPage({snackBarHandler}) {
     report.wastePicture = await uploadPicture(data.wastePicture);
 
     // Create new report and return response.
-    return await createReportAPI.post(report);
+    return await createReportAPI.post('', report);
   }
 
   // fungerar inte för t.ex. 10e+12

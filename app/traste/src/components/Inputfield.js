@@ -23,7 +23,6 @@ function Inputfield({label, value, onChange, error, type, sx}) {
       onChange={onChange}
       inputProps={{'data-testid': 'inputfield'}}
       error={!!error}
-      // helperText={error ? error.message : null}
     />
   );
 }
