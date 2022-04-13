@@ -76,7 +76,7 @@ export const BootstrapDialogTitle = (props) => {
   const {children, onClose, ...other} = props;
 
   return (
-    <DialogTitle sx={{m: 0, p: 2}} {...other}>
+    <DialogTitle sx={{m: 0, p: 2, alignContent: 'center'}} {...other}>
       {children}
       {onClose ? (
         <IconButton
@@ -86,7 +86,7 @@ export const BootstrapDialogTitle = (props) => {
             position: 'absolute',
             right: 8,
             top: 8,
-            color: (theme) => Colors.trasteNavyBlue,
+            color: (theme) => 'white',
           }}
         >
           <CloseIcon />

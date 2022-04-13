@@ -23,11 +23,11 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
   return (
     <Stack
       direction="column"
+      fullWidth
       sx={{
         display: 'flex',
         paddingTop: '15px',
         alignItems: 'center',
-        direction: 'row',
       }}>
 
       {/* contained-button-file is a button that
@@ -59,7 +59,6 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
             'backgroundColor': Colors.trasteNavyBlue,
             ':hover': {backgroundColor: Colors.trastePurple},
             'height': 20,
-            'width': '5vw',
           }}>
           Upload
         </Button>
@@ -67,7 +66,7 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
 
       <Stack
         style={{display: 'flex'}}
-        width='5vw'
+        fullWidth
         direction='row'
         spacing={2}
         sx={{
@@ -104,7 +103,6 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
             sx={{
               'color': Colors.trasteNavyBlue,
               ':hover': {color: Colors.trastePurple},
-              'width': '5vw',
             }}>
             <PhotoCamera />
           </IconButton>

@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import {Divider, List, ListItem,
-  ListItemText, CardMedia, Container} from '@mui/material';
+  ListItemText, CardMedia, Container, Typography} from '@mui/material';
 
 
 import PropTypes from 'prop-types';
@@ -18,6 +18,7 @@ import ReportForm from '../components/ReportForm.js';
 import {BootstrapDialog, BootstrapDialogTitle} from '../assets/Constants';
 import {uploadImageAPI, createReportAPI} from '../api/trasteApi';
 import {wasteTypes, successSx} from '../assets/Constants';
+import {Colors} from '../assets/Colors.js';
 
 /**
  * ReportPage renders the report form for a waste report.
@@ -165,82 +166,129 @@ function ReportPage({snackBarHandler}) {
         onClose={handleClosed}
         aria-labelledby="customized-dialog-title"
         open={open}
-        fullScreen='true'
+        PaperProps={{style: {
+          backgroundColor: Colors.trasteGreen,
+          boxShadow: 'none'}}}
+        // fullScreen='true'
+        sx={{backdropFilter: 'blur(40px)'}}
       >
         <BootstrapDialogTitle id="customized-dialog-title"
           onClose={handleClosed}
+          sx={{backgroundColor: Colors.trasteNavyBlue}}
         >
-          Waste Report
+          <Typography variant='h5' color="common.white" align="center">
+        Confirm Report
+          </Typography>
         </BootstrapDialogTitle>
-        <DialogContent dividers sx={{}}>
+        <DialogContent dividers
+          sx={{borderColor: Colors.trasteNavyBlue, overflow: 'hidden',
+            overflowY: 'scroll'}}>
           <List sx={{pt: 0}}>
             <ListItem autoFocus>
               <ListItemText primary="Date"
-                secondary={all.date}/>
+                secondary={new Date(all.date).toDateString()}
+                // primaryTypographyProps={{color: 'common.white'}}
+                // secondaryTypographyProps={{color: 'common.white'}}
+              />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Docket number"
-                secondary={all.docketNumber}/>
+                secondary={all.docketNumber}
+                // primaryTypographyProps={{color: 'common.white'}}
+                // secondaryTypographyProps={{color: 'common.white'}}
+              />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Weight"
-                secondary={all.weight}/>
+                secondary={all.weight}
+                // primaryTypographyProps={{color: 'common.white'}}
+                // secondaryTypographyProps={{color: 'common.white'}}
+              />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Bin size"
-                secondary={all.binSize}/>
+                secondary={all.binSize}
+                // primaryTypographyProps={{color: 'common.white'}}
+                // secondaryTypographyProps={{color: 'common.white'}}
+              />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Site"
-                secondary={all.site}/>
+                secondary={all.site}
+                // primaryTypographyProps={{color: 'common.white'}}
+                // secondaryTypographyProps={{color: 'common.white'}}
+              />
             </ListItem>
           </List>
-          <Divider/>
+          <Divider
+            sx={{backgroundColor: Colors.trasteNavyBlue}}/>
           <List sx={{pt: 0}}>
             <ListItem autoFocus>
               <ListItemText primary="Wood"
-                secondary={all.wasteData['Wood'] + '%'}/>
+                secondary={all.wasteData['Wood'] + '%'}
+                // primaryTypographyProps={{color: 'common.white'}}
+                // secondaryTypographyProps={{color: 'common.white'}}
+              />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Plastic"
                 secondary={all.wasteData['Plastic'] + '%'}
+                // primaryTypographyProps={{color: 'common.white'}}
+                // secondaryTypographyProps={{color: 'common.white'}}
               />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Concrete"
                 secondary={all.wasteData['Concrete'] + '%'}
+                // primaryTypographyProps={{color: 'common.white'}}
+                // secondaryTypographyProps={{color: 'common.white'}}
               />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Metal"
                 secondary={all.wasteData['Metal'] + '%'}
+                // primaryTypographyProps={{color: 'common.white'}}
+                // secondaryTypographyProps={{color: 'common.white'}}
               />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Other"
                 secondary={all.wasteData['Other'] + '%'}
+                // primaryTypographyProps={{color: 'common.white'}}
+                // secondaryTypographyProps={{color: 'common.white'}}
               />
             </ListItem>
           </List>
-          <Divider/>
+          <Divider sx={{backgroundColor: Colors.trasteNavyBlue}}/>
           <Container style={{
             display: 'flex',
             justifyContent: 'center',
+            alignItems: 'center',
             flexDirection: 'column'}}>
+            <Typography variant='h6' color="common.black">
+                Docket picture
+            </Typography>
             <CardMedia
               image={docketURL}
               sx={{height: '50vh',
                 width: '80vw'}} />
+            <Typography variant='h6' color="common.black">
+                Waste picture
+            </Typography>
             <CardMedia
               image={wasteURL}
               sx={{height: '50vh',
                 width: '80vw'}} />
           </Container>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{backgroundColor: Colors.trasteNavyBlue}}>
           <Button autoFocus type="submit" onClick={handleClosed}
-            form='report-form'>
-            Send report
+            form='report-form'
+            sx={{width: '100vw', color: 'common.white',
+              backgroundColor: Colors.trasteNavyBlue, m: 0, p: 1}}>
+            <Typography variant='h6' color="common.white">
+                Send Report
+            </Typography>
           </Button>
         </DialogActions>
       </BootstrapDialog>

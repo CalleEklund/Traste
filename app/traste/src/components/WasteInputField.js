@@ -1,6 +1,6 @@
 import React from 'react';
 import {Controller} from 'react-hook-form';
-import {Stack} from '@mui/material';
+import {Stack, Container} from '@mui/material';
 import MaterialField from './MaterialField';
 import PropTypes from 'prop-types';
 
@@ -15,7 +15,7 @@ function WasteInputField({control, onlyNumbers}) {
   for (let i = 0; i < Object.keys(wasteTypes).length; i += 2) {
     if (i + 1 >= Object.keys(wasteTypes).length) {
       outputlist.push(
-          <Stack direction="row" key={i + 'stack'}>
+          <Stack direction="row" marginTop='15px' key={i + 'stack'}>
             <Controller
               name={'wasteData.' + Object.keys(wasteTypes)[i]}
               control={control}
@@ -41,7 +41,7 @@ function WasteInputField({control, onlyNumbers}) {
       );
     } else {
       outputlist.push(
-          <Stack direction="row" spacing={2} key={i + 'stack'}>
+          <Stack direction="row" spacing={2} marginTop='15px' key={i + 'stack'}>
             <Controller
               name={'wasteData.' + Object.keys(wasteTypes)[i]}
               control={control}
@@ -90,9 +90,12 @@ function WasteInputField({control, onlyNumbers}) {
   }
 
   return (
-    <Stack direction="column" spacing={2} sx={{width: '90vw'}}>
+    <Container direction="column" spacing={2} disableGutters={true}
+      sx={{
+        paddingLeft: '0px',
+        paddingRight: '0px'}}>
       {outputlist}
-    </Stack>
+    </Container>
   );
 }
 

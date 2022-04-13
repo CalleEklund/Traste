@@ -17,11 +17,11 @@ function Selection({label, value, onChange, error, data}) {
       select
       label={label}
       value={value}
+      fullWidth
       onChange={onChange}
       sx={{
         marginTop: '15px',
         backgroundColor: 'rgba(255,255,255,0.3)',
-        width: '90vw',
       }}
       // required
       inputProps={{'data-testid': 'selectionfield'}}

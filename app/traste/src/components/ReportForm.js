@@ -42,11 +42,15 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
   return (
     <form onSubmit={handleSubmit(onSubmit)}
       id='report-form'>
-      <Container
+      <Stack
         sx={{
           display: 'flex',
+          marginLeft: '15px',
+          marginRight: '15px',
           alignItems: 'center',
           flexDirection: 'column',
+          bgcolor: Colors.trasteGreen,
+
         }}>
 
         <Controller
@@ -66,10 +70,10 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
                 renderInput={(params) => (
                   <TextField
                     {...params}
+                    fullWidth
                     sx={{
                       marginTop: '15px',
                       backgroundColor: 'rgba(255,255,255,0.3)',
-                      width: '90vw',
                     }}
                   />
                 )}
@@ -78,12 +82,14 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
           )}
         />
 
-        <Stack
+        <Container
           style={{display: 'flex'}}
-          width='90vw'
+          fullWidth
           direction='row'
-          spacing={2}
+          disableGutters={true}
           sx={{
+            paddingLeft: '0px',
+            paddingRight: '0px',
             alignItems: 'flex-start',
           }}>
 
@@ -97,8 +103,9 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
                 onChange={onChange}
                 value={value}
                 error={error}
-                sx={{width: '85vw',
+                sx={{flexGrow: 1,
                   marginTop: '15px',
+                  marginRight: '15px',
                   backgroundColor: 'rgba(255,255,255,0.3)'}}
               />
             )}
@@ -113,7 +120,7 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
             iconId={'icon-button-file'}
             setURL={setDocketURL}
           />
-        </Stack>
+        </Container>
 
         <Controller
           name="weight"
@@ -171,18 +178,20 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
           )}
         />
 
-        <Stack
-          style={{display: 'flex'}}
-          width='90vw'
+        <Container
+          style={{display: 'flex', m: 0, p: 0}}
+          fullWidth
           direction='row'
-          spacing={2}
+          disableGutters={true}
           sx={{
+            paddingLeft: '0px',
+            paddingRight: '0px',
             alignItems: 'flex-start',
             justifyContent: 'space-between',
           }}>
           <Typography
             variant="h4"
-            sx={{textAlign: 'center', marginTop: '10px', marginBottom: '10px'}}>
+            sx={{align: 'center', marginTop: '20px', marginBottom: '0px'}}>
             Waste Types
           </Typography>
 
@@ -195,25 +204,27 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
             iconId={'waste-icon-button-file'}
             setURL={setWasteURL}
           />
-        </Stack>
+        </Container>
 
         <WasteInputField control={control} onlyNumbers={onlyNumbers} />
-      </Container>
+      </Stack>
 
-      <Stack
-        direction="column"
-        justifyContent="center"
-        alignContent="stretch"
+      <Container
+        fullWidth
+        disableGutters={true}
         sx={{
+          paddingLeft: 0,
+          paddingRight: 0,
+          flexDirection: 'column',
           marginTop: '15px',
-          width: '100vw',
           flexGrow: '2',
           position: 'sticky',
-          justifyContent: 'space-around',
+          justifyContent: 'flex-end',
           bottom: 0,
           display: 'flex',
           zIndex: 2,
           flex: '1',
+          bgcolor: Colors.trasteGreen,
         }}>
 
         <Stack
@@ -304,7 +315,7 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
             Send Report
           </Typography>
         </Button>
-      </Stack>
+      </Container>
     </form>
   );
 }
