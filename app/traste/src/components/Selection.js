@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {TextField, MenuItem} from '@mui/material';
-import {transparentWhite} from '../assets/Colors';
+import {Colors} from '../assets/Colors';
 
 /**
  * Custom TextField for displaying a selectionbox with different alternatives.
@@ -21,7 +21,7 @@ function Selection({label, value, onChange, error, data}) {
       onChange={onChange}
       sx={{
         marginTop: '15px',
-        backgroundColor: transparentWhite,
+        backgroundColor: Colors.transparentWhite,
         width: '90vw',
       }}
       inputProps={{'data-testid': 'selectionfield'}}

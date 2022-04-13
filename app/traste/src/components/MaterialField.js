@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {transparentWhite} from '../assets/Colors';
+import {Colors} from '../assets/Colors';
 
 import {TextField, InputAdornment} from '@mui/material';
 
@@ -44,7 +44,7 @@ function MaterialField({label, value, onChange, error}) {
         onChange(tmpval);
       }}
       sx={{
-        backgroundColor: transparentWhite,
+        backgroundColor: Colors.transparentWhite,
       }}
       inputProps={{
         'style': {textAlign: 'right', fontSize: 16},
