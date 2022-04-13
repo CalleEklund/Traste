@@ -1,9 +1,9 @@
-import {render, cleanup} from '@testing-library/react';
+import {cleanup} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import renderer from 'react-test-renderer';
 import Selection from '../Selection';
 import React from 'react';
-import {configure, shallow, mount} from 'enzyme';
+import {configure, shallow} from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import {MenuItem} from '@mui/material';
 
