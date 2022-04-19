@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, {useEffect, useState} from 'react';
 import Accordion from '@mui/material/Accordion';
 import {AccordionSummary, AccordionDetails, Typography, Divider}
@@ -16,11 +17,46 @@ import {List, ListItem,
 function HistoryPage() {
   const [reportData, setReportData] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  /*  const titles = ['Bin size: ', 'Date: ', 'Docket Number: ',
+  'DocketPicture: ',
+    'Name: ', 'Site: ', 'Report made: ', 'Waste Picture: ', 'Weight: ']; */
+  const titles = {
+    binSize: 'Bin size: ',
+    date: 'Date: ',
+    docketNumber: 'Docket Number: ',
+    docketPicture: 'Docket Picture: ',
+    name: 'Name: ',
+    site: 'Site: ',
+    timeStamps: 'Report made: ',
+    wastePicture: 'Waste Picture: ',
+    weight: 'Weight: ',
+    Wood: 'Wood: ',
+    Concrete: 'Concrete: ',
+    Plastic: 'Plastic: ',
+    Metal: 'Metal: ',
+    Other: 'Other: ',
+  };
+  /**
+   * sss
+   * @param {*} inData s
+   * @return {*} hejdå
+   */
+  function formatData(inData) {
+    const outList = [];
+    inData.map((report)=>{
+      const tmp = {};
+      Object.entries(titles).map(([key, value], index)=>{
+        tmp[value] = report[key];
+      });
+      outList.push(tmp);
+    });
+    return outList;
+  }
 
   useEffect(async () => {
-    const out = await axios.get('https://europe-west3-traste-71a71.cloudfunctions.net/app/getAllReports');
-    console.log('axios status code');
-    setReportData(out.data);
+    const out = await axios.get('http://localhost:5001/traste-71a71/europe-west3/app/getAllReports');
+    console.log('IM HERE');
+    setReportData(formatData(out.data));
     setLoading(false);
   }, []);
   if (isLoading) {
@@ -28,28 +64,41 @@ function HistoryPage() {
   }
   return (
     <div>
-      {console.log(reportData)}
       {reportData.map((item, index)=>(
         <div key={index}>
           <Accordion
-            sx={{backgroundColor: Colors.trasteDarkPurple}}>
+            sx={{backgroundColor: Colors.trasteDadada}}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header">
-              <Typography color={Colors.trasteGreen}>
-                {item.date + ' ' + item.docketNumber}</Typography>
+              <Typography color={Colors.trasteNavyBlue}>
+                {item['Date: '] + ' ' + item['Docket Number: ']}
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <List>
-                {Object.entries(item).map((key, index)=>(
-                  <ListItem key={index}>
-                    <ListItemText
-                      sx={{backgroundColor: Colors.trasteGreen}}>
-                      {key}
-                    </ListItemText>
-                  </ListItem>
-                ))}
+                {Object.entries(item).map(([key, value], index)=>{
+                  if (key === 'Docket Picture: ' || key === 'Waste Picture: ') {
+                    return (
+                      <ListItem key={index}>
+                        <ListItemText>
+                          {key}
+                          {/* <a href={value}>Click here</a> */}
+                          <img src={value} alt="Lamp" width="32" height="32"/>
+                        </ListItemText>
+                      </ListItem>
+                    );
+                  } else {
+                    return (
+                      <ListItem key={index}>
+                        <ListItemText>
+                          {key + value}
+                        </ListItemText>
+                      </ListItem>
+                    );
+                  }
+                })}
 
               </List>
             </AccordionDetails>

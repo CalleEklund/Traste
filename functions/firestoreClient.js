@@ -119,14 +119,13 @@ class FirestoreClient {
       const containsRef = docRef.collection("Contains");
       const containsSnapshot = await containsRef.get();
       const o = {};
-      for(const waste of containsSnapshot.docs){
+      for (const waste of containsSnapshot.docs) {
         o[waste.id] = waste.data().percentage;
       }
       outList.push({...docData, ...o});
     }
     return JSON.stringify(outList);
   }
-
 }
 
 /*
