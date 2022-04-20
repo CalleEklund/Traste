@@ -3,11 +3,14 @@ import {Modal} from '@mui/material';
 import PropTypes from 'prop-types';
 
 /**
- * a
- * @param {*} param0 a
- * @return {*} a
+ * A modal containg an image
+ * @param {string} picture: the image being showed
+ * @param {func} closeHandler: handles the closing of the modal
+ * @param {bool} isOpen: a bool determining
+ * if the modal should be open or closed
+ * @return {*} Modal
  */
-function ImageModal({text, closeHandler, isOpen}) {
+function ImageModal({picture, closeHandler, isOpen}) {
   return (
     <Modal
       open={isOpen}
@@ -15,13 +18,13 @@ function ImageModal({text, closeHandler, isOpen}) {
       style={{display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center', marginTop: '10vh'}}
     >
-      <img src={text} alt="Firestore Photo"
+      <img src={picture} alt="Firestore Photo"
         width={'100%'} onClick={closeHandler}/>
     </Modal>);
 }
 
 ImageModal.propTypes = {
-  text: PropTypes.string,
+  picture: PropTypes.string,
   closeHandler: PropTypes.func,
   isOpen: PropTypes.bool,
 };

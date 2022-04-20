@@ -1,11 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, {useEffect, useState} from 'react';
 import {Accordion, AccordionSummary, AccordionDetails, Typography,
-  Divider, List, ListItem, ListItemText, Modal, Button, Box}
+  Divider, List, ListItem, ListItemText, Button, Skeleton, Stack}
   from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import axios from 'axios';
-import {Colors} from '../assets/Colors.js';
 import ImageModal from '../components/ImageModal.js';
 import {getAllReportsAPI} from '../api/trasteApi';
 /**
@@ -61,15 +59,19 @@ function HistoryPage() {
   }
 
   useEffect(async () => {
-    // TODO: gör en axios call
-    // const out = await axios.get('https://europe-west3-traste-71a71.cloudfunctions.net/app/getAllReports');
     const out = await getAllReportsAPI.get('');
     setReportData(formatData(out.data));
     setLoading(false);
   }, []);
   if (isLoading) {
-    // TODO: Sätt en loading animation ist.
-    return (<h1>Loading Reports...</h1>);
+    return (
+      <Stack spacing={1}>
+        <Skeleton variant="rectangular" height={'5vh'} />
+        <Skeleton variant="rectangular" height={'5vh'} />
+        <Skeleton variant="rectangular" height={'5vh'} />
+        <Skeleton variant="rectangular" height={'5vh'} />
+
+      </Stack>);
   }
   return (
     <div>
@@ -120,7 +122,7 @@ function HistoryPage() {
       ))
       }
       <ImageModal
-        text={selectedImage}
+        picture={selectedImage}
         closeHandler={handleClose}
         isOpen={open}
       />
