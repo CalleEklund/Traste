@@ -9,7 +9,7 @@ const path = require("path");
 
 const {v4: uuidv4} = require("uuid");
 const {initializeApp} = require("firebase/app");
-const {getStorage, ref, uploadBytes, connectStorageEmulator, getDownloadURL} =
+const {getStorage, ref, uploadBytes, getDownloadURL, connectStorageEmulator} =
 require("firebase/storage");
 
 const firebaseConfig = {
@@ -96,10 +96,12 @@ class FirestoreClient {
 
             if (wasteData && (typeof wasteData === "object")) {
               // eslint-disable-next-line guard-for-in
+              const tmpWasteData = {};
               for (const [key, value] of Object.entries(wasteData)) {
-                await reportRef.collection("Contains").
-                    doc(key).set({percentage: parseInt(value)});
+                tmpWasteData[key] = parseInt(value);
               }
+              await reportRef.collection("Contains")
+                  .doc("WasteData").set(tmpWasteData);
             }
             return JSON.stringify({msg: "Report was made"});
           }
@@ -117,10 +119,12 @@ class FirestoreClient {
       const docRef = this.firestore.collection("Reports").doc(doc.id);
       const docData = doc.data();
       const containsRef = docRef.collection("Contains");
+      // console.log("docdata", docData);
+      // console.log("containsdata", containsRef);
       const containsSnapshot = await containsRef.get();
       const o = {};
       for (const waste of containsSnapshot.docs) {
-        o[waste.id] = waste.data().percentage;
+        o[waste.id] = waste.data();
       }
       outList.push({...docData, ...o});
     }

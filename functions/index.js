@@ -56,6 +56,7 @@ function validationErrorMiddleware(error, _request, response, next) {
 }
 
 app.post("/uploadimage", function(req, res) {
+  console.log("test");
   const data = req.body;
   uploadImage(data).then((imageURL) =>{
     res.send(imageURL);
