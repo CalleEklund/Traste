@@ -17,6 +17,7 @@ function ImageModal({picture, closeHandler, isOpen}) {
       onClose={closeHandler}
       style={{display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center', marginTop: '10vh'}}
+      data-testid = 'imageModal'
     >
       <img src={picture} alt="Firestore Photo"
         width={'100%'} onClick={closeHandler}/>
@@ -24,9 +25,9 @@ function ImageModal({picture, closeHandler, isOpen}) {
 }
 
 ImageModal.propTypes = {
-  picture: PropTypes.string,
-  closeHandler: PropTypes.func,
-  isOpen: PropTypes.bool,
+  picture: PropTypes.string.isRequired,
+  closeHandler: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
 };
 
 export default ImageModal;
