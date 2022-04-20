@@ -3,6 +3,8 @@ image: node:latest
 stages:     # List of stages for jobs, and their order of execution
   - npm
   - lint
+  - unit-test-backend
+  - unit-test-frontend
   - deploy
 
 npm-backend:
@@ -60,7 +62,39 @@ eslint-frontend:
     - echo "Starting eslint check for all files in the frontend"
     - eslint .
     - echo "Done"
-  
+
+unit-test-backend: 
+  stage: unit-test-backend
+  dependencies:
+    - npm-backend
+  script:
+    - cd functions
+    - echo "Running unit tests for backend"
+    - npm run coverage-unit
+    - echo "Unit tests for backend are complete"
+  coverage: '/Code coverage: \d+\.\d+/'
+  artifacts:
+    expire_in: 1 year
+    when: on_success
+    paths:
+      - functions/coverage/
+
+unit-test-frontend:
+  stage: unit-test-frontend
+  dependencies:
+    - npm-frontend
+  script:
+    - cd app/traste
+    - echo "Running unit tests for frontend"
+    - npm run test -- --coverage
+    - echo "Unit tests for frontend are complete"
+  coverage: '/Code coverage: \d+\.\d+/'
+  artifacts:
+    expire_in: 1 year
+    when: on_success
+    paths:
+      - app/traste/coverage/
+ 
 deploy-firestore:
   stage: deploy
   before_script:

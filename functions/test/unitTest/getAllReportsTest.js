@@ -82,7 +82,6 @@ describe("Check if the added reports are the ", ()=>{
 
   it("Should be the same length on firestore as the report array", async ()=>{
     const out = await FS.getAllReports();
-    console.log(out);
     expect(out.length).to.be.eq(reportArray.length);
     done();
   });
