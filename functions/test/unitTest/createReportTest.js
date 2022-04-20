@@ -3,7 +3,7 @@ This is the test file for createReport
 */
 
 const {expect} = require("chai");
-const FirestoreClient = require("../../firestoreClient");
+const {FirestoreClient} = require("../../firestoreClient");
 const FS = new FirestoreClient();
 
 describe("The create function", () => {
