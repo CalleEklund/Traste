@@ -2,7 +2,7 @@ const {expect} = require("chai");
 const {FirestoreClient} = require("../../firestoreClient");
 const FS = new FirestoreClient();
 
-const reportArray=[{
+/* const reportArray=[{
   "date": "Thu Apr 07 2022",
   "docketNumber": "123a",
   "docketPicture": "http://localhost:9199/v0/b/traste-71a71.appspot.com/o/55efc864-b8f0-4033-840c-abb9885b3591?alt=media&token=5b69b1f4-e365-478b-8b9b-d21777cb9a5a",
@@ -70,19 +70,21 @@ const reportArray=[{
     "Other": 0,
   },
   "timeStamps": "Thu, 07 Apr 2022 14:41:44 GMT",
-}];
+}]; */
 
-describe("Check if the added reports are the ", ()=>{
-  before(function() {
+describe("The get all reports function ", ()=>{
+  /*  before(function() {
     reportArray.forEach(async (report)=>{
       await FS.createReport(report);
     });
-  });
+  }); */
 
 
-  it("Should be the same length on firestore as the report array", async ()=>{
-    const out = await FS.getAllReports();
-    expect(out.length).to.be.eq(reportArray.length);
-    done();
-  });
+  it("Should return a array with length of atleast one",
+      function(done) {
+        FS.getAllReports().then((res, body)=>{
+          expect(res.length).to.be.at.least(1);
+          done();
+        }).catch(done);
+      });
 });
