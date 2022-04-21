@@ -72,7 +72,6 @@ This is for testing the createreport function.
 
 app.post("/createreport", validate({body: reportSchema}), (req, res) => {
   const data = req.body;
-  console.log("/createrep, data:", data);
   if (validatePicureUrl(data.docketPicture) &&
   validatePicureUrl(data.wastePicture)) {
     const response = FS.createReport(data);
@@ -92,6 +91,22 @@ app.post("/createreport", validate({body: reportSchema}), (req, res) => {
 app.get("/getAllReports", async (req, res)=>{
   const resp = await FS.getAllReports();
   res.send(resp);
+});
+
+/**
+ * Delete function
+ */
+app.delete("/deleteDocument", async (req, res) => {
+  const data = req.body;
+  const cresp = await FS.deleteSubCollection(data.docketNumber, "Contains");
+  const resp = await FS.deleteDocument(data.docketNumber);
+  if (resp && cresp) {
+    res.statusCode = 200;
+    res.send({msg: "Delete was successfull"});
+  } else {
+    res.statusCode = 400;
+    res.send({msg: "Delete was unsuccessfull"});
+  }
 });
 
 

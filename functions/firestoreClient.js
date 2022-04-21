@@ -9,7 +9,7 @@ const path = require("path");
 
 const {v4: uuidv4} = require("uuid");
 const {initializeApp} = require("firebase/app");
-const {getStorage, ref, uploadBytes, getDownloadURL} =
+const {getStorage, ref, uploadBytes, getDownloadURL, connectStorageEmulator} =
 require("firebase/storage");
 
 const firebaseConfig = {
@@ -22,7 +22,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 
 const storage = getStorage(firebaseApp);
-// connectStorageEmulator(storage, "localhost", 9199);
+connectStorageEmulator(storage, "localhost", 9199);
 
 /**
  * Upload image is the functions used to communicate
@@ -54,13 +54,24 @@ class FirestoreClient {
     params collectionPath, batchSize
     returns promise
     */
-  async deleteCollection(collectionPath, batchSize) {
-    const collectionRef = this.firestore.collection(collectionPath);
-    const query = collectionRef.orderBy("__name__").limit(batchSize);
-
+  async deleteSubCollection(docketNum, collectionPath) {
+    const collectionRef = this.firestore
+        .collection("Reports").doc(docketNum).collection(collectionPath);
+    const query = collectionRef.orderBy("__name__").limit(10);
     return new Promise((resolve, reject) => {
       deleteQueryBatch(this.firestore, query, resolve).catch(reject);
     });
+  }
+
+  /**
+   * Delete document function
+   * @param {*} documentPath
+   * @return {*}
+   */
+  async deleteDocument(documentPath) {
+    const documentRef = await this.firestore
+        .collection("Reports").doc(documentPath);
+    return await documentRef.delete();
   }
 
   /*
@@ -143,7 +154,7 @@ async function deleteQueryBatch(db, query, resolve) {
   const batchSize = snapshot.size;
   if (batchSize === 0) {
     // When there are no documents left, we are done
-    resolve();
+    resolve({msg: "Deleted all subcollections"});
     return;
   }
 
