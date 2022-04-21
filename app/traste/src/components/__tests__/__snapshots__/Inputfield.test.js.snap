@@ -3,7 +3,6 @@
 exports[`Matches snapshot 1`] = `
 <div
   className="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-1uxunh6-MuiFormControl-root-MuiTextField-root"
-  marginRight="15px"
 >
   <label
     className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary Mui-error MuiFormLabel-filled css-1sumxir-MuiFormLabel-root-MuiInputLabel-root"
