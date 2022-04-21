@@ -9,7 +9,7 @@ const path = require("path");
 
 const {v4: uuidv4} = require("uuid");
 const {initializeApp} = require("firebase/app");
-const {getStorage, ref, uploadBytes, getDownloadURL, connectStorageEmulator} =
+const {getStorage, ref, uploadBytes, getDownloadURL} =
 require("firebase/storage");
 
 const firebaseConfig = {
@@ -22,7 +22,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 
 const storage = getStorage(firebaseApp);
-connectStorageEmulator(storage, "localhost", 9199);
+// connectStorageEmulator(storage, "localhost", 9199);
 
 /**
  * Upload image is the functions used to communicate
@@ -32,7 +32,6 @@ connectStorageEmulator(storage, "localhost", 9199);
  */
 
 async function uploadImage(data) {
-  console.log("data", data);
   const imgId = uuidv4();
   const storageRef = ref(storage, imgId);
   // 'file' comes from the Blob or File API
