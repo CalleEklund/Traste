@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const url = 'http://localhost:5001/traste-71a71/europe-west3/app';
-// const url = 'https://europe-west3-traste-71a71.cloudfunctions.net/app';
+const baseURL = 'http://localhost:5001/traste-71a71/europe-west3/app';
+// const baseURL = 'https://europe-west3-traste-71a71.cloudfunctions.net/app';
 
 /**
  * Makes a call with data as login password to authenticate user.

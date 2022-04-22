@@ -56,8 +56,8 @@ function LoginPage({snackBarHandler}) {
       snackBarHandler(
           'Successfully logged in.',
           'success', successSx,
-      );
-      // bla bla bla, save token
+      ); // dubbelkolla path till token från res.
+      localStorage.setItem('token', res.payload.data.token);
       navigate('/menupage');
     }
   }
