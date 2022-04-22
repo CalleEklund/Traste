@@ -96,9 +96,10 @@ app.get("/getAllReports", async (req, res)=>{
 /**
  * Delete function
  */
-app.delete("/deleteDocument", async (req, res) => {
+app.delete("/deleteReport", async (req, res) => {
   const data = req.body;
-  const cresp = await FS.deleteSubCollection(data.docketNumber, "Contains");
+
+  /* const cresp = await FS.deleteSubCollection(data.docketNumber, "Contains");
   const resp = await FS.deleteDocument(data.docketNumber);
   if (resp && cresp) {
     res.statusCode = 200;
@@ -106,7 +107,10 @@ app.delete("/deleteDocument", async (req, res) => {
   } else {
     res.statusCode = 400;
     res.send({msg: "Delete was unsuccessfull"});
-  }
+  } */
+  const resp = await FS.deleteReport(data.docketNumber);
+  res.statusCode = resp.status;
+  res.send(JSON.stringify(resp.msg));
 });
 
 

@@ -74,6 +74,15 @@ class FirestoreClient {
     return await documentRef.delete();
   }
 
+  async deleteReport(docketNum) {
+    const cresp = await this.deleteSubCollection(docketNum, "Contains");
+    const resp = await this.deleteDocument(docketNum);
+    if (resp && cresp) {
+      return {msg: "Delete was successfull", status: 200};
+    } else {
+      return {msg: "Delete was unsuccessfull", status: 400};
+    }
+  }
   /*
     This function creates a report from data.
     If data is not formatted correctly a error code will be provided
