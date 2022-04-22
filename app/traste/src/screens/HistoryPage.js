@@ -5,7 +5,9 @@ import {Accordion, AccordionSummary, AccordionDetails, Typography,
   from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ImageModal from '../components/ImageModal.js';
-import {getAllReportsAPI} from '../api/trasteApi';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {deleteReportAPI, getAllReportsAPI} from '../api/trasteApi';
+import {Colors} from '../assets/Colors';
 /**
  * A page which shows the created reports in list form
  * @return {*}
@@ -63,6 +65,9 @@ function HistoryPage() {
     setReportData(formatData(out.data));
     setLoading(false);
   }, []);
+  useEffect(()=>{
+    console.log('reportdata has changed');
+  }, [reportData]);
   if (isLoading) {
     return (
       <Stack spacing={1}>
@@ -98,7 +103,9 @@ function HistoryPage() {
                           <Button onClick={()=>{
                             setSelectedImage(value);
                             handleOpen(true);
-                          }}>Open image</Button>
+                          }}
+                          variant="outlined"
+                          sx={{marginLeft: '15px'}}>Open image</Button>
 
                         </ListItemText>
                       </ListItem>
@@ -115,6 +122,30 @@ function HistoryPage() {
                 })}
 
               </List>
+              <Button
+                endIcon={<DeleteIcon style={{color: Colors.trasteTeal}}/>}
+                variant="outlined"
+                sx={{borderColor: Colors.trasteTeal, color: Colors.trasteTeal}}
+                onClick={async ()=>{
+                  console.log('delete report', item['Docket Number: '],
+                      'index', index);
+                  const res =
+                  await deleteReportAPI.delete('',
+                      {data: {docketNumber: item['Docket Number: ']}});
+                  console.log('res', res);
+                  if (res.status===200) {
+                    console.log('old arr', reportData);
+                    const old = reportData;
+                    old.splice(index, 1);
+                    setReportData(old);
+                    console.log('new arr', old);
+                    console.log(old === reportData);
+                  }
+                }}
+              >
+                Delete Report
+              </Button>
+
             </AccordionDetails>
           </Accordion>
           <Divider/>
