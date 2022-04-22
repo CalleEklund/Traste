@@ -15,6 +15,12 @@ const theme = createTheme({
   typography: {
     fontFamily: ['Gilroy'],
   },
+  palette: {
+    primary: {
+      main: '#00a8ab',
+      contrastText: '#ffffff',
+    },
+  },
   overrides: {
     MuiCssBaseline: {
       '@global': {

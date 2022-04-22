@@ -84,7 +84,6 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
 
         <Container
           style={{display: 'flex'}}
-          fullWidth
           direction='row'
           disableGutters={true}
           sx={{
@@ -180,7 +179,6 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
 
         <Container
           style={{display: 'flex', m: 0, p: 0}}
-          fullWidth
           direction='row'
           disableGutters={true}
           sx={{
@@ -191,7 +189,8 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
           }}>
           <Typography
             variant="h4"
-            sx={{align: 'center', marginTop: '20px', marginBottom: '0px'}}>
+            sx={{align: 'center', marginTop: '20px', marginBottom: '0px',
+              color: Colors.trasteNavyBlue}}>
             Waste Types
           </Typography>
           <CameraButtons
@@ -209,7 +208,6 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
       </Stack>
 
       <Container
-        fullWidth
         disableGutters={true}
         sx={{
           paddingLeft: 0,

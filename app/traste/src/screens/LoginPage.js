@@ -121,8 +121,7 @@ function LoginPage({snackBarHandler}) {
           onClick={loginCallback}
           sx={{'width': '80vw', 'maxWidth': '400px',
             'backgroundColor': Colors.trasteNavyBlue,
-            ':hover': {backgroundColor: Colors.trastePurple},
-            'fontFamily': 'Gilroy'}}
+            ':hover': {backgroundColor: Colors.trastePurple}}}
         >Log in
         </Button>
       </Paper>
