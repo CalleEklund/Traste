@@ -10,6 +10,7 @@ import {Colors} from './assets/Colors';
 
 import axios from 'axios';
 import HistoryPage from './screens/HistoryPage';
+import LoginPage from './screens/LoginPage';
 
 /**
  * Main file for controling the flow of the app.
@@ -74,7 +75,10 @@ function App() {
       </Snackbar>
 
       <Routes>
-        <Route exact path="/" element={<MenuPage />} />
+        <Route
+          exact path="/menupage"
+          element={<MenuPage />}
+        />
         <Route
           path="/reportpage"
           element={<ReportPage snackBarHandler={openSnackBar} />}
@@ -82,6 +86,10 @@ function App() {
         <Route
           path="/historypage"
           element={<HistoryPage/>}
+        />
+        <Route
+          path="/"
+          element={<LoginPage/>}
         />
       </Routes>
     </Container>

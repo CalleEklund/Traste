@@ -138,7 +138,7 @@ function ReportPage({snackBarHandler}) {
       snackBarHandler('An Error occured, report was not sent',
           'error');
     });
-    navigate('/');
+    navigate('/menupage');
   };
 
   return (
