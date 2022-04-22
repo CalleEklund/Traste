@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:5001/traste-71a71/europe-west3/app';
+const url = 'http://localhost:5001/traste-71a71/europe-west3/app';
+// const url = 'https://europe-west3-traste-71a71.cloudfunctions.net/app';
 
 /**
  * Upploads an image to the backend at the endpoint /uploadimage.
  * Cointains neccesary header for an image.
  */
 export const uploadImageAPI = axios.create({
-  baseURL: baseURL + '/uploadimage',
+  baseURL: url + '/uploadimage',
   headers: {
     'Content-Type': 'multipart/form-data',
   },
@@ -17,9 +18,13 @@ export const uploadImageAPI = axios.create({
  * Uploads the report to the backend at the endpoint /createreport.
  */
 export const createReportAPI = axios.create({
-  baseURL: baseURL + '/createreport',
+  baseURL: url + '/createreport',
+});
+
+export const getAllReportsAPI = axios.create({
+  baseURL: url+'/getAllReports',
 });
 
 export default {
-  uploadImageAPI, createReportAPI,
+  uploadImageAPI, createReportAPI, getAllReportsAPI,
 };
