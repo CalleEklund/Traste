@@ -279,7 +279,9 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
           endIcon={
             <SendIcon
               sx={{
-                color: Colors.trasteNavyBlue,
+                color: isValid && total === 100 ?
+                Colors.trasteNavyBlue :
+                'rgba(0,50,0,0.2)',
                 fontSize: '200px',
                 width: 40,
                 height: 40,
@@ -289,28 +291,32 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
           disabled={total !== 100}
           // type="submit"
           sx={{
-            flex: '1',
-            display: 'flex',
-            position: 'sticky',
-            alignItems: 'center',
-            aligntContent: 'stretch',
-            justifyContent: 'space-around',
-            width: 1,
-            zIndex: 2,
-            backgroundColor:
+            'flex': '1',
+            'display': 'flex',
+            'position': 'sticky',
+            'alignItems': 'center',
+            'aligntContent': 'stretch',
+            'justifyContent': 'space-around',
+            'width': 1,
+            'zIndex': 2,
+            'backgroundColor':
             isValid && total === 100 ?
               Colors.trastePurple :
-              Colors.trasteDadada,
-            borderRadius: '0',
-            paddingTop: 1,
-            paddingBottom: 1,
+              'rgba(255,255,255,0.4)',
+            'borderRadius': '0',
+            'paddingTop': 1,
+            'paddingBottom': 1,
+            '&:hover': {
+              backgroundColor: 'rgba(255,255,255,0.5)'},
           }}
           onClick={handleClickOpen}
         >
 
           <Typography
             variant="h4"
-            sx={{color: Colors.trasteNavyBlue}}>
+            sx={{color: isValid && total === 100 ?
+              Colors.trasteNavyBlue :
+              'rgba(0,50,0,0.2)'}}>
             Send Report
           </Typography>
         </Button>

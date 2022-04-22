@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Typography, Button} from '@mui/material';
+import {Container, Paper, Button} from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import {Colors} from '../assets/Colors.js';
 import {useNavigate} from 'react-router-dom';
 import bcrypt from 'bcryptjs';
+import logo from '../assets/login_logo.png';
 
 /**
  *
@@ -82,38 +83,49 @@ function LoginPage({snackBarHandler}) {
       sx={{flex: 1, display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center', width: '100vw'}}
     >
-      <Typography variant="h7">Enter password to access Traste: </Typography>
+      <Paper elevation={0}
+        sx={{display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          width: '85vw', maxWidth: '400px', padding: '20px',
+          backgroundColor: 'rgba(255,255,255,0.4)'}}>
+        <img src={logo} alt='traste logo'
+          style={{width: '80vw', maxWidth: '400px'}} />
 
-      <FormControl sx={{m: 1, width: '80vw', marginTop: '2vh',
-        marginBottom: '2vh'}} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-password"
-          type={values.showPassword ? 'text' : 'password'}
-          value={values.password}
-          onChange={handleChange('password')}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {values.showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
-          label="Password"
-        />
-      </FormControl>
+        <FormControl sx={{m: 1, width: '80vw', marginTop: '2vh',
+          marginBottom: '2vh', maxWidth: '400px'}} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">Password
+          </InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={values.showPassword ? 'text' : 'password'}
+            value={values.password}
+            onChange={handleChange('password')}
+            sx={{backgroundColor: 'rgba(255,255,255,0.3)', maxWidth: '400px'}}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
 
-      <Button variant="contained"
-        onClick={loginCallback}
-        sx={{width: '80vw', backgroundColor: Colors.trasteNavyBlue}}
-      >Log in
-      </Button>
-
+        <Button variant="contained"
+          onClick={loginCallback}
+          sx={{'width': '80vw', 'maxWidth': '400px',
+            'backgroundColor': Colors.trasteNavyBlue,
+            ':hover': {backgroundColor: Colors.trastePurple},
+            'fontFamily': 'Gilroy'}}
+        >Log in
+        </Button>
+      </Paper>
     </Container>
   );
 };

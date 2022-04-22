@@ -14,3 +14,11 @@ code {
     monospace;
 }
 
+@font-face {
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/gilroy.woff2') format('woff2');
+}
+
