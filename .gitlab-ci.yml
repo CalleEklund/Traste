@@ -5,6 +5,7 @@ stages:     # List of stages for jobs, and their order of execution
   - lint
   - unit-test-backend
   - unit-test-frontend
+  - integration-test-backend
   - deploy
 
 npm-backend:
@@ -94,6 +95,22 @@ unit-test-frontend:
     when: on_success
     paths:
       - app/traste/coverage/
+
+integration-test-backend: 
+  stage: integration-test-backend
+  dependencies:
+    - npm-backend
+  script:
+    - cd functions
+    - echo "Running integration tests for backend"
+    - npm run coverage-int
+    - echo "Integrations tests for backend are complete"
+  coverage: '/Code coverage: \d+\.\d+/'
+  artifacts:
+    expire_in: 1 year
+    when: on_success
+    paths:
+      - functions/coverage/
  
 deploy-firestore:
   stage: deploy

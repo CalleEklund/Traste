@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:5001/traste-71a71/europe-west3/app';
+const url = 'http://localhost:5001/traste-71a71/europe-west3/app';
+// const url = 'https://europe-west3-traste-71a71.cloudfunctions.net/app';
 
 /**
  * Makes a call with data as login password to authenticate user.
@@ -14,7 +15,7 @@ export const loginAPI = axios.create({
  * Cointains neccesary header for an image.
  */
 export const uploadImageAPI = axios.create({
-  baseURL: baseURL + '/uploadimage',
+  baseURL: url + '/uploadimage',
   headers: {
     'Content-Type': 'multipart/form-data',
     'Authorization': 'Token ' + localStorage.getItem('token'),
@@ -31,6 +32,13 @@ export const createReportAPI = axios.create({
   },
 });
 
+export const getAllReportsAPI = axios.create({
+  baseURL: url+'/getAllReports',
+  headers: {
+    'Authorization': 'Token ' + localStorage.getItem('token'),
+  },
+});
+
 export default {
-  uploadImageAPI, createReportAPI, loginAPI,
+  uploadImageAPI, createReportAPI, getAllReportsAPI, loginAPI,
 };

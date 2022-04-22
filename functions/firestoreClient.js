@@ -9,7 +9,7 @@ const path = require("path");
 
 const {v4: uuidv4} = require("uuid");
 const {initializeApp} = require("firebase/app");
-const {getStorage, ref, uploadBytes, connectStorageEmulator, getDownloadURL} =
+const {getStorage, ref, uploadBytes, getDownloadURL, connectStorageEmulator} =
 require("firebase/storage");
 
 const firebaseConfig = {
@@ -32,7 +32,6 @@ connectStorageEmulator(storage, "localhost", 9199);
  */
 
 async function uploadImage(data) {
-  console.log("data", data);
   const imgId = uuidv4();
   const storageRef = ref(storage, imgId);
   // 'file' comes from the Blob or File API
@@ -55,15 +54,35 @@ class FirestoreClient {
     params collectionPath, batchSize
     returns promise
     */
-  async deleteCollection(collectionPath, batchSize) {
-    const collectionRef = this.firestore.collection(collectionPath);
-    const query = collectionRef.orderBy("__name__").limit(batchSize);
-
+  async deleteSubCollection(docketNum, collectionPath) {
+    const collectionRef = this.firestore
+        .collection("Reports").doc(docketNum).collection(collectionPath);
+    const query = collectionRef.orderBy("__name__").limit(10);
     return new Promise((resolve, reject) => {
       deleteQueryBatch(this.firestore, query, resolve).catch(reject);
     });
   }
 
+  /**
+   * Delete document function
+   * @param {*} documentPath
+   * @return {*}
+   */
+  async deleteDocument(documentPath) {
+    const documentRef = await this.firestore
+        .collection("Reports").doc(documentPath);
+    return await documentRef.delete();
+  }
+
+  async deleteReport(docketNum) {
+    const cresp = await this.deleteSubCollection(docketNum, "Contains");
+    const resp = await this.deleteDocument(docketNum);
+    if (resp && cresp) {
+      return {msg: "Delete was successfull", status: 200};
+    } else {
+      return {msg: "Delete was unsuccessfull", status: 400};
+    }
+  }
   /*
     This function creates a report from data.
     If data is not formatted correctly a error code will be provided
@@ -96,10 +115,12 @@ class FirestoreClient {
 
             if (wasteData && (typeof wasteData === "object")) {
               // eslint-disable-next-line guard-for-in
+              const tmpWasteData = {};
               for (const [key, value] of Object.entries(wasteData)) {
-                await reportRef.collection("Contains").
-                    doc(key).set({percentage: parseInt(value)});
+                tmpWasteData[key] = parseInt(value);
               }
+              await reportRef.collection("Contains")
+                  .doc("WasteData").set(tmpWasteData);
             }
             return JSON.stringify({msg: "Report was made"});
           }
@@ -113,9 +134,19 @@ class FirestoreClient {
     const ref = this.firestore.collection("Reports");
     const snapshot = await ref.get();
     const outList = [];
-    snapshot.forEach((doc)=>{
-      outList.push(doc.data());
-    });
+    for ( const doc of snapshot.docs) {
+      const docRef = this.firestore.collection("Reports").doc(doc.id);
+      const docData = doc.data();
+      const containsRef = docRef.collection("Contains");
+      // console.log("docdata", docData);
+      // console.log("containsdata", containsRef);
+      const containsSnapshot = await containsRef.get();
+      const o = {};
+      for (const waste of containsSnapshot.docs) {
+        o[waste.id] = waste.data();
+      }
+      outList.push({...docData, ...o});
+    }
     return JSON.stringify(outList);
   }
 }
@@ -132,7 +163,7 @@ async function deleteQueryBatch(db, query, resolve) {
   const batchSize = snapshot.size;
   if (batchSize === 0) {
     // When there are no documents left, we are done
-    resolve();
+    resolve({msg: "Deleted all subcollections"});
     return;
   }
 
