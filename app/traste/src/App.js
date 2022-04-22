@@ -89,7 +89,7 @@ function App() {
         />
         <Route
           path="/"
-          element={<LoginPage/>}
+          element={<LoginPage snackBarHandler={openSnackBar}/>}
         />
       </Routes>
     </Container>
