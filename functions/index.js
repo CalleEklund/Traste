@@ -98,7 +98,6 @@ app.get("/getAllReports", async (req, res)=>{
  */
 app.delete("/deleteReport", async (req, res) => {
   const data = req.body;
-
   /* const cresp = await FS.deleteSubCollection(data.docketNumber, "Contains");
   const resp = await FS.deleteDocument(data.docketNumber);
   if (resp && cresp) {

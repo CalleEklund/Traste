@@ -100,7 +100,7 @@ function ReportPage({snackBarHandler}) {
    */
   async function sendReport(data) {
     const report = {...data};
-
+    console.log('sent report', report);
     // Upload pictures to Firebase Storage.
     report.docketPicture = await uploadPicture(data.docketPicture);
     report.wastePicture = await uploadPicture(data.wastePicture);

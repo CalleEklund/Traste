@@ -39,6 +39,10 @@ export const getAllReportsAPI = axios.create({
   },
 });
 
+export const deleteReportAPI = axios.create({
+  baseURL: url+'/deleteReport',
+});
+
 export default {
-  uploadImageAPI, createReportAPI, getAllReportsAPI, loginAPI,
+  loginAPI, uploadImageAPI, createReportAPI, getAllReportsAPI, deleteReportAPI,
 };

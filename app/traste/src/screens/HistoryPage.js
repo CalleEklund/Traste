@@ -5,7 +5,9 @@ import {Accordion, AccordionSummary, AccordionDetails, Typography,
   from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ImageModal from '../components/ImageModal.js';
-import {getAllReportsAPI} from '../api/trasteApi';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {deleteReportAPI, getAllReportsAPI} from '../api/trasteApi';
+import {Colors} from '../assets/Colors';
 /**
  * A page which shows the created reports in list form
  * @return {*}
@@ -17,6 +19,35 @@ function HistoryPage() {
   const [selectedImage, setSelectedImage] = useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [expanded, setExpanded] = React.useState(false);
+
+  /**
+   * Makes the opening and closing of a accordion a controlled state
+   * @param {*} panel the clicked accordion
+   * @return {*} sets the opposite of the clicked accordions opened/closed state
+   */
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  /**
+   * Handles the deleting of a report, checks if the deleting was successfull
+   *  then removes the item from reportData
+   * @param {*} item the item to be deleted
+   * @param {*} index the index of the item
+   */
+  const handleDelete = async (item, index)=>{
+    setExpanded(false);
+    const res =
+    await deleteReportAPI.delete('',
+        {data: {docketNumber: item['Docket Number: ']}});
+    if (res.status===200) {
+      const old = Object.assign([], reportData);
+      old.splice(index, 1);
+      setReportData(old);
+    }
+  };
+
   const titles = {
     binSize: 'Bin size: ',
     date: 'Date: ',
@@ -70,7 +101,6 @@ function HistoryPage() {
         <Skeleton variant="rectangular" height={'5vh'} />
         <Skeleton variant="rectangular" height={'5vh'} />
         <Skeleton variant="rectangular" height={'5vh'} />
-
       </Stack>);
   }
   return (
@@ -78,7 +108,10 @@ function HistoryPage() {
       {reportData.map((item, index)=>(
         <div key={index}>
           <Accordion
-            sx={{backgroundColor: Colors.trasteDadada}}>
+            sx={{backgroundColor: Colors.trasteDadada}}
+            expanded = {expanded===('panel'+index)}
+            onChange = {handleChange('panel'+index)}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -98,7 +131,9 @@ function HistoryPage() {
                           <Button onClick={()=>{
                             setSelectedImage(value);
                             handleOpen(true);
-                          }}>Open image</Button>
+                          }}
+                          variant="outlined"
+                          sx={{marginLeft: '15px'}}>Open image</Button>
 
                         </ListItemText>
                       </ListItem>
@@ -115,6 +150,17 @@ function HistoryPage() {
                 })}
 
               </List>
+              <Button
+                endIcon={<DeleteIcon style={{color: Colors.trasteTeal}}/>}
+                variant="outlined"
+                sx={{borderColor: Colors.trasteTeal, color: Colors.trasteTeal}}
+                onClick={()=>{
+                  handleDelete(item, index);
+                }}
+              >
+                Delete Report
+              </Button>
+
             </AccordionDetails>
           </Accordion>
           <Divider/>
