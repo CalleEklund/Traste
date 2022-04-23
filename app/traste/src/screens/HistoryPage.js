@@ -176,7 +176,3 @@ function HistoryPage() {
   );
 }
 export default HistoryPage;
-
-
-import {Colors} from '../assets/Colors.js';
-

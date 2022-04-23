@@ -4,14 +4,15 @@ const url = 'http://localhost:5001/traste-71a71/europe-west3/app';
 // const url = 'https://europe-west3-traste-71a71.cloudfunctions.net/app';
 
 /**
- * Makes a call with data as login password to authenticate user.
+ * Makes a call with data as login password to authenticate user
+ * at the endpoint /login.
  */
 export const loginAPI = axios.create({
   baseURL: url + '/login',
 });
 
 /**
- * Upploads an image to the backend at the endpoint /uploadimage.
+ * Uploads an image to the backend at the endpoint /uploadimage.
  * Cointains neccesary header for an image.
  */
 export const uploadImageAPI = axios.create({
@@ -32,6 +33,9 @@ export const createReportAPI = axios.create({
   },
 });
 
+/**
+ * Fetches all reports in the database at the endpoint /getAllReports.
+ */
 export const getAllReportsAPI = axios.create({
   baseURL: url +'/getAllReports',
   headers: {
@@ -39,8 +43,14 @@ export const getAllReportsAPI = axios.create({
   },
 });
 
+/**
+ * Deletes a report in the database at the endpoint /deleteReport.
+ */
 export const deleteReportAPI = axios.create({
   baseURL: url+'/deleteReport',
+  headers: {
+    'Authorization': 'Token ' + localStorage.getItem('token'),
+  },
 });
 
 export default {
