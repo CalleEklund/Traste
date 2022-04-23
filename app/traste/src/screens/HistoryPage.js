@@ -19,6 +19,35 @@ function HistoryPage() {
   const [selectedImage, setSelectedImage] = useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [expanded, setExpanded] = React.useState(false);
+
+  /**
+   * Makes the opening and closing of a accordion a controlled state
+   * @param {*} panel the clicked accordion
+   * @return {*} sets the opposite of the clicked accordions opened/closed state
+   */
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  /**
+   * Handles the deleting of a report, checks if the deleting was successfull
+   *  then removes the item from reportData
+   * @param {*} item the item to be deleted
+   * @param {*} index the index of the item
+   */
+  const handleDelete = async (item, index)=>{
+    setExpanded(false);
+    const res =
+    await deleteReportAPI.delete('',
+        {data: {docketNumber: item['Docket Number: ']}});
+    if (res.status===200) {
+      const old = Object.assign([], reportData);
+      old.splice(index, 1);
+      setReportData(old);
+    }
+  };
+
   const titles = {
     binSize: 'Bin size: ',
     date: 'Date: ',
@@ -65,9 +94,6 @@ function HistoryPage() {
     setReportData(formatData(out.data));
     setLoading(false);
   }, []);
-  useEffect(()=>{
-    console.log('reportdata has changed');
-  }, [reportData]);
   if (isLoading) {
     return (
       <Stack spacing={1}>
@@ -75,7 +101,6 @@ function HistoryPage() {
         <Skeleton variant="rectangular" height={'5vh'} />
         <Skeleton variant="rectangular" height={'5vh'} />
         <Skeleton variant="rectangular" height={'5vh'} />
-
       </Stack>);
   }
   return (
@@ -83,7 +108,10 @@ function HistoryPage() {
       {reportData.map((item, index)=>(
         <div key={index}>
           <Accordion
-            sx={{backgroundColor: Colors.trasteDadada}}>
+            sx={{backgroundColor: Colors.trasteDadada}}
+            expanded = {expanded===('panel'+index)}
+            onChange = {handleChange('panel'+index)}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -126,21 +154,8 @@ function HistoryPage() {
                 endIcon={<DeleteIcon style={{color: Colors.trasteTeal}}/>}
                 variant="outlined"
                 sx={{borderColor: Colors.trasteTeal, color: Colors.trasteTeal}}
-                onClick={async ()=>{
-                  console.log('delete report', item['Docket Number: '],
-                      'index', index);
-                  const res =
-                  await deleteReportAPI.delete('',
-                      {data: {docketNumber: item['Docket Number: ']}});
-                  console.log('res', res);
-                  if (res.status===200) {
-                    console.log('old arr', reportData);
-                    const old = reportData;
-                    old.splice(index, 1);
-                    setReportData(old);
-                    console.log('new arr', old);
-                    console.log(old === reportData);
-                  }
+                onClick={()=>{
+                  handleDelete(item, index);
                 }}
               >
                 Delete Report
