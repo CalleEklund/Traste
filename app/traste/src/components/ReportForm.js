@@ -7,6 +7,7 @@ import {
   Button,
   Box,
   CircularProgress,
+  Paper,
 } from '@mui/material';
 import {Controller} from 'react-hook-form';
 import Inputfield from './Inputfield';
@@ -50,164 +51,190 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
           alignItems: 'center',
           flexDirection: 'column',
           bgcolor: Colors.trasteGreen,
+          padding: 0,
 
         }}>
+        <Paper elevation={0}
+          sx={{display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
+            width: '85vw', maxWidth: '400px', padding: '20px',
+            marginTop: '15px', paddingTop: '4px',
+            backgroundColor: 'rgba(255,255,255,0.4)'}}>
+          <Container style={{display: 'flex', m: 0, p: 0}}
+            direction='row'
+            disableGutters={true}
+            sx={{
+              paddingLeft: '0px',
+              paddingRight: '0px',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between'}}>
+            <Typography
+              variant="h4"
+              sx={{align: 'left', marginTop: '20px', marginBottom: '0px',
+                color: Colors.trasteNavyBlue}}>General Information
+            </Typography>
+          </Container>
+          <Controller
+            name="date"
+            control={control}
+            rules={{required: 'Select a valid date'}}
+            render={({field: {onChange, value}}) => (
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <MobileDatePicker
+                  label="Date"
+                  name="Date"
+                  value={value}
+                  autoOK
+                  minDate={new Date('2000-01-01T03:00:00')}
+                  maxDate={new Date()}
+                  onChange={onChange}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      sx={{
+                        marginTop: '15px',
+                        backgroundColor: 'rgba(255,255,255,0.3)',
+                      }}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+            )}
+          />
 
-        <Controller
-          name="date"
-          control={control}
-          rules={{required: 'Select a valid date'}}
-          render={({field: {onChange, value}}) => (
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <MobileDatePicker
-                label="Date"
-                name="Date"
-                value={value}
-                autoOK
-                minDate={new Date('2000-01-01T03:00:00')}
-                maxDate={new Date()}
-                onChange={onChange}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    fullWidth
-                    sx={{
-                      marginTop: '15px',
-                      backgroundColor: 'rgba(255,255,255,0.3)',
-                    }}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-          )}
-        />
+          <Container
+            style={{display: 'flex'}}
+            direction='row'
+            disableGutters={true}
+            sx={{
+              paddingLeft: '0px',
+              paddingRight: '0px',
+              alignItems: 'flex-start',
+            }}>
 
-        <Container
-          style={{display: 'flex'}}
-          direction='row'
-          disableGutters={true}
-          sx={{
-            paddingLeft: '0px',
-            paddingRight: '0px',
-            alignItems: 'flex-start',
-          }}>
+            <Controller
+              name="docketNumber"
+              control={control}
+              rules={{required: 'Docket Number required'}}
+              render={({field: {onChange, value}, fieldState: {error}}) => (
+                <Inputfield
+                  label="Docket No."
+                  onChange={onChange}
+                  value={value}
+                  error={error}
+                  sx={{flexGrow: 1,
+                    marginTop: '15px',
+                    marginRight: '15px',
+                    backgroundColor: 'rgba(255,255,255,0.3)'}}
+                />
+              )}
+            />
+
+            <CameraButtons
+              control={control}
+              useStateValue={docketCheck}
+              setUseStateFunc={setDocketCheck}
+              buttonId={'contained-button-file'}
+              name={'docketPicture'}
+              iconId={'icon-button-file'}
+              setURL={setDocketURL}
+            />
+          </Container>
 
           <Controller
-            name="docketNumber"
+            name="weight"
             control={control}
-            rules={{required: 'Docket Number required'}}
+            rules={{
+              required: 'Enter a valid number',
+              validate: onlyNumbers,
+            }}
             render={({field: {onChange, value}, fieldState: {error}}) => (
               <Inputfield
-                label="Docket No."
-                onChange={onChange}
+                label="Weight"
+                onChange={(e) => {
+                  let tmpval = e.target.value;
+                  if (isNaN(parseInt(e.target.value, 10))) {
+                    tmpval = 0;
+                  } else {
+                    tmpval = parseInt(tmpval, 10);
+                  }
+                  onChange(tmpval);
+                }}
                 value={value}
                 error={error}
-                sx={{flexGrow: 1,
-                  marginTop: '15px',
-                  marginRight: '15px',
-                  backgroundColor: 'rgba(255,255,255,0.3)'}}
+                type="number"
               />
             )}
           />
 
-          <CameraButtons
+          <Controller
+            name="binSize"
             control={control}
-            useStateValue={docketCheck}
-            setUseStateFunc={setDocketCheck}
-            buttonId={'contained-button-file'}
-            name={'docketPicture'}
-            iconId={'icon-button-file'}
-            setURL={setDocketURL}
+            rules={{required: 'Select a bin size'}}
+            render={({field: {onChange, value}, fieldState: {error}}) => (
+              <Selection
+                label="Bin Size"
+                data={binsizes}
+                onChange={onChange}
+                value={value}
+                error={error}
+              />
+            )}
           />
-        </Container>
 
-        <Controller
-          name="weight"
-          control={control}
-          rules={{
-            required: 'Enter a valid number',
-            validate: onlyNumbers,
-          }}
-          render={({field: {onChange, value}, fieldState: {error}}) => (
-            <Inputfield
-              label="Weight"
-              onChange={(e) => {
-                let tmpval = e.target.value;
-                if (isNaN(parseInt(e.target.value, 10))) {
-                  tmpval = 0;
-                } else {
-                  tmpval = parseInt(tmpval, 10);
-                }
-                onChange(tmpval);
-              }}
-              value={value}
-              error={error}
-              type="number"
-            />
-          )}
-        />
-
-        <Controller
-          name="binSize"
-          control={control}
-          rules={{required: 'Select a bin size'}}
-          render={({field: {onChange, value}, fieldState: {error}}) => (
-            <Selection
-              label="Bin Size"
-              data={binsizes}
-              onChange={onChange}
-              value={value}
-              error={error}
-            />
-          )}
-        />
-
-        <Controller
-          name="site"
-          control={control}
-          rules={{required: 'Select a site'}}
-          render={({field: {onChange, value}, fieldState: {error}}) => (
-            <Selection
-              label="Site"
-              data={sites}
-              onChange={onChange}
-              value={value}
-              error={error}
-            />
-          )}
-        />
-
-        <Container
-          style={{display: 'flex', m: 0, p: 0}}
-          direction='row'
-          disableGutters={true}
-          sx={{
-            paddingLeft: '0px',
-            paddingRight: '0px',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-          }}>
-          <Typography
-            variant="h4"
-            sx={{align: 'center', marginTop: '20px', marginBottom: '0px',
-              color: Colors.trasteNavyBlue}}>
+          <Controller
+            name="site"
+            control={control}
+            rules={{required: 'Select a site'}}
+            render={({field: {onChange, value}, fieldState: {error}}) => (
+              <Selection
+                label="Site"
+                data={sites}
+                onChange={onChange}
+                value={value}
+                error={error}
+              />
+            )}
+          />
+        </Paper>
+        <Paper elevation={0}
+          sx={{display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
+            width: '85vw', maxWidth: '400px', padding: '20px',
+            marginTop: '15px', paddingTop: '4px',
+            backgroundColor: 'rgba(255,255,255,0.4)'}}>
+          <Container
+            style={{display: 'flex', m: 0, p: 0}}
+            direction='row'
+            disableGutters={true}
+            sx={{
+              paddingLeft: '0px',
+              paddingRight: '0px',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+            }}>
+            <Typography
+              variant="h4"
+              sx={{align: 'center', marginTop: '20px', marginBottom: '0px',
+                color: Colors.trasteNavyBlue}}>
             Waste Types
-          </Typography>
-          <CameraButtons
-            control={control}
-            useStateValue={wasteCheck}
-            setUseStateFunc={setWasteCheck}
-            buttonId={'waste-button-file'}
-            name={'wastePicture'}
-            iconId={'waste-icon-button-file'}
-            setURL={setWasteURL}
-          />
-        </Container>
-
-        <WasteInputField control={control} onlyNumbers={onlyNumbers} />
+            </Typography>
+            <CameraButtons
+              control={control}
+              useStateValue={wasteCheck}
+              setUseStateFunc={setWasteCheck}
+              buttonId={'waste-button-file'}
+              name={'wastePicture'}
+              iconId={'waste-icon-button-file'}
+              setURL={setWasteURL}
+            />
+          </Container>
+          <WasteInputField control={control} onlyNumbers={onlyNumbers} />
+        </Paper>
       </Stack>
 
-      <Container
+      <Stack
         disableGutters={true}
         sx={{
           paddingLeft: 0,
@@ -318,7 +345,7 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
             Send Report
           </Typography>
         </Button>
-      </Container>
+      </Stack>
     </form>
   );
 }

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, {useState} from 'react';
 import MenuPage from './screens/MenuPage';
-import {Container, Snackbar, Alert} from '@mui/material';
+import {Container, Stack, Snackbar, Alert} from '@mui/material';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import ReportPage from './screens/ReportPage';
 import Header from './components/Header';
@@ -52,10 +52,11 @@ function App() {
 
   return (
 
-    <Container
+    <Stack
       disableGutters={true}
       sx={{height: '100vh', display: 'flex', flexDirection: 'column',
-        bgcolor: Colors.trasteGreen}}
+        bgcolor: Colors.trasteGreen, marginLeft: 0, marginRight: 0, padding: 0,
+      }}
     >
       <Header goBackHandler={goBack} />
 
@@ -92,7 +93,7 @@ function App() {
           element={<LoginPage snackBarHandler={openSnackBar}/>}
         />
       </Routes>
-    </Container>
+    </Stack>
   );
 }
 

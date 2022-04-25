@@ -110,7 +110,7 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
           sx={{
             paddingTop: 0.9,
             color: () => (useStateValue === 1 ?
-                    Colors.trasteNavyBlue : Colors.trasteGreen),
+                    Colors.trasteNavyBlue : 'transparent'),
           }}>
         </CheckIcon>
       </Stack>
