@@ -15,14 +15,6 @@ function goBack() {
   console.log('Test back');
 }
 
-test('Should contain TRASTE text', () => {
-  render(<Header goBackHandler={goBack} />);
-
-  const headerElement = screen.getByTestId('header');
-  expect(headerElement).toBeInTheDocument();
-  expect(headerElement).toHaveTextContent('TRASTE');
-});
-
 test('Should not contain SIMON text', () => {
   render(<Header goBackHandler={goBack} />);
 

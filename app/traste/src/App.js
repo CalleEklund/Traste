@@ -53,7 +53,7 @@ function App() {
   return (
 
     <Stack
-      disableGutters={true}
+
       sx={{height: '100vh', display: 'flex', flexDirection: 'column',
         bgcolor: Colors.trasteGreen, marginLeft: 0, marginRight: 0, padding: 0,
       }}

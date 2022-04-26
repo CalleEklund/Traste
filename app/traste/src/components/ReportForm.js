@@ -57,7 +57,7 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
         <Paper elevation={0}
           sx={{display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
-            width: '85vw', maxWidth: '400px', padding: '20px',
+            width: '85vw', maxWidth: '600px', padding: '20px',
             marginTop: '15px', paddingTop: '4px',
             backgroundColor: 'rgba(255,255,255,0.4)'}}>
           <Container style={{display: 'flex', m: 0, p: 0}}
@@ -70,7 +70,7 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
               justifyContent: 'space-between'}}>
             <Typography
               variant="h4"
-              sx={{align: 'left', marginTop: '20px', marginBottom: '0px',
+              sx={{align: 'left', marginTop: '15px', marginBottom: '0px',
                 color: Colors.trasteNavyBlue}}>General Information
             </Typography>
           </Container>
@@ -201,7 +201,7 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
         <Paper elevation={0}
           sx={{display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
-            width: '85vw', maxWidth: '400px', padding: '20px',
+            width: '85vw', maxWidth: '600px', padding: '20px',
             marginTop: '15px', paddingTop: '4px',
             backgroundColor: 'rgba(255,255,255,0.4)'}}>
           <Container
@@ -216,7 +216,7 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
             }}>
             <Typography
               variant="h4"
-              sx={{align: 'center', marginTop: '20px', marginBottom: '0px',
+              sx={{align: 'center', marginTop: '15px', marginBottom: '0px',
                 color: Colors.trasteNavyBlue}}>
             Waste Types
             </Typography>
@@ -235,7 +235,6 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
       </Stack>
 
       <Stack
-        disableGutters={true}
         sx={{
           paddingLeft: 0,
           paddingRight: 0,
