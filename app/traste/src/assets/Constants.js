@@ -74,7 +74,10 @@ export const BootstrapDialog = styled(Dialog)(({theme}) => ({
 
 export const BootstrapDialogTitle = (props) => {
   const {children, onClose, ...other} = props;
-
+  BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+  };
   return (
     <DialogTitle sx={{m: 0, p: 2, alignContent: 'center'}} {...other}>
       {children}
@@ -94,8 +97,4 @@ export const BootstrapDialogTitle = (props) => {
       ) : null}
     </DialogTitle>
   );
-  BootstrapDialogTitle.propTypes = {
-    children: PropTypes.node,
-    onClose: PropTypes.func.isRequired,
-  };
 };

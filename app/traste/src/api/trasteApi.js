@@ -19,7 +19,7 @@ export const uploadImageAPI = axios.create({
   baseURL: url + '/uploadimage',
   headers: {
     'Content-Type': 'multipart/form-data',
-    'Authorization': 'Token ' + localStorage.getItem('token'),
+    'Authorization': 'Bearer ' + localStorage.getItem('token'),
   },
 });
 
@@ -29,7 +29,7 @@ export const uploadImageAPI = axios.create({
 export const createReportAPI = axios.create({
   baseURL: url + '/createreport',
   headers: {
-    'Authorization': 'Token ' + localStorage.getItem('token'),
+    'Authorization': 'Bearer ' + localStorage.getItem('token'),
   },
 });
 
@@ -39,7 +39,7 @@ export const createReportAPI = axios.create({
 export const getAllReportsAPI = axios.create({
   baseURL: url +'/getAllReports',
   headers: {
-    'Authorization': 'Token ' + localStorage.getItem('token'),
+    'Authorization': 'Bearer ' + localStorage.getItem('token'),
   },
 });
 
@@ -49,7 +49,7 @@ export const getAllReportsAPI = axios.create({
 export const deleteReportAPI = axios.create({
   baseURL: url+'/deleteReport',
   headers: {
-    'Authorization': 'Token ' + localStorage.getItem('token'),
+    'Authorization': 'Bearer ' + localStorage.getItem('token'),
   },
 });
 

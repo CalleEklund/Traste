@@ -32,8 +32,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-function generateToken() {
-  return jwt.sign({}, TOKEN_SECRET, {expiresIn: "1000000s"});
+function generateToken(data) {
+  return jwt.sign(data, TOKEN_SECRET, {expiresIn: "1000000s"});
 }
 
 
@@ -63,7 +63,7 @@ function validationErrorMiddleware(error, _request, response, next) {
   next();
 }
 
-const authenticateJWT = (req, res, next) => {
+function authenticateJWT(req, res, next) {
   const authHeader = req.headers.authorization;
 
   if (authHeader) {
@@ -78,7 +78,7 @@ const authenticateJWT = (req, res, next) => {
   } else {
     res.sendStatus(401);
   }
-};
+}
 
 app.post("/uploadimage", authenticateJWT, function(req, res) {
   console.log("test");
