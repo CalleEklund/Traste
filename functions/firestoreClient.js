@@ -74,6 +74,13 @@ class FirestoreClient {
     return await documentRef.delete();
   }
 
+  async getPassword() {
+    const docRef = this.firestore.collection("Password").doc("Password");
+    const doc = await docRef.get();
+    // console.log("Document data:", doc.data().hashedPassword);
+    return doc.data().hashedPassword;
+  }
+
   async deleteReport(docketNum) {
     const cresp = await this.deleteSubCollection(docketNum, "Contains");
     const resp = await this.deleteDocument(docketNum);

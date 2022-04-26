@@ -6,6 +6,9 @@ const {FirestoreClient, uploadImage} = require("./firestoreClient.js");
 
 const FS = new FirestoreClient();
 const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
+
+const TOKEN_SECRET = "secret lol";
 
 
 // const {syncData} = require("./syncData");
@@ -27,6 +30,11 @@ app.use(cors);
 // Fixing bug where body cant be parsed when testing the integration.
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+
+function generateToken() {
+  return jwt.sign({}, TOKEN_SECRET, {expiresIn: "1000000s"});
+}
 
 
 const {validate} = new Validator();
@@ -55,7 +63,24 @@ function validationErrorMiddleware(error, _request, response, next) {
   next();
 }
 
-app.post("/uploadimage", function(req, res) {
+const authenticateJWT = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader) {
+    const token = authHeader.split(" ")[1];
+
+    jwt.verify(token, TOKEN_SECRET, (err) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
+};
+
+app.post("/uploadimage", authenticateJWT, function(req, res) {
   console.log("test");
   const data = req.body;
   uploadImage(data).then((imageURL) =>{
@@ -70,25 +95,26 @@ This is for testing the createreport function.
 */
 
 
-app.post("/createreport", validate({body: reportSchema}), (req, res) => {
-  const data = req.body;
-  if (validatePicureUrl(data.docketPicture) &&
+app.post("/createreport", validate({body: reportSchema}),
+    authenticateJWT, (req, res) => {
+      const data = req.body;
+      if (validatePicureUrl(data.docketPicture) &&
   validatePicureUrl(data.wastePicture)) {
-    const response = FS.createReport(data);
-    response.then(function(msg) {
-      res.send(msg);
-      // syncData(data);
+        const response = FS.createReport(data);
+        response.then(function(msg) {
+          res.send(msg);
+          // syncData(data);
+        });
+      } else {
+        res.statusCode = 400;
+        res.send(JSON.stringify({"error": "Invalid url"}));
+      }
     });
-  } else {
-    res.statusCode = 400;
-    res.send(JSON.stringify({"error": "Invalid url"}));
-  }
-});
 
 /**
  * Returns all reports and sends it to HistoryPage
  */
-app.get("/getAllReports", async (req, res)=>{
+app.get("/getAllReports", authenticateJWT, async (req, res)=>{
   const resp = await FS.getAllReports();
   res.send(resp);
 });
@@ -96,7 +122,7 @@ app.get("/getAllReports", async (req, res)=>{
 /**
  * Delete function
  */
-app.delete("/deleteReport", async (req, res) => {
+app.delete("/deleteReport", authenticateJWT, async (req, res) => {
   const data = req.body;
   /* const cresp = await FS.deleteSubCollection(data.docketNumber, "Contains");
   const resp = await FS.deleteDocument(data.docketNumber);
@@ -110,6 +136,25 @@ app.delete("/deleteReport", async (req, res) => {
   const resp = await FS.deleteReport(data.docketNumber);
   res.statusCode = resp.status;
   res.send(JSON.stringify(resp.msg));
+});
+
+/**
+ * Login function takes encrypted string and compares to database.
+ * Returns either 200 and token or 403.
+ */
+app.post("/login", async (req, res) => {
+  const hash = await FS.getPassword();
+  // console.log("hash data", hash);
+  const password = req.body.password;
+  if (hash === password) {
+    const token = generateToken({});
+    res.json({
+      accessToken: token,
+    });
+  } else {
+    res.status(401).send("Password incorrect.");
+    // incorrect pass makes res undefined for some reason.
+  }
 });
 
 

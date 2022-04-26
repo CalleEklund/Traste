@@ -40,14 +40,13 @@ function LoginPage({snackBarHandler}) {
   async function login() {
     const hashedPassword = bcrypt.hashSync(values.password, salt);
     const res = await loginAPI
-        .post('', hashedPassword).catch((e) => {
+        .post('', {'password': hashedPassword}).catch((e) => {
           snackBarHandler(
               'An error occurred, please try again later (never).',
               'error',
           );
         });
-
-    if (res.status === 400) {
+    if (res.status === 401) {
       snackBarHandler(
           'The password is not correct, ' +
           'please check that you have the correct password.',
@@ -58,7 +57,7 @@ function LoginPage({snackBarHandler}) {
           'Successfully logged in.',
           'success', successSx,
       ); // dubbelkolla path till token från res.
-      localStorage.setItem('token', res.payload.data.token);
+      localStorage.setItem('token', res.data.accessToken);
       navigate('/menupage');
     }
   }
