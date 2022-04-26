@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 
 import logo from '../assets/traste_logo.png';
+import name from '../assets/traste_name.png';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 import {Colors} from '../assets/Colors';
@@ -20,13 +20,11 @@ function Header({goBackHandler}) {
     <AppBar
       data-testid='header'
       position='sticky'
-      sx={{textAlign: 'center', backgroundColor: Colors.trasteNavyBlue}}
+      sx={{backgroundColor: Colors.trasteNavyBlue}}
     >
-      <Toolbar>
+      <Toolbar sx={{justifyContent: 'space-between'}}>
         <KeyboardBackspaceIcon fontSize='large' onClick={goBackHandler} />
-        <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
-          TRASTE
-        </Typography>
+        <img src={name} alt='traste name' style={{height: '25px'}} />
         <img src={logo} alt='traste logo' style={{height: '40px'}} />
       </Toolbar>
     </AppBar>

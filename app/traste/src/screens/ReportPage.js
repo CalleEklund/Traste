@@ -100,7 +100,7 @@ function ReportPage({snackBarHandler}) {
    */
   async function sendReport(data) {
     const report = {...data};
-
+    console.log('sent report', report);
     // Upload pictures to Firebase Storage.
     report.docketPicture = await uploadPicture(data.docketPicture);
     report.wastePicture = await uploadPicture(data.wastePicture);
@@ -138,7 +138,7 @@ function ReportPage({snackBarHandler}) {
       snackBarHandler('An Error occured, report was not sent',
           'error');
     });
-    navigate('/');
+    navigate('/menupage');
   };
 
   return (
@@ -263,6 +263,7 @@ function ReportPage({snackBarHandler}) {
             </Typography>
             <CardMedia
               image={docketURL}
+              component='img'
               sx={{height: '50vh',
                 width: '80vw'}} />
             <Typography variant='h6' color="common.black">
@@ -270,6 +271,7 @@ function ReportPage({snackBarHandler}) {
             </Typography>
             <CardMedia
               image={wasteURL}
+              component='img'
               sx={{height: '50vh',
                 width: '80vw'}} />
           </Container>

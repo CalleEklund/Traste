@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {TextField} from '@mui/material';
+import {Colors} from '../assets/Colors';
 
 /**
  * Custom TextField used for different data in the RenderPage.
@@ -31,9 +32,11 @@ function Inputfield({label, value, onChange, error, type, sx}) {
 Inputfield.defaultProps = {
   error: false,
   type: 'text',
-  sx: {
-    marginTop: '15px',
-    backgroundColor: 'rgba(255,255,255,0.3)',
+  sx: {'& .MuiOutlinedInput-root': {
+    '&.Mui-focused fieldset': {
+      borderColor: Colors.trasteTeal}},
+  'marginTop': '15px',
+  'backgroundColor': 'rgba(255,255,255,0.3)',
   },
 };
 
