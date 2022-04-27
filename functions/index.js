@@ -7,9 +7,7 @@ const {FirestoreClient, uploadImage} = require("./firestoreClient.js");
 const FS = new FirestoreClient();
 const bodyParser = require("body-parser");
 
-
-// const {syncData} = require("./syncData");
-
+const {addReport, deleteReport} = require("./sheetsApi");
 const functions = require("firebase-functions");
 
 const express = require("express");
@@ -56,7 +54,6 @@ function validationErrorMiddleware(error, _request, response, next) {
 }
 
 app.post("/uploadimage", function(req, res) {
-  console.log("test");
   const data = req.body;
   uploadImage(data).then((imageURL) =>{
     res.send(imageURL);
@@ -68,17 +65,21 @@ app.post("/uploadimage", function(req, res) {
 This is the function for posting on localhost/3000/createreport.
 This is for testing the createreport function.
 */
-
-
-app.post("/createreport", validate({body: reportSchema}), (req, res) => {
+app.post("/createreport", validate({body: reportSchema}), async (req, res) => {
   const data = req.body;
   if (validatePicureUrl(data.docketPicture) &&
   validatePicureUrl(data.wastePicture)) {
-    const response = FS.createReport(data);
-    response.then(function(msg) {
+    const msg = await FS.createReport(data);
+    const addResp= await addReport(data);
+    if (addResp === 200) {
       res.send(msg);
-      // syncData(data);
-    });
+    }
+    /*  response.then(async function(msg) {
+      const addResp = await addReport(data);
+      if (addResp===200) {
+        res.send(msg);
+      }
+    }); */
   } else {
     res.statusCode = 400;
     res.send(JSON.stringify({"error": "Invalid url"}));
@@ -98,18 +99,13 @@ app.get("/getAllReports", async (req, res)=>{
  */
 app.delete("/deleteReport", async (req, res) => {
   const data = req.body;
-  /* const cresp = await FS.deleteSubCollection(data.docketNumber, "Contains");
-  const resp = await FS.deleteDocument(data.docketNumber);
-  if (resp && cresp) {
-    res.statusCode = 200;
-    res.send({msg: "Delete was successfull"});
-  } else {
-    res.statusCode = 400;
-    res.send({msg: "Delete was unsuccessfull"});
-  } */
-  const resp = await FS.deleteReport(data.docketNumber);
+  const resp = await FS.deleteReport(
+      data.docketNumber, data.docketPicture, data.wastePicture);
   res.statusCode = resp.status;
-  res.send(JSON.stringify(resp.msg));
+  const delResp = await deleteReport(data.docketNumber);
+  if (delResp===200) {
+    res.send(JSON.stringify(resp));
+  }
 });
 
 

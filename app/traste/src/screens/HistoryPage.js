@@ -40,7 +40,12 @@ function HistoryPage() {
     setExpanded(false);
     const res =
     await deleteReportAPI.delete('',
-        {data: {docketNumber: item['Docket Number: ']}});
+        {data:
+          {
+            docketNumber: item['Docket Number: '],
+            wastePicture: item['Waste Picture: '],
+            docketPicture: item['Docket Picture: '],
+          }});
     if (res.status===200) {
       const old = Object.assign([], reportData);
       old.splice(index, 1);

@@ -96,6 +96,23 @@ describe("Integration Test for post function create report ", () => {
               }
             });
       });
+  it("Should return that a report was deleted with status code 200",
+      (done)=>{
+        chai
+            .request(app)
+            .post("/deletereport")
+            .send(data)
+            .end(function(error, response, body) {
+              if (error) {
+                done(error);
+              } else {
+                assert.equal(response.text,
+                    JSON.stringify({msg: "Delete was successfull"}));
+                assert.equal(response.status, 200);
+                done();
+              }
+            });
+      });
   it("Should return status code 400, for wrong data type", (done) => {
     chai
         .request(app)

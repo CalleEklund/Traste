@@ -9,7 +9,8 @@ const path = require("path");
 
 const {v4: uuidv4} = require("uuid");
 const {initializeApp} = require("firebase/app");
-const {getStorage, ref, uploadBytes, getDownloadURL, connectStorageEmulator} =
+const {getStorage, ref, uploadBytes, getDownloadURL,
+  deleteObject, connectStorageEmulator} =
 require("firebase/storage");
 
 const firebaseConfig = {
@@ -74,9 +75,24 @@ class FirestoreClient {
     return await documentRef.delete();
   }
 
-  async deleteReport(docketNum) {
+
+  async deleteImage(imagePath) {
+    // ta ut id på url
+    const imageToken = decodeURIComponent(imagePath.split("/")
+        .pop().split("?")[0]);
+    const imageRef = ref(storage, imageToken);
+    deleteObject(imageRef).then(()=>{
+      console.log("image removed");
+    }).catch((error)=>{
+      console.log("error", error);
+    });
+  }
+
+  async deleteReport(docketNum, docketPic, wastePic) {
     const cresp = await this.deleteSubCollection(docketNum, "Contains");
     const resp = await this.deleteDocument(docketNum);
+    await this.deleteImage(docketPic);
+    await this.deleteImage(wastePic);
     if (resp && cresp) {
       return {msg: "Delete was successfull", status: 200};
     } else {
@@ -112,7 +128,6 @@ class FirestoreClient {
             const wasteData = data.wasteData;
             const reportRef = this.firestore.collection("Reports").
                 doc(data.docketNumber);
-
             if (wasteData && (typeof wasteData === "object")) {
               // eslint-disable-next-line guard-for-in
               const tmpWasteData = {};
@@ -138,8 +153,6 @@ class FirestoreClient {
       const docRef = this.firestore.collection("Reports").doc(doc.id);
       const docData = doc.data();
       const containsRef = docRef.collection("Contains");
-      // console.log("docdata", docData);
-      // console.log("containsdata", containsRef);
       const containsSnapshot = await containsRef.get();
       const o = {};
       for (const waste of containsSnapshot.docs) {
