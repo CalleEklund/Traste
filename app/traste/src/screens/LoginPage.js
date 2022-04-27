@@ -61,7 +61,7 @@ function LoginPage({snackBarHandler}) {
           'success', successSx,
       ); // dubbelkolla path till token från res.
       localStorage.setItem('token', res.data.accessToken);
-      navigate('/menupage');
+      navigate('/');
     }
   }
 
