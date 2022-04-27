@@ -59,6 +59,20 @@ export const successSx = {
   fontSize: 18,
 };
 
+export const warningSx = {
+  width: '100%',
+  backgroundColor: 'orange',
+  color: '#103849',
+  fontSize: 18,
+};
+
+export const errorSx = {
+  width: '100%',
+  backgroundColor: 'red',
+  color: '#103849',
+  fontSize: 18,
+};
+
 export default {
   binsizes, wasteTypes, sites, successSx,
 };
@@ -74,10 +88,6 @@ export const BootstrapDialog = styled(Dialog)(({theme}) => ({
 
 export const BootstrapDialogTitle = (props) => {
   const {children, onClose, ...other} = props;
-  BootstrapDialogTitle.propTypes = {
-    children: PropTypes.node,
-    onClose: PropTypes.func.isRequired,
-  };
   return (
     <DialogTitle sx={{m: 0, p: 2, alignContent: 'center'}} {...other}>
       {children}
@@ -97,4 +107,8 @@ export const BootstrapDialogTitle = (props) => {
       ) : null}
     </DialogTitle>
   );
+  BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+  };
 };

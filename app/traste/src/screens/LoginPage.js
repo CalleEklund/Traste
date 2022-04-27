@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {loginAPI} from '../api/trasteApi.js';
-import {successSx} from '../assets/Constants';
+import {successSx, warningSx, errorSx} from '../assets/Constants';
 import PropTypes from 'prop-types';
 import {Colors} from '../assets/Colors.js';
 import {useNavigate} from 'react-router-dom';
@@ -41,18 +41,21 @@ function LoginPage({snackBarHandler}) {
     const hashedPassword = bcrypt.hashSync(values.password, salt);
     const res = await loginAPI
         .post('', {'password': hashedPassword}).catch((e) => {
-          snackBarHandler(
-              'An error occurred, please try again later (never).',
-              'error',
-          );
+          console.log(e);
+          if (e.response.status === 401) {
+            snackBarHandler(
+                'The password is not correct, ' +
+                'please check that you have the correct password.',
+                'warning', warningSx,
+            );
+          } else {
+            snackBarHandler(
+                'An error occurred, please try again later.',
+                'error', errorSx,
+            );
+          }
         });
-    if (res.status === 401) {
-      snackBarHandler(
-          'The password is not correct, ' +
-          'please check that you have the correct password.',
-          'warning',
-      );
-    } else if (res.status === 200) {
+    if (res && res.status === 200) {
       snackBarHandler(
           'Successfully logged in.',
           'success', successSx,
