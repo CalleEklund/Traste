@@ -25,9 +25,10 @@ describe("The delete function", ()=>{
       },
       "timeStamps": "Thu, 07 Apr 2022 14:41:44 GMT",
     };
-    FS.deleteReport(data.docketNumber).then((res, _)=>{
-      expect(res.msg).to.be.eq("Delete was successfull");
-      done();
-    }).catch(done);
+    FS.deleteReport(data.docketNumber, data.docketPicture, data.wastePicture)
+        .then((res, _)=>{
+          expect(res.msg).to.be.eq("Delete was successfull");
+          done();
+        }).catch(done);
   });
 });

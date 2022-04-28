@@ -138,7 +138,7 @@ function ReportPage({snackBarHandler}) {
       snackBarHandler('An Error occured, report was not sent',
           'error');
     });
-    navigate('/menupage');
+    navigate('/');
   };
 
   return (
@@ -264,7 +264,7 @@ function ReportPage({snackBarHandler}) {
             <CardMedia
               image={docketURL}
               component='img'
-              sx={{height: '50vh',
+              sx={{maxWidth: '400px',
                 width: '80vw'}} />
             <Typography variant='h6' color="common.black">
                 Waste picture
@@ -272,7 +272,7 @@ function ReportPage({snackBarHandler}) {
             <CardMedia
               image={wasteURL}
               component='img'
-              sx={{height: '50vh',
+              sx={{maxWidth: '400px',
                 width: '80vw'}} />
           </Container>
         </DialogContent>

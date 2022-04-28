@@ -12,7 +12,7 @@ import {Colors} from '../assets/Colors';
 function MenuPage() {
   const navigate = useNavigate();
   const routeChange = () => {
-    navigate('/reportpage');
+    navigate('/report');
   };
   return (
     <Container
@@ -45,7 +45,7 @@ function MenuPage() {
           alignItems: 'center',
         }}
         onClick={()=>{
-          navigate('/historypage');
+          navigate('/history');
         }}
       >
         <Typography variant="h4">Show History</Typography>
