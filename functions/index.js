@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-function generateToken(data) {
+export function generateToken(data) {
   return jwt.sign(data, TOKEN_SECRET, {expiresIn: "1000000s"});
 }
 
