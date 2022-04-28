@@ -1,5 +1,6 @@
 export const Colors = {
   trasteNavyBlue: '#103849',
+  trasteNavyLight: '#17495e',
   trasteGreen: '#80ed99',
   trasteTeal: '#00a8ab',
   trasteDadada: '#dadada',

@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, {useEffect, useState} from 'react';
 import {Accordion, AccordionSummary, AccordionDetails, Typography,
-  Divider, List, ListItem, ListItemText, Button, Skeleton, Stack}
+  Divider, List, ListItem, ListItemText, Button, Skeleton, Stack, Paper}
   from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ImageModal from '../components/ImageModal.js';
 import DeleteIcon from '@mui/icons-material/Delete';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import {deleteReportAPI, getAllReportsAPI} from '../api/trasteApi';
 import {Colors} from '../assets/Colors';
 /**
@@ -110,73 +111,91 @@ function HistoryPage() {
   }
   return (
     <div>
-      {reportData.map((item, index)=>(
-        <div key={index}>
-          <Accordion
-            sx={{backgroundColor: Colors.trasteDadada}}
-            expanded = {expanded===('panel'+index)}
-            onChange = {handleChange('panel'+index)}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header">
-              <Typography color={Colors.trasteNavyBlue}>
-                {item['Date: '] + ' ' + item['Docket Number: ']}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <List>
-                {Object.entries(item).map(([key, value], index)=>{
-                  if (key === 'Docket Picture: ' || key === 'Waste Picture: ') {
-                    return (
-                      <ListItem key={index}>
-                        <ListItemText>
-                          {key}
-                          <Button onClick={()=>{
-                            setSelectedImage(value);
-                            handleOpen(true);
-                          }}
-                          variant="outlined"
-                          sx={{marginLeft: '15px'}}>Open image</Button>
+      <Paper elevation={2}
+        square={true}
+        sx={{flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          backgroundColor: Colors.trasteNavyLight}}>
+        {reportData.map((item, index)=>(
+          <div key={index}>
+            <Accordion
+              square={true}
+              sx={{backgroundColor: Colors.trasteNavyLight}}
+              expanded = {expanded===('panel'+index)}
+              onChange = {handleChange('panel'+index)}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon style={{color: 'white'}}/>}
+                aria-controls="panel1a-content"
+                id="panel1a-header">
 
-                        </ListItemText>
-                      </ListItem>
-                    );
-                  } else {
-                    return (
-                      <ListItem key={index}>
-                        <ListItemText>
-                          {key + value}
-                        </ListItemText>
-                      </ListItem>
-                    );
-                  }
-                })}
+                <Typography color={'white'}>
+                  {item['Date: '] + ' - ' + item['Docket Number: ']}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  {Object.entries(item).map(([key, value], index)=>{
+                    if (key === 'Docket Picture: ' ||
+                    key === 'Waste Picture: ') {
+                      return (
+                        <ListItem key={index}>
+                          <Stack direction='row'>
+                            <ListItemText primary={key}
+                              primaryTypographyProps={{color: 'white'}}/>
+                            <Button onClick={()=>{
+                              setSelectedImage(value);
+                              handleOpen(true);
+                            }}
+                            variant="outlined"
+                            sx={{marginLeft: '15px',
+                              borderColor: Colors.trasteGreen,
+                              backgroundColor: Colors.trasteNavyBlue,
+                              color: Colors.trasteGreen}}
+                            startIcon={<InsertPhotoIcon
+                              style={{color: Colors.trasteGreen}}/>}>
+                                Open image
+                            </Button>
 
-              </List>
-              <Button
-                endIcon={<DeleteIcon style={{color: Colors.trasteTeal}}/>}
-                variant="outlined"
-                sx={{borderColor: Colors.trasteTeal, color: Colors.trasteTeal}}
-                onClick={()=>{
-                  handleDelete(item, index);
-                }}
-              >
+                          </Stack>
+                        </ListItem>
+                      );
+                    } else {
+                      return (
+                        <ListItem key={index}>
+                          <ListItemText primary={key + value}
+                            primaryTypographyProps={{color: 'white'}}/>
+                        </ListItem>
+                      );
+                    }
+                  })}
+
+                </List>
+                <Button
+                  endIcon={<DeleteIcon style={{color: Colors.trasteGreen}}/>}
+                  variant="outlined"
+                  sx={{borderColor: Colors.trasteGreen,
+                    backgroundColor: Colors.trasteNavyBlue,
+                    color: Colors.trasteGreen}}
+                  onClick={()=>{
+                    handleDelete(item, index);
+                  }}
+                >
                 Delete Report
-              </Button>
+                </Button>
 
-            </AccordionDetails>
-          </Accordion>
-          <Divider/>
-        </div>
-      ))
-      }
-      <ImageModal
-        picture={selectedImage}
-        closeHandler={handleClose}
-        isOpen={open}
-      />
+              </AccordionDetails>
+            </Accordion>
+            <Divider/>
+          </div>
+        ))
+        }
+        <ImageModal
+          picture={selectedImage}
+          closeHandler={handleClose}
+          isOpen={open}
+        />
+      </Paper>
     </div>
   );
 }

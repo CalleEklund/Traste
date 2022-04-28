@@ -4,6 +4,7 @@ import {Button, Stack} from '@mui/material';
 import {styled} from '@mui/material/styles';
 import CheckIcon from '@mui/icons-material/Check';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import IconButton from '@mui/material/IconButton';
 import PropTypes from 'prop-types';
 import {Colors} from '../assets/Colors';
@@ -54,10 +55,12 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
         <Button
           variant="contained"
           component="span"
+          startIcon={<AddPhotoAlternateIcon
+            style={{color: 'white'}}/>}
           sx={{
             'backgroundColor': Colors.trasteNavyBlue,
-            ':hover': {backgroundColor: Colors.trastePurple},
-            'height': 20,
+            ':hover': {backgroundColor: Colors.trasteNavyLight},
+            'height': 20, 'width': 100,
           }}>
           Upload
         </Button>
@@ -100,7 +103,7 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
             component="span"
             sx={{
               'color': Colors.trasteNavyBlue,
-              ':hover': {color: Colors.trastePurple},
+              ':hover': {color: Colors.trasteNavyLight},
             }}>
             <PhotoCamera />
           </IconButton>
