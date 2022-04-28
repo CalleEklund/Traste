@@ -7,7 +7,8 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const assert = chai.assert;
 
-const {app, generateToken} = require("../../index.js");
+const {app} = require("../../index.js");
+import {generateToken} from "../../index.js";
 const token = generateToken({});
 chai.use(chaiHttp);
 
