@@ -7,7 +7,8 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const assert = chai.assert;
 
-const {app} = require("../../index.js");
+const {app, generateToken} = require("../../index.js");
+const token = generateToken({});
 chai.use(chaiHttp);
 
 const data = {
@@ -69,7 +70,7 @@ describe("Integration Test for post function create report ", () => {
   it("Should return that a report was made with status code 200", (done) => {
     chai
         .request(app)
-        .post("/createreport")
+        .post("/createreport").set({Authorization: `Bearer ${token}`})
         .send(data).end(function(error, response, body) {
           if (error) {
             done(error);
@@ -86,7 +87,7 @@ describe("Integration Test for post function create report ", () => {
       (done) => {
         chai
             .request(app)
-            .post("/createreport")
+            .post("/createreport").set({Authorization: `Bearer ${token}`})
             .send(data).end(function(error, response, body) {
               if (error) {
                 done(error);
@@ -102,7 +103,7 @@ describe("Integration Test for post function create report ", () => {
       (done)=>{
         chai
             .request(app)
-            .del("/deletereport")
+            .del("/deletereport").set({Authorization: `Bearer ${token}`})
             .send(data)
             .end(function(error, response, body) {
               if (error) {
@@ -120,7 +121,7 @@ describe("Integration Test for post function create report ", () => {
   it("Should return status code 400, for wrong data type", (done) => {
     chai
         .request(app)
-        .post("/createreport")
+        .post("/createreport").set({Authorization: `Bearer ${token}`})
         .send(data2).end(function(error, response, body) {
           if (error) {
             done(error);
@@ -135,7 +136,7 @@ describe("Integration Test for post function create report ", () => {
   it("Should return status code 400, for wrong image format", (done) => {
     chai
         .request(app)
-        .post("/createreport")
+        .post("/createreport").set({Authorization: `Bearer ${token}`})
         .send(data3).end(function(error, response, body) {
           if (error) {
             done(error);
