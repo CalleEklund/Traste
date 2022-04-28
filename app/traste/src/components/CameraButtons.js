@@ -23,7 +23,6 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
   return (
     <Stack
       direction="column"
-      fullWidth
       sx={{
         display: 'flex',
         paddingTop: '15px',
@@ -66,7 +65,6 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
 
       <Stack
         style={{display: 'flex'}}
-        fullWidth
         direction='row'
         spacing={2}
         sx={{
@@ -112,7 +110,7 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
           sx={{
             paddingTop: 0.9,
             color: () => (useStateValue === 1 ?
-                    Colors.trasteNavyBlue : Colors.trasteGreen),
+                    Colors.trasteNavyBlue : 'transparent'),
           }}>
         </CheckIcon>
       </Stack>

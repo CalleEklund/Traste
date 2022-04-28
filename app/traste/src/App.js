@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, {useState} from 'react';
 import MenuPage from './screens/MenuPage';
-import {Container, Snackbar, Alert} from '@mui/material';
+import {Container, Stack, Snackbar, Alert} from '@mui/material';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import ReportPage from './screens/ReportPage';
 import Header from './components/Header';
@@ -10,6 +10,7 @@ import {Colors} from './assets/Colors';
 
 import axios from 'axios';
 import HistoryPage from './screens/HistoryPage';
+import LoginPage from './screens/LoginPage';
 
 /**
  * Main file for controling the flow of the app.
@@ -51,10 +52,11 @@ function App() {
 
   return (
 
-    <Container
-      disableGutters={true}
+    <Stack
+
       sx={{height: '100vh', display: 'flex', flexDirection: 'column',
-        bgcolor: Colors.trasteGreen}}
+        bgcolor: Colors.trasteGreen, marginLeft: 0, marginRight: 0, padding: 0,
+      }}
     >
       <Header goBackHandler={goBack} />
 
@@ -74,7 +76,10 @@ function App() {
       </Snackbar>
 
       <Routes>
-        <Route exact path="/" element={<MenuPage />} />
+        <Route
+          exact path="/menupage"
+          element={<MenuPage />}
+        />
         <Route
           path="/reportpage"
           element={<ReportPage snackBarHandler={openSnackBar} />}
@@ -83,8 +88,12 @@ function App() {
           path="/historypage"
           element={<HistoryPage/>}
         />
+        <Route
+          path="/"
+          element={<LoginPage snackBarHandler={openSnackBar}/>}
+        />
       </Routes>
-    </Container>
+    </Stack>
   );
 }
 
