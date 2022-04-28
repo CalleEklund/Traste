@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-export function generateToken(data) {
+function generateToken(data) {
   return jwt.sign(data, TOKEN_SECRET, {expiresIn: "1000000s"});
 }
 
@@ -170,3 +170,4 @@ function validatePicureUrl(picture) {
 app.use(validationErrorMiddleware);
 
 exports.app = functions.region("europe-west3").https.onRequest(app);
+export {generateToken};
