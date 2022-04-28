@@ -170,4 +170,3 @@ function validatePicureUrl(picture) {
 app.use(validationErrorMiddleware);
 
 exports.app = functions.region("europe-west3").https.onRequest(app);
-export {generateToken};

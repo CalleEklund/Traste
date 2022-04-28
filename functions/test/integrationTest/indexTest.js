@@ -8,9 +8,15 @@ const chaiHttp = require("chai-http");
 const assert = chai.assert;
 
 const {app} = require("../../index.js");
-import {generateToken} from "../../index.js";
-const token = generateToken({});
 chai.use(chaiHttp);
+
+const jwt = require("jsonwebtoken");
+const TOKEN_SECRET = "secret lol";
+
+function generateToken(data) {
+  return jwt.sign(data, TOKEN_SECRET, {expiresIn: "1000000s"});
+}
+const token = generateToken({});
 
 const data = {
   date: "Thu Apr 07 2022",
