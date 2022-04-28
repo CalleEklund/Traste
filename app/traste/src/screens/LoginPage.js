@@ -17,6 +17,7 @@ import logo from '../assets/login_logo.png';
 
 /**
  *
+ *
  * @return {*} lol
  */
 function LoginPage({snackBarHandler}) {
