@@ -13,7 +13,7 @@ import {Colors} from '../assets/Colors';
  * @return {Stack} Rendered Stack.
  */
 function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
-  name, iconId, setURL}) {
+  name, displayName, iconId, setURL}) {
   // Used for Input component.
   const Input = styled('input')({
     display: 'none',
@@ -28,7 +28,7 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
         justifyItems: 'flex-end',
       }}>
       <Typography variant='caption'
-        color={Colors.trasteNavyBlue}>{name}</Typography>
+        color={Colors.trasteNavyBlue}>{displayName}</Typography>
 
       {/* buttonId is a button that
       an user can click to upload a picture. */}
@@ -81,6 +81,7 @@ CameraButtons.propTypes = {
   setUseStateFunc: PropTypes.any.isRequired,
   buttonId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  displayName: PropTypes.string.isRequired,
   iconId: PropTypes.string.isRequired,
   setURL: PropTypes.func.isRequired,
 };

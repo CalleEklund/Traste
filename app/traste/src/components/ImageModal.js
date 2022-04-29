@@ -19,7 +19,7 @@ function ImageModal({picture, closeHandler, isOpen}) {
         justifyContent: 'center', alignItems: 'center', marginTop: '10vh'}}
       data-testid = 'imageModal'
     >
-      <img src={picture} style={{maxWidth: '400px'}}
+      <img src={picture} style={{maxWidth: '800px'}}
         alt="Firestore Photo" width={'100%'}
         onClick={closeHandler}/>
     </Modal>);
