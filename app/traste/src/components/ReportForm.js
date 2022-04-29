@@ -136,7 +136,7 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
               useStateValue={docketCheck}
               setUseStateFunc={setDocketCheck}
               buttonId={'contained-button-file'}
-              name={'docketPicture'}
+              name={'Docket Picture'}
               iconId={'icon-button-file'}
               setURL={setDocketURL}
             />
@@ -225,7 +225,7 @@ function ReportForm({handleSubmit, onSubmit, control, total, isValid,
               useStateValue={wasteCheck}
               setUseStateFunc={setWasteCheck}
               buttonId={'waste-button-file'}
-              name={'wastePicture'}
+              name={'Waste Picture'}
               iconId={'waste-icon-button-file'}
               setURL={setWasteURL}
             />

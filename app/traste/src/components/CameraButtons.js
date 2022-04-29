@@ -1,11 +1,9 @@
 import React from 'react';
 import {Controller} from 'react-hook-form';
-import {Button, Stack} from '@mui/material';
+import {Button, Stack, Typography} from '@mui/material';
 import {styled} from '@mui/material/styles';
 import CheckIcon from '@mui/icons-material/Check';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import IconButton from '@mui/material/IconButton';
 import PropTypes from 'prop-types';
 import {Colors} from '../assets/Colors';
 
@@ -26,9 +24,11 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
       direction="column"
       sx={{
         display: 'flex',
-        paddingTop: '15px',
         alignItems: 'center',
+        justifyItems: 'flex-end',
       }}>
+      <Typography variant='caption'
+        color={Colors.trasteNavyBlue}>{name}</Typography>
 
       {/* buttonId is a button that
       an user can click to upload a picture. */}
@@ -60,63 +60,17 @@ function CameraButtons({control, useStateValue, setUseStateFunc, buttonId,
           sx={{
             'backgroundColor': Colors.trasteNavyBlue,
             ':hover': {backgroundColor: Colors.trasteNavyLight},
-            'height': 20, 'width': 100,
-          }}>
-          Upload
+            'height': 45, 'width': 120,
+          }}
+          endIcon={<CheckIcon
+            sx={{
+              color: () => (useStateValue === 1 ?
+                      'white' : 'transparent'),
+            }}>
+          </CheckIcon>}>
+          upload
         </Button>
       </label>
-
-      <Stack
-        style={{display: 'flex'}}
-        direction='row'
-        spacing={2}
-        sx={{
-          alignItems: 'flex-start',
-          justifyContent: 'space-evenly',
-        }}>
-
-        {/* iconId is a camera icon.
-        When clicked opens an user's camera on the phone. */}
-        <label htmlFor={iconId}>
-          <Controller
-            name={name}
-            control={control}
-            rules={{required: 'Select an image'}}
-            render={({field: {onChange}, fieldState: {error}}) => (
-
-              <Input
-                accept="image/*"
-                id={iconId}
-                multiple type="file"
-                onChange={(e) => {
-                  onChange(e.target.files[0]);
-                  setUseStateFunc(1);
-                  setURL(URL.createObjectURL(e.target.files[0]));
-                }}
-                error={error}
-              />
-            )}
-          />
-
-          <IconButton
-            aria-label="upload picture"
-            component="span"
-            sx={{
-              'color': Colors.trasteNavyBlue,
-              ':hover': {color: Colors.trasteNavyLight},
-            }}>
-            <PhotoCamera />
-          </IconButton>
-        </label>
-
-        <CheckIcon
-          sx={{
-            paddingTop: 0.9,
-            color: () => (useStateValue === 1 ?
-                    Colors.trasteNavyBlue : 'transparent'),
-          }}>
-        </CheckIcon>
-      </Stack>
     </Stack>
   );
 }
