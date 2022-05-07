@@ -7,8 +7,15 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ImageModal from '../components/ImageModal.js';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+// import {
+//  Chart,
+//  PieSeries,
+//  Title,
+//  Legend} from '@devexpress/dx-react-chart-material-ui';
+// import {Palette} from '@devexpress/dx-react-chart';
 import {deleteReportAPI, getAllReportsAPI} from '../api/trasteApi';
 import {Colors} from '../assets/Colors';
+import CustomChart from '../components/Chart.js';
 /**
  * A page which shows the created reports in list form
  * @return {*}
@@ -83,9 +90,18 @@ function HistoryPage() {
       const tmp = {};
       Object.entries(titles).map(([key, value], index)=>{
         if (key==='WasteData') {
+          // const pieData = {};
+          const labels = [];
+          const series = [];
           Object.entries(value).map(([k, v], i)=>{
-            tmp[v] = report.WasteData[k];
+            // tmp[v] = report.WasteData[k];
+            labels.push(v.slice(0, -2));
+            series.push(report.WasteData[k]);
+            // const dataBit = {argument: v.slice(0, -2),
+            //  value: report.WasteData[k]};
+            // pieData.push(dataBit);
           });
+          tmp['Waste Data'] = {labels: labels, series: series};
         } else {
           tmp[value] = report[key];
         }
@@ -160,6 +176,10 @@ function HistoryPage() {
                           </Stack>
                         </ListItem>
                       );
+                    } else if (key === 'Waste Data') {
+                      return (
+                        <CustomChart labels={value['labels']}
+                          seriesData={value['series']}/>);
                     } else {
                       return (
                         <ListItem key={index}>
