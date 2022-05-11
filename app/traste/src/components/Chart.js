@@ -110,8 +110,9 @@ function CustomChart({labels, seriesData}) {
   };
   return (
     <Paper elevation={0}
-      sx={{display: 'flex', flexDirection: 'row', maxWidth: '500px',
-        backgroundColor: 'transparent'}}>
+      sx={{display: 'flex', flexDirection: 'column', alignItems: 'center',
+        width: '100vw', maxWidth: '650px', justifyContent: 'center',
+        backgroundColor: 'transparent', marginLeft: -2}}>
       <Chart options={state.options}
         series={state.series} type="donut"
         width='100%'

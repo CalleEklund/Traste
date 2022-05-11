@@ -177,9 +177,9 @@ function HistoryPage() {
                         </ListItem>
                       );
                     } else if (key === 'Waste Data') {
-                      return (
-                        <CustomChart labels={value['labels']}
-                          seriesData={value['series']}/>);
+                      return;
+                    } else if (key === 'Name: ') {
+                      return;
                     } else {
                       return (
                         <ListItem key={index}>
@@ -189,8 +189,14 @@ function HistoryPage() {
                       );
                     }
                   })}
-
                 </List>
+                {Object.entries(item).map(([key, value], index)=>{
+                  if (key === 'Waste Data') {
+                    return (
+                      <CustomChart labels={value['labels']}
+                        seriesData={value['series']}/>);
+                  }
+                })}
                 <Button
                   endIcon={<DeleteIcon style={{color: Colors.trasteGreen}}/>}
                   variant="outlined"
