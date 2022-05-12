@@ -35,12 +35,8 @@ function ReportPage({snackBarHandler}) {
 
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClosed = () => {
-    setOpen(false);
-  };
+  const handleClickOpen = () => setOpen(true);
+  const handleClosed = () => setOpen(false);
 
   const {
     handleSubmit,

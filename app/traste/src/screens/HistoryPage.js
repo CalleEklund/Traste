@@ -6,6 +6,8 @@ import {Accordion, AccordionSummary, AccordionDetails, Typography,
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ImageModal from '../components/ImageModal.js';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 // import {
 //  Chart,
@@ -14,6 +16,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 //  Legend} from '@devexpress/dx-react-chart-material-ui';
 // import {Palette} from '@devexpress/dx-react-chart';
 import {deleteReportAPI, getAllReportsAPI} from '../api/trasteApi';
+import {BootstrapDialog, BootstrapDialogTitle} from '../assets/Constants';
 import {Colors} from '../assets/Colors';
 import CustomChart from '../components/Chart.js';
 /**
@@ -27,7 +30,22 @@ function HistoryPage() {
   const [selectedImage, setSelectedImage] = useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  // fix to prevent from just deleting last element in list
+  const [deleteItem, setItem] = useState(null);
+  const [deleteIndex, setIndex] = useState(null);
+  const handleConfirmOpen = (item, index) => {
+    setConfirmOpen(true);
+    setItem(item);
+    setIndex(index);
+  };
+  const handleRegretDelete = () => setConfirmOpen(false);
+  const handleConfirmDelete = () => {
+    setConfirmOpen(false);
+    handleDelete(deleteItem, deleteIndex);
+  };
 
   /**
    * Makes the opening and closing of a accordion a controlled state
@@ -204,12 +222,56 @@ function HistoryPage() {
                     backgroundColor: Colors.trasteNavyBlue,
                     color: Colors.trasteGreen}}
                   onClick={()=>{
-                    handleDelete(item, index);
+                    handleConfirmOpen(item, index);
                   }}
                 >
                 Delete Report
                 </Button>
-
+                <BootstrapDialog
+                  onClose={()=>{
+                    handleRegretDelete();
+                  }}
+                  aria-labelledby="customized-dialog-title"
+                  open={confirmOpen}
+                  PaperProps={{style: {
+                    backgroundColor: Colors.trasteGreen,
+                    boxShadow: 'none'}}}
+                  // fullScreen='true'
+                  sx={{backdropFilter: 'blur(40px)'}}
+                >
+                  <BootstrapDialogTitle id="customized-dialog-title"
+                    onClose={()=>{
+                      handleRegretDelete();
+                    }}
+                    sx={{backgroundColor: Colors.trasteNavyBlue}}
+                  >
+                    <Typography variant='h5' color="common.white"
+                      align="center">
+        Confirm Delete
+                    </Typography>
+                  </BootstrapDialogTitle>
+                  <DialogContent dividers
+                    sx={{borderColor: Colors.trasteNavyBlue,
+                      overflow: 'hidden'}}>
+                    <Typography variant='h5' color={Colors.trasteNavyBlue}
+                      align="center">
+                        Are you sure you want to delete this report?
+                    </Typography>
+                  </DialogContent>
+                  <DialogActions sx={{backgroundColor: Colors.trasteNavyBlue}}>
+                    <Button autoFocus
+                      onClick={()=>{
+                        handleConfirmDelete();
+                      }}
+                      form='report-form'
+                      sx={{width: '100vw', color: 'common.white',
+                        backgroundColor: Colors.trasteNavyBlue, m: 0, p: 1}}>
+                      <Typography variant='h6' color="common.white">
+                Delete Report
+                      </Typography>
+                    </Button>
+                  </DialogActions>
+                </BootstrapDialog>
               </AccordionDetails>
             </Accordion>
             <Divider/>
