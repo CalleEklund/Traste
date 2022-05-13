@@ -109,7 +109,7 @@ function CustomChart({labels, seriesData, chartColor,
         backgroundColor: 'transparent', marginLeft: marginLeft}}>
       <Chart options={state.options}
         series={state.series} type="donut"
-        width={2*width < height ? size : '650px'}
+        width={1.3*width < height ? size : '650px'}
       />
     </Paper>
   );
