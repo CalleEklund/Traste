@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import * as React from 'react';
 import {Colors} from './Colors.js';
 
+
 export const binsizes = [
   {
     id: '0',
@@ -61,15 +62,15 @@ export const successSx = {
 
 export const warningSx = {
   width: '100%',
-  backgroundColor: 'orange',
-  color: '#103849',
+  backgroundColor: '#302f2fba',
+  color: 'white',
   fontSize: 18,
 };
 
 export const errorSx = {
   width: '100%',
-  backgroundColor: 'red',
-  color: '#103849',
+  backgroundColor: '#302f2fba',
+  color: 'white',
   fontSize: 18,
 };
 

@@ -11,20 +11,18 @@ import {Paper} from '@mui/material';
  * @param {*} seriesData Handler.
  * @return {Paper} Rendered field.
  */
-function CustomChart({labels, seriesData}) {
+function CustomChart({labels, seriesData, chartColor,
+  labelColor, foreColor, size, marginLeft}) {
+  const {innerWidth: width, innerHeight: height} = window;
   const state = {
     series: seriesData,
     options: {
-      colors: [Colors.trasteGreen,
-        Colors.trasteBlue,
-        Colors.trasteTeal,
-        Colors.trasteDarkPurple,
-        Colors.trastePurple],
+      colors: chartColor,
 
       chart: {
         redrawOnParentResize: true,
         redrawOnWindowResize: true,
-        foreColor: 'white',
+        foreColor: foreColor,
         width: '110%',
         type: 'donut',
       },
@@ -56,11 +54,7 @@ function CustomChart({labels, seriesData}) {
           fontWeight: 'regular',
           fontSize: '12px',
           fontFamily: 'Gilroy',
-          colors: [Colors.trasteNavyBlue,
-            'white',
-            'white',
-            'white',
-            'white'],
+          colors: labelColor,
         },
         enabled: true,
         formatter(val, opts) {
@@ -109,13 +103,13 @@ function CustomChart({labels, seriesData}) {
     },
   };
   return (
-    <Paper elevation={0}
-      sx={{display: 'flex', flexDirection: 'column', alignItems: 'center',
-        width: '100vw', maxWidth: '650px', justifyContent: 'center',
-        backgroundColor: 'transparent', marginLeft: -2}}>
+    <Paper elevation={0} fullWidth='true'
+      sx={{display: 'flex', flexDirection: 'column',
+        justifyContent: 'center', alignItems: 'center',
+        backgroundColor: 'transparent', marginLeft: marginLeft}}>
       <Chart options={state.options}
         series={state.series} type="donut"
-        width='100%'
+        width={2*width < height ? size : '650px'}
       />
     </Paper>
   );
@@ -125,9 +119,30 @@ function CustomChart({labels, seriesData}) {
  * @return {Paper} Rendered field.
  */
 
+CustomChart.defaultProps = {
+  chartColor: [Colors.trasteGreen,
+    Colors.trasteBlue,
+    Colors.trasteTeal,
+    Colors.trasteDarkPurple,
+    Colors.trastePurple],
+  labelColor: [Colors.trasteNavyBlue,
+    'white',
+    'white',
+    'white',
+    'white'],
+  foreColor: 'white',
+  size: '120%',
+  marginLeft: -2,
+};
+
 CustomChart.propTypes = {
   labels: PropTypes.array.isRequired,
   seriesData: PropTypes.array.isRequired,
+  chartColor: PropTypes.array,
+  labelColor: PropTypes.array,
+  foreColor: PropTypes.string,
+  size: PropTypes.string,
+  marginLeft: PropTypes.number,
 };
 
 export default CustomChart;

@@ -9,16 +9,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-// import {
-//  Chart,
-//  PieSeries,
-//  Title,
-//  Legend} from '@devexpress/dx-react-chart-material-ui';
-// import {Palette} from '@devexpress/dx-react-chart';
 import {deleteReportAPI, getAllReportsAPI} from '../api/trasteApi';
 import {BootstrapDialog, BootstrapDialogTitle} from '../assets/Constants';
 import {Colors} from '../assets/Colors';
 import CustomChart from '../components/Chart.js';
+
 /**
  * A page which shows the created reports in list form
  * @return {*}
@@ -108,16 +103,11 @@ function HistoryPage() {
       const tmp = {};
       Object.entries(titles).map(([key, value], index)=>{
         if (key==='WasteData') {
-          // const pieData = {};
           const labels = [];
           const series = [];
           Object.entries(value).map(([k, v], i)=>{
-            // tmp[v] = report.WasteData[k];
             labels.push(v.slice(0, -2));
             series.push(report.WasteData[k]);
-            // const dataBit = {argument: v.slice(0, -2),
-            //  value: report.WasteData[k]};
-            // pieData.push(dataBit);
           });
           tmp['Waste Data'] = {labels: labels, series: series};
         } else {
