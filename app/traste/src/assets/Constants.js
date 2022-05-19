@@ -10,19 +10,39 @@ import {Colors} from './Colors.js';
 export const binsizes = [
   {
     id: '0',
-    label: 5,
+    label: 2,
   },
   {
     id: '1',
-    label: 10,
+    label: 3,
   },
   {
     id: '2',
-    label: 15,
+    label: 4,
   },
   {
     id: '3',
-    label: 20,
+    label: 6,
+  },
+  {
+    id: '4',
+    label: 8,
+  },
+  {
+    id: '5',
+    label: 12,
+  },
+  {
+    id: '6',
+    label: 15,
+  },
+  {
+    id: '7',
+    label: 23,
+  },
+  {
+    id: '8',
+    label: 31,
   },
 ];
 
@@ -37,26 +57,26 @@ export const wasteTypes = {
 export const sites = [
   {
     id: '0',
-    label: 'Linköping',
+    label: 'Sydney International Speedway',
   },
   {
     id: '1',
-    label: 'Norrköping',
+    label: 'Redfern Station Upgrade',
   },
   {
     id: '2',
-    label: 'Gustavsberg',
+    label: 'The Marker, Spencer St Melbourne',
   },
   {
     id: '3',
-    label: 'Vetlanda',
+    label: 'St Catherine’s Junior School, Waverley ',
   },
 ];
 
 export const successSx = {
   width: '100%',
   backgroundColor: Colors.trasteGreen,
-  color: '#103849',
+  color: Colors.trasteNavyBlue,
   fontSize: 18,
 };
 
