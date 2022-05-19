@@ -63,6 +63,7 @@ function LoginPage({snackBarHandler}) {
       ); // dubbelkolla path till token från res.
       localStorage.setItem('token', res.data.accessToken);
       navigate('/');
+      location.reload();
     }
   }
 
@@ -135,5 +136,4 @@ function LoginPage({snackBarHandler}) {
 LoginPage.propTypes = {
   snackBarHandler: PropTypes.any.isRequired,
 };
-
 export default LoginPage;

@@ -19,6 +19,7 @@ import {BootstrapDialog, BootstrapDialogTitle} from '../assets/Constants';
 import {uploadImageAPI, createReportAPI} from '../api/trasteApi';
 import {wasteTypes, successSx} from '../assets/Constants';
 import {Colors} from '../assets/Colors.js';
+import CustomChart from '../components/Chart.js';
 
 /**
  * ReportPage renders the report form for a waste report.
@@ -35,12 +36,8 @@ function ReportPage({snackBarHandler}) {
 
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClosed = () => {
-    setOpen(false);
-  };
+  const handleClickOpen = () => setOpen(true);
+  const handleClosed = () => setOpen(false);
 
   const {
     handleSubmit,
@@ -63,6 +60,11 @@ function ReportPage({snackBarHandler}) {
     },
   });
   const all = watch(control);
+
+  const labelArray = ['Wood', 'Plastic', 'Concrete', 'Metal', 'Other'];
+  const seriesArray = [all.wasteData['Wood'],
+    all.wasteData['Plastic'], all.wasteData['Concrete'],
+    all.wasteData['Metal'], all.wasteData['Other']];
 
   /**
    * Keeps track of changes to the wastedata inputs and then updated the
@@ -180,95 +182,78 @@ function ReportPage({snackBarHandler}) {
             <ListItem autoFocus>
               <ListItemText primary="Date"
                 secondary={new Date(all.date).toDateString()}
-                // primaryTypographyProps={{color: 'common.white'}}
-                // secondaryTypographyProps={{color: 'common.white'}}
+                primaryTypographyProps={{color: Colors.trasteNavyBlue}}
+                secondaryTypographyProps={{color: Colors.trasteNavyLight}}
               />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Docket number"
                 secondary={all.docketNumber}
-                // primaryTypographyProps={{color: 'common.white'}}
-                // secondaryTypographyProps={{color: 'common.white'}}
+                primaryTypographyProps={{color: Colors.trasteNavyBlue}}
+                secondaryTypographyProps={{color: Colors.trasteNavyLight}}
               />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Weight"
                 secondary={all.weight}
-                // primaryTypographyProps={{color: 'common.white'}}
-                // secondaryTypographyProps={{color: 'common.white'}}
+                primaryTypographyProps={{color: Colors.trasteNavyBlue}}
+                secondaryTypographyProps={{color: Colors.trasteNavyLight}}
               />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Bin size"
                 secondary={all.binSize}
-                // primaryTypographyProps={{color: 'common.white'}}
-                // secondaryTypographyProps={{color: 'common.white'}}
+                primaryTypographyProps={{color: Colors.trasteNavyBlue}}
+                secondaryTypographyProps={{color: Colors.trasteNavyLight}}
               />
             </ListItem>
             <ListItem autoFocus>
               <ListItemText primary="Site"
                 secondary={all.site}
-                // primaryTypographyProps={{color: 'common.white'}}
-                // secondaryTypographyProps={{color: 'common.white'}}
+                primaryTypographyProps={{color: Colors.trasteNavyBlue}}
+                secondaryTypographyProps={{color: Colors.trasteNavyLight}}
               />
             </ListItem>
           </List>
           <Divider
-            sx={{backgroundColor: Colors.trasteNavyBlue}}/>
-          <List sx={{pt: 0}}>
-            <ListItem autoFocus>
-              <ListItemText primary="Wood"
-                secondary={all.wasteData['Wood'] + '%'}
-                // primaryTypographyProps={{color: 'common.white'}}
-                // secondaryTypographyProps={{color: 'common.white'}}
-              />
-            </ListItem>
-            <ListItem autoFocus>
-              <ListItemText primary="Plastic"
-                secondary={all.wasteData['Plastic'] + '%'}
-                // primaryTypographyProps={{color: 'common.white'}}
-                // secondaryTypographyProps={{color: 'common.white'}}
-              />
-            </ListItem>
-            <ListItem autoFocus>
-              <ListItemText primary="Concrete"
-                secondary={all.wasteData['Concrete'] + '%'}
-                // primaryTypographyProps={{color: 'common.white'}}
-                // secondaryTypographyProps={{color: 'common.white'}}
-              />
-            </ListItem>
-            <ListItem autoFocus>
-              <ListItemText primary="Metal"
-                secondary={all.wasteData['Metal'] + '%'}
-                // primaryTypographyProps={{color: 'common.white'}}
-                // secondaryTypographyProps={{color: 'common.white'}}
-              />
-            </ListItem>
-            <ListItem autoFocus>
-              <ListItemText primary="Other"
-                secondary={all.wasteData['Other'] + '%'}
-                // primaryTypographyProps={{color: 'common.white'}}
-                // secondaryTypographyProps={{color: 'common.white'}}
-              />
-            </ListItem>
-          </List>
-          <Divider sx={{backgroundColor: Colors.trasteNavyBlue}}/>
+            sx={{color: Colors.trasteNavyBlue}}>
+            <Typography variant='h6' color={Colors.trasteNavyBlue}>
+            Waste Data
+            </Typography></Divider>
+          <CustomChart labels={labelArray}
+            seriesData={seriesArray}
+            chartColor={[Colors.trasteNavyLight,
+              Colors.trasteBlue,
+              Colors.trasteTeal,
+              Colors.trasteDarkPurple,
+              Colors.trastePurple]}
+            labelColor={['white',
+              'white',
+              'white',
+              'white',
+              'white']}
+            size='120%'
+            marginLeft={0}
+            foreColor={Colors.trasteNavyBlue}/>
+          <Divider sx={{color: Colors.trasteNavyBlue}}>
+            <Typography variant='h6' color={Colors.trasteNavyBlue}>
+                Docket picture
+            </Typography></Divider>
           <Container style={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            flexDirection: 'column'}}>
-            <Typography variant='h6' color="common.black">
-                Docket picture
-            </Typography>
+            flexDirection: 'column',
+            padding: 0}}>
             <CardMedia
               image={docketURL}
               component='img'
               sx={{maxWidth: '400px',
                 width: '80vw'}} />
-            <Typography variant='h6' color="common.black">
+            <Divider sx={{color: Colors.trasteNavyBlue, width: '100%'}}>
+              <Typography variant='h6' color={Colors.trasteNavyBlue}>
                 Waste picture
-            </Typography>
+              </Typography></Divider>
             <CardMedia
               image={wasteURL}
               component='img'
