@@ -7,16 +7,14 @@ changing and deleting entries in the database.
 const Firestore = require("@google-cloud/firestore");
 const path = require("path");
 
-const {v4: uuidv4} = require("uuid");
-const {initializeApp} = require("firebase/app");
-const {getStorage, ref, uploadBytes, getDownloadURL,
-  deleteObject} =
-require("firebase/storage");
+const { v4: uuidv4 } = require("uuid");
+const { initializeApp } = require("firebase/app");
+const { getStorage, ref, uploadBytes, getDownloadURL,
+  deleteObject } =
+  require("firebase/storage");
 
 const firebaseConfig = {
-  apiKey: "AAAAm_Qkz68:APA91bEeboBLN9Is0JTqJGwQqoJIAeqatTlQ2WigbKxoC418apnP"+
-  "g6RUbBKAwuB31JP81h3WgoDTrw00WOLS5sayASuGTPPQdIj-9RGgw14SOdAik9"+
-  "_VIRxNxFq5gdMVUtkh2W_KyAwp",
+  apiKey: "",
   authDomain: "https://accounts.google.com/o/oauth2/auth",
   storageBucket: "gs://traste-71a71.appspot.com",
 };
@@ -36,9 +34,9 @@ async function uploadImage(data) {
   const imgId = uuidv4();
   const storageRef = ref(storage, imgId);
   // 'file' comes from the Blob or File API
-  await uploadBytes(storageRef, data, {contentType: "image/png"});
+  await uploadBytes(storageRef, data, { contentType: "image/png" });
   const out = await getDownloadURL(storageRef);
-  return JSON.stringify({imgUrl: out});
+  return JSON.stringify({ imgUrl: out });
 }
 
 
@@ -57,7 +55,7 @@ class FirestoreClient {
     */
   async deleteSubCollection(docketNum, collectionPath) {
     const collectionRef = this.firestore
-        .collection("Reports").doc(docketNum).collection(collectionPath);
+      .collection("Reports").doc(docketNum).collection(collectionPath);
     const query = collectionRef.orderBy("__name__").limit(10);
     return new Promise((resolve, reject) => {
       deleteQueryBatch(this.firestore, query, resolve).catch(reject);
@@ -71,7 +69,7 @@ class FirestoreClient {
    */
   async deleteDocument(documentPath) {
     const documentRef = await this.firestore
-        .collection("Reports").doc(documentPath);
+      .collection("Reports").doc(documentPath);
     return await documentRef.delete();
   }
 
@@ -85,11 +83,11 @@ class FirestoreClient {
   async deleteImage(imagePath) {
     // ta ut id på url
     const imageToken = decodeURIComponent(imagePath.split("/")
-        .pop().split("?")[0]);
+      .pop().split("?")[0]);
     const imageRef = ref(storage, imageToken);
-    deleteObject(imageRef).then(()=>{
+    deleteObject(imageRef).then(() => {
       console.log("image removed");
-    }).catch((error)=>{
+    }).catch((error) => {
       console.log("error", error);
     });
   }
@@ -100,9 +98,9 @@ class FirestoreClient {
     await this.deleteImage(docketPic);
     await this.deleteImage(wastePic);
     if (resp && cresp) {
-      return {msg: "Delete was successfull", status: 200};
+      return { msg: "Delete was successfull", status: 200 };
     } else {
-      return {msg: "Delete was unsuccessfull", status: 400};
+      return { msg: "Delete was unsuccessfull", status: 400 };
     }
   }
   /*
@@ -124,16 +122,16 @@ class FirestoreClient {
       site: data.site, // STRING
     };
     const response =
-    this.firestore.collection("Reports").doc(data.docketNumber).get()
-        .then(async (doc) =>{
+      this.firestore.collection("Reports").doc(data.docketNumber).get()
+        .then(async (doc) => {
           if (doc.exists) {
-            return JSON.stringify({msg: "Report already exists"});
+            return JSON.stringify({ msg: "Report already exists" });
           } else {
             await this.firestore.collection("Reports").
-                doc(data.docketNumber).set(reportData);
+              doc(data.docketNumber).set(reportData);
             const wasteData = data.wasteData;
             const reportRef = this.firestore.collection("Reports").
-                doc(data.docketNumber);
+              doc(data.docketNumber);
             if (wasteData && (typeof wasteData === "object")) {
               // eslint-disable-next-line guard-for-in
               const tmpWasteData = {};
@@ -141,9 +139,9 @@ class FirestoreClient {
                 tmpWasteData[key] = parseInt(value);
               }
               await reportRef.collection("Contains")
-                  .doc("WasteData").set(tmpWasteData);
+                .doc("WasteData").set(tmpWasteData);
             }
-            return JSON.stringify({msg: "Report was made"});
+            return JSON.stringify({ msg: "Report was made" });
           }
         });
     return response;
@@ -155,7 +153,7 @@ class FirestoreClient {
     const ref = this.firestore.collection("Reports");
     const snapshot = await ref.get();
     const outList = [];
-    for ( const doc of snapshot.docs) {
+    for (const doc of snapshot.docs) {
       const docRef = this.firestore.collection("Reports").doc(doc.id);
       const docData = doc.data();
       const containsRef = docRef.collection("Contains");
@@ -164,7 +162,7 @@ class FirestoreClient {
       for (const waste of containsSnapshot.docs) {
         o[waste.id] = waste.data();
       }
-      outList.push({...docData, ...o});
+      outList.push({ ...docData, ...o });
     }
     outList.sort(compare);
     return JSON.stringify(outList);
@@ -183,7 +181,7 @@ async function deleteQueryBatch(db, query, resolve) {
   const batchSize = snapshot.size;
   if (batchSize === 0) {
     // When there are no documents left, we are done
-    resolve({msg: "Deleted all subcollections"});
+    resolve({ msg: "Deleted all subcollections" });
     return;
   }
 
@@ -211,4 +209,4 @@ function compare(a, b) {
   return 0;
 }
 
-module.exports = {FirestoreClient, uploadImage};
+module.exports = { FirestoreClient, uploadImage };

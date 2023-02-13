@@ -1,20 +1,20 @@
-const {google} = require("googleapis");
+const { google } = require("googleapis");
 const keys = require("./traste-71a71.json");
 
 
 const getObjectValues = (obj) => (obj && typeof obj === "object") ?
-    Object.values(obj).map(getObjectValues).flat() :
-    [obj];
+  Object.values(obj).map(getObjectValues).flat() :
+  [obj];
 
 const client = new google.auth.JWT(
-    keys.client_email,
-    null,
-    keys.private_key,
-    ["https://www.googleapis.com/auth/spreadsheets"],
+  keys.client_email,
+  null,
+  keys.private_key,
+  ["https://www.googleapis.com/auth/spreadsheets"],
 );
 
 const jwtAuth = client.authorize();
-const gsapi = google.sheets({version: "v4", auth: client});
+const gsapi = google.sheets({ version: "v4", auth: client });
 
 /**
  * Appends a new row containing the new report data
@@ -26,10 +26,10 @@ async function addReport(report) {
   // Flattens the report object
   const outData = [getObjectValues(report)];
   const addOpt = {
-    spreadsheetId: "1-Ihe6vu4Nchp_CN1WqOSAiICXBZHhqdORCk6FriFMaE",
+    spreadsheetId: "",
     range: "Sheet1!A1:N1",
     valueInputOption: "RAW",
-    requestBody: {values: outData, majorDimension: "ROWS"},
+    requestBody: { values: outData, majorDimension: "ROWS" },
   };
   const res = await gsapi.spreadsheets.values.append(addOpt, {});
   console.log("sheets api skickat");
@@ -58,14 +58,14 @@ async function deleteReport(docketNum) {
             "sheetId": 0,
             "dimension": "ROWS",
             "startIndex": foundIndex,
-            "endIndex": foundIndex+1,
+            "endIndex": foundIndex + 1,
           },
         },
       },
     ],
   };
   const delResp = await gsapi.spreadsheets.batchUpdate({
-    spreadsheetId: "1-Ihe6vu4Nchp_CN1WqOSAiICXBZHhqdORCk6FriFMaE",
+    spreadsheetId: "",
     resource: batchOpt,
   });
   return delResp.status;
@@ -73,7 +73,7 @@ async function deleteReport(docketNum) {
 
 async function getIndexByValues(inList, num) {
   let foundIndex = -1;
-  inList.map((item, index)=>{
+  inList.map((item, index) => {
     if (item.includes(num)) {
       foundIndex = index;
     }
@@ -81,4 +81,4 @@ async function getIndexByValues(inList, num) {
   return foundIndex;
 }
 
-module.exports = {addReport, deleteReport};
+module.exports = { addReport, deleteReport };
